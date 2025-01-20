@@ -9,7 +9,8 @@ import Sidebar from './Sidebar';
 import Teacherm from "./Teacherm";
 import Studentm from './Studentm'
 import reportWebVitals from './reportWebVitals';
-import Fee from "./Fee"
+import Fee from "./Fee";
+import Reports from "./Reports"
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -23,6 +24,7 @@ root.render(
         <Route path="/Teacherm" element={<Teacherm />} />
         <Route path="/Studentm" element={<Studentm />} />
         <Route path="/Fee" element={<Fee />} />
+        <Route path="/Reports" element={<Reports />} />
       </Routes>
     </Router>
   </React.StrictMode>

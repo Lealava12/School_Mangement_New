@@ -35,7 +35,7 @@ const Sidebar = () => {
         >
           Fee Management
         </Link>
-   <Link to="/Studentm"
+   <Link to="/Reports"
           className={activeLink === "about" ? "active" : ""}
           onClick={() => handleLinkClick("about")}
         >
