@@ -10,7 +10,7 @@ export default function Login() {
     <form>
       <Grid class="user-box">
         <input type="email"/>
-        <label>Email</label>
+        <label>Email And phone</label>
       </Grid>
       <Grid class="user-box">
         <input type="password"/>
