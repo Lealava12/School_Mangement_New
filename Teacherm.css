@@ -1,0 +1,44 @@
+/* Card styling */
+.card {
+    width: 80%;
+    margin: 20px auto;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-body {
+    padding: 20px;
+  }
+  
+  /* Form styling */
+  .form-horizontal {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group {
+    display: flex;
+    margin-bottom: 15px;
+  }
+  
+  .control-label {
+    width: 20%;
+    text-align: right;
+    padding-right: 10px;
+  }
+  
+  .col-sm-10 {
+    width: 80%;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+  }
+  
+  .btn {
+    margin-top: 15px;
+  }
+  
