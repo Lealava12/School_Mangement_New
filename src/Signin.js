@@ -1,17 +1,8 @@
-// import React from 'react';
-// import { Link } from 'react-router-dom';
-// import './sign_in.css';
-
-// export default function SignUp() {
-//   return (
-   
-//   );
-// }
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';  // Importing Link from react-router-dom
 import './Signin.css';
 
-export default function Signup() {
+export default function Login() {
   return (
     <div className="container">
         <h1 className="title">SCHOOL MANAGEMENT</h1>
@@ -19,32 +10,33 @@ export default function Signup() {
         <div className="avatar">
           <img  src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="User Avatar" />
         </div>
-        <h2 className="login-header">SIGN UP</h2>
+        <h2 className="login-header">LOGIN</h2>
         <form>
           <div className="user-box">
             <input type="email" required />
             <label>Email</label>
           </div>
           <div className="user-box">
-            <input type="text" required /> 
-            <label>Mobile No</label>
-          </div>
-          <div className="user-box">
-            <input type="text" required />  
-            <label>Roll No</label>
-          </div>
-          <div className="user-box">
             <input type="password" required />
-            <label>Create Password</label>
+            <label>Password</label>
+          </div>
+          <div className="checkbox-forgot">
+            <div className="checkbox-container">
+              <input type="checkbox" id="remember" />
+              <label htmlFor="remember">Remember me</label>
+            </div>
+            <div className="forgot-password">
+              <a href="/">Forgot Password?</a>
+            </div>
           </div>
           <button type="submit" className="login-button">
-            Create Account
+            Login
           </button>
         </form>
         <p className="signup-link">
-          Do you have an account? <Link to="/Signin">Sign in</Link>
+          Don’t have an account? <Link to="/Signup">Sign up</Link> 
         </p>
       </div>
     </div>
-  )
+  );
 }
