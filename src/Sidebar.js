@@ -41,7 +41,7 @@ const Sidebar = () => {
         >
           Reports
         </Link>
-        <Link to="/Studentm"
+        <Link to="/Notice"
           className={activeLink === "about" ? "active" : ""}
           onClick={() => handleLinkClick("about")}
         >
