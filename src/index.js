@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import PythonBackend from './Python_backend';
+// import PythonBackend from './Python_backend';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 // import Login from './Login';
 // import Signup from './Signup';
