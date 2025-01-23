@@ -22,7 +22,7 @@ root.render(
       <Routes>
       <Route path="/python-backend" element={<PythonBackend />} />
 
-        <Route path="/" element={<Signup />} />
+        <Route path="/" element={<Teacherm />} />
         <Route path="/Signup" element={<Signup />} />
         <Route path="/Signin" element={<Signin />} />
           {/* <Route path="/Login" element={<Login />} /> */}
