@@ -1,40 +1,81 @@
-// import React from 'react';
-// import { Link } from 'react-router-dom';
-// import './sign_in.css';
-
-// export default function SignUp() {
-//   return (
-   
-//   );
-// }
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import './Signin.css';
 
 export default function Signup() {
+  const [email, setEmail] = useState('');
+  const [mobileNo, setMobileNo] = useState('');
+  const [rollNo, setRollNo] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSignup = (e) => {
+    e.preventDefault();
+    axios
+      .post('http://127.0.0.1:5000/api/admin/signup', {
+        email,
+        mobile_no: mobileNo,
+        roll_no: rollNo,
+        password,
+      })
+      .then((response) => {
+        alert(response.data.message);
+        if (response.data.redirect) {
+          window.location.href = response.data.redirect;
+        }
+      })
+      .catch((error) => {
+        if (error.response && error.response.data && error.response.data.error) {
+          alert(error.response.data.error);
+        } else {
+          console.error('Error during signup:', error);
+        }
+      });
+  };
+
   return (
     <div className="container">
-        <h1 className="title">SCHOOL MANAGEMENT</h1>
+      <h1 className="title">SCHOOL MANAGEMENT</h1>
       <div className="login-box">
         <div className="avatar">
-          <img  src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="User Avatar" />
+          <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="User Avatar" />
         </div>
         <h2 className="login-header">SIGN UP</h2>
-        <form>
+        <form onSubmit={handleSignup}>
           <div className="user-box">
-            <input type="email" required />
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
             <label>Email</label>
           </div>
           <div className="user-box">
-            <input type="text" required /> 
+            <input
+              type="text"
+              value={mobileNo}
+              onChange={(e) => setMobileNo(e.target.value)}
+              required
+            />
             <label>Mobile No</label>
           </div>
           <div className="user-box">
-            <input type="text" required />  
+            <input
+              type="text"
+              value={rollNo}
+              onChange={(e) => setRollNo(e.target.value)}
+              required
+            />
             <label>Roll No</label>
           </div>
           <div className="user-box">
-            <input type="password" required />
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
             <label>Create Password</label>
           </div>
           <button type="submit" className="login-button">
@@ -46,5 +87,6 @@ export default function Signup() {
         </p>
       </div>
     </div>
-  )
+  );
 }
+

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import Signup from "./Signup" ;
 import Signin from "./Signin";
-// import PythonBackend from './Python_backend';
+import PythonBackend from './Python_backend';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 // import Login from './Login';
 // import Signup from './Signup';
@@ -20,7 +20,7 @@ root.render(
   <React.StrictMode>
     <Router>
       <Routes>
-        {/* <PythonBackend /> */}
+      <Route path="/python-backend" element={<PythonBackend />} />
 
         <Route path="/" element={<Signup />} />
         <Route path="/Signup" element={<Signup />} />
