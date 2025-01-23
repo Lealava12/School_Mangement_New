@@ -42,73 +42,45 @@ const Teacherm = () => {
     return (
         <>
             <Sidebar />
-            <center style={{}}>
-                <Grid class="contact-form" style={{ backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "900px", }}>
-                    <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginRight: "740px" }}>Teacher's Details :</Typography>
-                    <form style={{ paddingTop: "20px", paddingBottom: "20px" }}>
+
+            <Grid class="contact-form" style={{
+                backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
+
+            }}>
+                <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "7%" }}>Teacher's Details :</Typography>
+                <form style={{ paddingTop: "20px", paddingBottom: "20px" }}>
 
 
-                        <Grid style={{ display: "flex", justifyContent: "space-between", }}>
-                            <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                                <input type="text" id="Name" placeholder=" Name" required
-                                    style={{ width: "400px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
-                            </Grid>
-                            <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                                <input type="email" id="email" placeholder="Enter Email " required
-                                    style={{ width: "400px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
-                            </Grid>
+                    <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
+                        <Grid class="form-group" style={{ marginBottom: "15px" }}>
+                            <input type="text" id="Name" placeholder=" Name" required
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
                         </Grid>
-
-
-                        <Grid style={{ display: "flex", justifyContent: "space-between", }}>
-                            <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                                <input type="number " id="mobile" placeholder="  Enter number" required
-                                    style={{ width: "400px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
-                            </Grid>
-
-                            <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                                <input type="date" id="birthday" name="birthday" style={{ width: "400px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
-
-                            </Grid>
+                        <Grid class="form-group" style={{ marginBottom: "15px" }}>
+                            <input type="email" id="email" placeholder="Enter Email " required
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
                         </Grid>
+                    </Grid>
 
 
-                        <Grid style={{ display: "flex", justifyContent: "space-between", }}>
-                            <Grid class="form-group" style={{ marginBottom: "15px" }}>
-
-                                <p> Select your Gender:</p>
-                                <RadioGroup
-                                    row
-                                    aria-labelledby="demo-form-control-label-placement"
-                                    name="position"
-                                    defaultValue="top"
-                                >
-
-                                    <FormControlLabel style={{ marginLeft: "10px" }} value="1" control={<Radio />} label="Male" />
-                                    <FormControlLabel value="2" control={<Radio />} label="Female" />
-                                    <FormControlLabel value="3" control={<Radio />} label="Other" />
-                                </RadioGroup>
-
-
-
-
-                            </Grid>
-
-                            <select id="venue" required style={{ width: "425px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
-                                <option value="">Select Subject</option>
-                                <option value="saab">Math</option>
-                                <option value="mercedes">English</option>
-                                <option value="audi">Physics </option>
-                                <option value="audi">Chemistry </option>
-                                <option value="audi">Odia </option>
-                                <option value="audi">Hindi </option>
-                            </select>
+                    <Grid style={{ display: "flex", justifyContent: "space-evenly" }}>
+                        <Grid class="form-group" style={{ marginBottom: "15px" }}>
+                            <input type="number " id="mobile" placeholder="  Enter number" required
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
                         </Grid>
-
-
 
                         <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                            <select id="venue" required style={{ width: "100%", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
+                            <input type="date" id="birthday" name="birthday" style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+
+                        </Grid>
+                    </Grid>
+
+
+                    <Grid style={{ display: "flex", justifyContent: "space-evenly" }}>
+
+
+                        <Grid class="form-group" style={{ marginBottom: "15px", }}>
+                            <select id="venue" required style={{ width: "530px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
 
                                 <option value="">Select Class</option>
                                 <option value="saab">1</option>
@@ -124,20 +96,65 @@ const Teacherm = () => {
 
                             </select>
                         </Grid>
-                        <center>
 
-                            <Button style={{ width: "130px", marginTop: "35px", fontWeight: 600, fontSize: "16px", backgroundColor: "#000066", fontColor: " white" }} >
+                        <Grid class="form-group" style={{ marginBottom: "15px", }}>
+                            <select id="venue" required style={{ width: "530px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
+                                <option value="">Select Subject</option>
+                                <option value="saab">Math</option>
+                                <option value="mercedes">English</option>
+                                <option value="audi">Physics </option>
+                                <option value="audi">Chemistry </option>
+                                <option value="audi">Odia </option>
+                                <option value="audi">Hindi </option>
+                            </select>
+                        </Grid>
+                    </Grid>
+                    <Grid class="form-group" style={{ marginBottom: "15px", marginLeft: "7%" }}>
 
-                                Submit
-                            </Button>
-                        </center>
+                        <p style={{ fontWeight: 500 }}> Select your Gender:</p>
+                        <RadioGroup
+                            row
+                            aria-labelledby="demo-form-control-label-placement"
+                            name="position"
+                            defaultValue="top"
+                        >
 
-                    </form>
-                </Grid>
-            </center>
+                            <FormControlLabel style={{ marginLeft: "10px" }} value="1" control={<Radio />} label="Male" />
+                            <FormControlLabel value="2" control={<Radio />} label="Female" />
+                            <FormControlLabel value="3" control={<Radio />} label="Other" />
+                        </RadioGroup>
 
-            <center>
-                <TableContainer sx={{ marginTop: "50px", width: 950 }} component={Paper}>
+
+
+
+                    </Grid>
+
+                    <center>
+
+                        <Button style={{ width: "130px", marginTop: "35px", fontWeight: 600, fontSize: "16px", backgroundColor: "#000066", fontColor: " white" }} >
+
+                            Submit
+                        </Button>
+                    </center>
+
+                </form>
+            </Grid>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+                <TableContainer sx={{ marginTop: "50px", width: "72%", marginLeft: "20%" }} component={Paper}>
                     <Table aria-label="simple table">
                         <TableHead>
                             <TableRow>
@@ -146,9 +163,10 @@ const Teacherm = () => {
                                 <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Email</TableCell>
                                 <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Mobile No</TableCell>
                                 <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Joining Date</TableCell>
-                                <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Gender</TableCell>
+
                                 <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Subject</TableCell>
                                 <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Class</TableCell>
+                                <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Gender</TableCell>
                                 <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Actions</TableCell>
                             </TableRow>
                         </TableHead>
@@ -159,9 +177,10 @@ const Teacherm = () => {
                                 <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">Smita@gmail.com</TableCell>
                                 <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">986574545</TableCell>
                                 <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">02/12/24</TableCell>
-                                <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">Female</TableCell>
+
                                 <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">Maths</TableCell>
                                 <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">10th</TableCell>
+                                <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">Female</TableCell>
                                 <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">
                                     <ModeEditOutlineIcon onClick={handleOpenEdit} style={{ fontSize: "18px", color: "#000066", cursor: "pointer" }} />
                                     <DeleteIcon onClick={handleOpenDelete} style={{ fontSize: "18px", color: "red", cursor: "pointer" }} />
@@ -170,7 +189,7 @@ const Teacherm = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-            </center>
+           
 
 
 
@@ -178,107 +197,112 @@ const Teacherm = () => {
 
             <Grid>
 
-            
-
-                    <Modal open={openEdit} onClose={handleCloseEdit} style={{ marginTop: "200px" }}>
-                        <center>
-                            <Grid class="contact-form" style={{ backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "900px", }}>
-                                <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginRight: "700px" }}> Edit Teacher's Details :</Typography>
-                                <form style={{ paddingTop: "20px", paddingBottom: "20px" }}>
 
 
-                                    <Grid style={{ display: "flex", justifyContent: "space-between", }}>
-                                        <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                                            <input type="text" id="Name" placeholder=" Name" required
-                                                style={{ width: "400px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
-                                        </Grid>
-                                        <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                                            <input type="email" id="email" placeholder="Enter Email " required
-                                                style={{ width: "400px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
-                                        </Grid>
-                                    </Grid>
+                <Modal open={openEdit} onClose={handleCloseEdit} style={{ marginTop: "200px" }}>
+                    <center>
+                    <Grid class="contact-form" style={{
+                backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
+
+            }}>
+                <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "7%" }}> Edit Teacher's Details :</Typography>
+                <form style={{ paddingTop: "20px", paddingBottom: "20px" }}>
 
 
-                                    <Grid style={{ display: "flex", justifyContent: "space-between", }}>
-                                        <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                                            <input type="number " id="mobile" placeholder="  Enter number" required
-                                                style={{ width: "400px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
-                                        </Grid>
-
-                                        <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                                            <input type="date" id="birthday" name="birthday" style={{ width: "400px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
-
-                                        </Grid>
-                                    </Grid>
-
-
-                                    <Grid style={{ display: "flex", justifyContent: "space-between", }}>
-                                        <Grid class="form-group" style={{ marginBottom: "15px" }}>
-
-                                            <p> Select your Gender:</p>
-                                            <RadioGroup
-                                                row
-                                                aria-labelledby="demo-form-control-label-placement"
-                                                name="position"
-                                                defaultValue="top"
-                                            >
-
-                                                <FormControlLabel style={{ marginLeft: "10px" }} value="1" control={<Radio />} label="Male" />
-                                                <FormControlLabel value="2" control={<Radio />} label="Female" />
-                                                <FormControlLabel value="3" control={<Radio />} label="Other" />
-                                            </RadioGroup>
+                    <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
+                        <Grid class="form-group" style={{ marginBottom: "15px" }}>
+                            <input type="text" id="Name" placeholder=" Name" required
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                        </Grid>
+                        <Grid class="form-group" style={{ marginBottom: "15px" }}>
+                            <input type="email" id="email" placeholder="Enter Email " required
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                        </Grid>
+                    </Grid>
 
 
+                    <Grid style={{ display: "flex", justifyContent: "space-evenly" }}>
+                        <Grid class="form-group" style={{ marginBottom: "15px" }}>
+                            <input type="number " id="mobile" placeholder="  Enter number" required
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                        </Grid>
+
+                        <Grid class="form-group" style={{ marginBottom: "15px" }}>
+                            <input type="date" id="birthday" name="birthday" style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+
+                        </Grid>
+                    </Grid>
 
 
-                                        </Grid>
-
-                                        <select id="venue" required style={{ width: "425px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
-                                            <option value="">Select Subject</option>
-                                            <option value="saab">Math</option>
-                                            <option value="mercedes">English</option>
-                                            <option value="audi">Physics </option>
-                                            <option value="audi">Chemistry </option>
-                                            <option value="audi">Odia </option>
-                                            <option value="audi">Hindi </option>
-                                        </select>
-                                    </Grid>
+                    <Grid style={{ display: "flex", justifyContent: "space-evenly" }}>
 
 
+                        <Grid class="form-group" style={{ marginBottom: "15px", }}>
+                            <select id="venue" required style={{ width: "530px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
 
-                                    <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                                        <select id="venue" required style={{ width: "100%", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
+                                <option value="">Select Class</option>
+                                <option value="saab">1</option>
+                                <option value="mercedes">2</option>
+                                <option value="audi">3 </option>
+                                <option value="audi">4 </option>
+                                <option value="audi">5 </option>
+                                <option value="audi">6 </option>
+                                <option value="audi">7 </option>
+                                <option value="audi">8 </option>
+                                <option value="audi">9 </option>
+                                <option value="audi">10 </option>
 
-                                            <option value="">Select Class</option>
-                                            <option value="saab">1</option>
-                                            <option value="mercedes">2</option>
-                                            <option value="audi">3 </option>
-                                            <option value="audi">4 </option>
-                                            <option value="audi">5 </option>
-                                            <option value="audi">6 </option>
-                                            <option value="audi">7 </option>
-                                            <option value="audi">8 </option>
-                                            <option value="audi">9 </option>
-                                            <option value="audi">10 </option>
+                            </select>
+                        </Grid>
 
-                                        </select>
-                                    </Grid>
-                                    <center>
+                        <Grid class="form-group" style={{ marginBottom: "15px", }}>
+                            <select id="venue" required style={{ width: "530px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
+                                <option value="">Select Subject</option>
+                                <option value="saab">Math</option>
+                                <option value="mercedes">English</option>
+                                <option value="audi">Physics </option>
+                                <option value="audi">Chemistry </option>
+                                <option value="audi">Odia </option>
+                                <option value="audi">Hindi </option>
+                            </select>
+                        </Grid>
+                    </Grid>
+                    <Grid class="form-group" style={{ marginBottom: "15px", marginLeft: "7%" }}>
 
-                                        <Button style={{ width: "130px", marginTop: "35px", fontWeight: 600, fontSize: "16px", backgroundColor: "#000066", fontColor: " white" }} >
+                        <p style={{ fontWeight: 500 }}> Select your Gender:</p>
+                        <RadioGroup
+                            row
+                            aria-labelledby="demo-form-control-label-placement"
+                            name="position"
+                            defaultValue="top"
+                        >
 
-                                            Submit
-                                        </Button>
-                                    </center>
-
-                                </form>
-                            </Grid>
-                        </center>
-                    </Modal>
+                            <FormControlLabel style={{ marginLeft: "10px" }} value="1" control={<Radio />} label="Male" />
+                            <FormControlLabel value="2" control={<Radio />} label="Female" />
+                            <FormControlLabel value="3" control={<Radio />} label="Other" />
+                        </RadioGroup>
 
 
 
-                </Grid>
+
+                    </Grid>
+
+                    <center>
+
+                        <Button style={{ width: "130px", marginTop: "35px", fontWeight: 600, fontSize: "16px", backgroundColor: "#000066", fontColor: " white" }} >
+
+                            Submit
+                        </Button>
+                    </center>
+
+                </form>
+            </Grid>
+                    </center>
+                </Modal>
+
+
+
+            </Grid>
 
 
 

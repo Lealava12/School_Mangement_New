@@ -17,32 +17,31 @@ import Paper from '@mui/material/Paper';
 const Fee = () => {
     return (
         <>
-            <>
+        
                 <Sidebar />
-            </>
-            <>
+           
 
 
 
-                <center >
-                    <Grid style={{ backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "900px", }}>
+             
+                  <Grid class="contact-form" style={{
+                                  backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
+                  
+                              }}>
 
-
-                        <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginRight: "710px" }}>Student's Details :</Typography>
+                        <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px",  marginLeft: "7%" }}>Student's Details :</Typography>
                         <form style={{ paddingTop: "20px", paddingBottom: "20px" }}>
 
-                            <Grid style={{ display: "flex", justifyContent: "space-between", }}>
+                            <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
 
                                 <Grid class="form-group" style={{ marginBottom: "15px" }}>
                                     <input type="text" id="Name" placeholder="Student's Name" required
-                                        style={{ width: "400px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                                        style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
                                 </Grid>
                                 <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                                    {/* <input type="date" id="birthday" name="birthday" style={{ width: "400px", padding: "10px", borderRadius: "5px",borderColor: "1px solid #000066" }} /> */}
+                                   
 
-
-
-                                    <select id="venue" required style={{ width: "425px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
+                                    <select id="venue" required style={{ width: "500px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
 
 
 
@@ -65,16 +64,16 @@ const Fee = () => {
                             </Grid>
 
 
-                            <Grid style={{ display: "flex", justifyContent: "space-between", }}>
+                            <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
                                 <Grid class="form-group" style={{ marginBottom: "15px" }}>
 
                                     <input type="number " id="mobile" placeholder="Enter Roll No" required
-                                        style={{ width: "400px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                                        style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
 
 
                                 </Grid>
 
-                                <select id="venue" required style={{ width: "425px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
+                                <select id="venue" required style={{ width: "500px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
 
 
 
@@ -90,17 +89,17 @@ const Fee = () => {
                             </Grid>
 
 
-                            <Grid style={{ display: "flex", justifyContent: "space-between", }}>
+                            <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
                                 <Grid class="form-group" style={{ marginBottom: "15px" }}>
                                     <input type="number " id="number" placeholder="Amount" required
-                                        style={{ width: "400px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                                        style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
 
 
 
                                 </Grid>
 
                                 <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                                    <input type="date" id="birthday" placeholder="Payment Date" style={{ width: "400px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                                    <input type="date" id="birthday" placeholder="Payment Date" style={{ width: "480px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
 
 
                                 </Grid>
@@ -108,10 +107,10 @@ const Fee = () => {
 
 
 
-                            <Grid style={{ display: "flex", justifyContent: "space-between", }}>
+                            <Grid style={{ display: "flex", marginLeft:"7.5%" }}>
                                 <Grid class="form-group" style={{ marginBottom: "15px" }}>
                                     <input type="number " id="number" placeholder="Receipt No" required
-                                        style={{ width: "400px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                                        style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
 
 
 
@@ -127,16 +126,18 @@ const Fee = () => {
 
 
 
-                    <Grid style={{ backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "900px", marginTop: "20px", }}>
+                  <Grid class="contact-form" style={{
+                                  backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
+                  
+                              }}>
 
-
-                        <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginRight: " 740px" }}>Fee Reports :</Typography>
+                        <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "7%" }}>Fee Reports :</Typography>
                         <form style={{ paddingTop: "20px", paddingBottom: "20px" }}>
 
-                            <Grid style={{ display: "flex", justifyContent: "space-between", }}>
+                            <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
 
                                 <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                                    <select id="venue" required style={{ width: "425px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
+                                    <select id="venue" required style={{ width: "500px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
 
 
 
@@ -157,7 +158,7 @@ const Fee = () => {
                                     </select>
                                 </Grid>
                                 <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                                <input type="date" id="birthday" placeholder="Payment Date" style={{ width: "400px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                                <input type="date" id="birthday" placeholder="Payment Date" style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
 
                                 </Grid>
                             </Grid>
@@ -174,73 +175,15 @@ const Fee = () => {
 
                         </form>
                     </Grid>
-                </center>
-            </>
-
-            <>
+              
+        
 
 
 
 
 
-                <center style={{}}>
-                    <TableContainer sx={{ marginTop: "50px", width: 900, }} component={Paper}>
-                        <Table aria-label="simple table">
-                            <TableHead   >
-                                <TableRow >
-                                    <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px", fontStyle: " STL Calisto MT" }}>Sl No</TableCell>
-                                    <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Name</TableCell>
-                                    <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">DOB</TableCell>
-                                    <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Gender</TableCell>
-                                    <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Class</TableCell>
-                                    <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Section</TableCell>
-                                    <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Roll</TableCell>
-
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-
-                                <TableRow  >
-                                    <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} >1</TableCell>
-                                    <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">Smita</TableCell>
-                                    <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">02/12/24</TableCell>
-                                    <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">Female</TableCell>
-                                    <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="roight">10th</TableCell>
-                                    <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">B</TableCell>
-                                    <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">05</TableCell>
-
-                                </TableRow>
-
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-
-                </center>
-
-
-
-
-
-
-
-
-            </>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+               
+            
 
 
 
