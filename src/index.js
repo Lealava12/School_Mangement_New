@@ -2,6 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 
+import Signup from "./Signup" ;
+import Signin from "./Signin";
+import PythonBackend from './Python_backend';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Teacherm from "./Teacherm";
@@ -24,6 +27,11 @@ root.render(
         {/* <PythonBackend /> */}
         <Route path="/" element={<Sidebar />} />
       
+      <Route path="/python-backend" element={<PythonBackend />} />
+
+        <Route path="/" element={<Signup />} />
+        <Route path="/Signup" element={<Signup />} />
+        <Route path="/Signin" element={<Signin />} />
           {/* <Route path="/Login" element={<Login />} /> */}
         <Route path="/Teacherm" element={<Teacherm />} />
         <Route path="/Studentm" element={<Studentm />} />
