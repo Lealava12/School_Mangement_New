@@ -117,7 +117,7 @@ const Notice = () => {
                     </Box>
 
 
-                </Grid>``
+                </Grid>
                 <center>
                     <Button style={{ width: "130px", marginTop: "35px", fontWeight: 600, fontSize: "16px", backgroundColor: "#000066", fontColor: " white" }} >
 
@@ -203,7 +203,7 @@ const Notice = () => {
                         </Box>
 
 
-                    </Grid>``
+                    </Grid>
                 </Grid>
 
         </>

@@ -1,5 +1,4 @@
 import React from 'react';
-// import '../src/Teacherm.css';
 import Sidebar from './Sidebar';
 import { Grid, Button, Typography } from '@mui/material';
 import Radio from '@mui/material/Radio';
@@ -13,7 +12,6 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
-
 import DeleteIcon from '@mui/icons-material/Delete';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -25,7 +23,6 @@ const style = {
     transform: 'translate(-50%, -50%)',
     width: 400,
     bgcolor: 'background.paper',
-    // border: '2px solid #000',
     boxShadow: 24,
     p: 4,
 };
@@ -44,11 +41,7 @@ const Studentm = () => {
     return (
         <>
 
-
             <Sidebar />
-
-
-
 
             <Grid class="contact-form" style={{
                 backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
@@ -146,9 +139,6 @@ const Studentm = () => {
                 </form>
             </Grid>
 
-
-
-
             <Grid class="contact-form" style={{
                 backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
 
@@ -200,14 +190,6 @@ const Studentm = () => {
             </Grid>
 
 
-
-
-
-
-
-
-
-
             <TableContainer sx={{ marginTop: "50px", width: "72%", marginLeft: "20%" }} component={Paper}>
                 <Table aria-label="simple table">
                     <TableHead   >
@@ -252,172 +234,146 @@ const Studentm = () => {
                 </Table>
             </TableContainer>
 
-
-
-
-
-
-
-
-
-
-
             <Grid>
-
-
 
                 <Modal open={openEdit} onClose={handleCloseEdit} style={{ marginTop: "200px" }}>
                     <center>
-                      
 
-            <Grid class="contact-form" style={{
-                backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
 
-            }}>
-                <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px",  }}> Edit Student's Details :</Typography>
-                <form style={{ paddingTop: "20px", paddingBottom: "20px" }}>
+                        <Grid class="contact-form" style={{
+                            backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
 
-                    <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
+                        }}>
+                            <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", }}> Edit Student's Details :</Typography>
+                            <form style={{ paddingTop: "20px", paddingBottom: "20px" }}>
 
-                        <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                            <input type="text" id="Name" placeholder="Student's Name" required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                                <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
+
+                                    <Grid class="form-group" style={{ marginBottom: "15px" }}>
+                                        <input type="text" id="Name" placeholder="Student's Name" required
+                                            style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                                    </Grid>
+                                    <Grid class="form-group" style={{ marginBottom: "15px" }}>
+                                        <input type="date" id="birthday" name="birthday" style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+
+                                    </Grid>
+                                </Grid>
+
+
+                                <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
+
+
+                                    <select id="venue" required style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
+
+                                        <option value="">Select Class</option>
+                                        <option value="saab">1</option>
+                                        <option value="mercedes">2</option>
+                                        <option value="audi">3 </option>
+                                        <option value="audi">4 </option>
+                                        <option value="audi">5 </option>
+                                        <option value="audi">6 </option>
+                                        <option value="audi">7 </option>
+                                        <option value="audi">8 </option>
+                                        <option value="audi">9 </option>
+                                        <option value="audi">10 </option>
+
+
+                                    </select>
+
+
+                                    <Grid class="form-group" style={{ marginBottom: "15px" }}>
+                                        <select id="venue" required style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
+
+                                            <option value="">Select Section</option>
+                                            <option value="saab">A</option>
+                                            <option value="mercedes">B</option>
+                                            <option value="mercedes">c</option>
+
+
+                                        </select>
+
+                                    </Grid>
+                                </Grid>
+
+
+                                <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
+                                    <Grid class="form-group" style={{ marginBottom: "15px", width: "520px", }}>
+
+                                        <p> Select your Gender:</p>
+                                        <RadioGroup
+                                            row
+                                            aria-labelledby="demo-form-control-label-placement"
+                                            name="position"
+                                            defaultValue="top"
+                                        >
+
+                                            <FormControlLabel style={{ marginLeft: "10px" }} value="1" control={<Radio />} label="Male" />
+                                            <FormControlLabel value="2" control={<Radio />} label="Female" />
+                                            <FormControlLabel value="3" control={<Radio />} label="Other" />
+                                        </RadioGroup>
+
+
+                                    </Grid>
+
+                                    <Grid class="form-group" style={{ marginBottom: "15px" }}>
+                                        <input type="number " id="mobile" placeholder="Enter Roll No" required
+                                            style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                                    </Grid>
+                                </Grid>
+
+
+                            </form>
                         </Grid>
-                        <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                            <input type="date" id="birthday" name="birthday" style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
 
+                        <Grid class="contact-form" style={{
+                            backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
+
+                        }}>
+
+
+                            <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px" }}>Edit Parent's Details :</Typography>
+                            <form style={{ paddingTop: "20px", paddingBottom: "20px" }}>
+
+                                <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
+
+                                    <Grid class="form-group" style={{ marginBottom: "15px" }}>
+                                        <input type="text" id="Name" placeholder="Father's Name" required
+                                            style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                                    </Grid>
+                                    <Grid class="form-group" style={{ marginBottom: "15px" }}>
+                                        <input type="text" id="Name" placeholder="Mother's Name" required
+                                            style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                                    </Grid>
+                                </Grid>
+
+                                <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
+
+                                    <Grid class="form-group" style={{ marginBottom: "15px" }}>
+                                        <input type="email" id="Name" placeholder="Email" required
+                                            style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                                    </Grid>
+                                    <Grid class="form-group" style={{ marginBottom: "15px" }}>
+                                        <input type="number" id="Name" placeholder="Mobile No" required
+                                            style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                                    </Grid>
+                                </Grid>
+
+                                <Grid style={{ display: "flex", marginLeft: "7%" }}>
+
+                                    <textarea id="message" placeholder="Address" required
+                                        style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}></textarea>
+                                </Grid>
+
+
+                                <center>
+                                    <Button style={{ width: "130px", marginTop: "35px", fontWeight: 600, fontSize: "16px", backgroundColor: "#000066", fontColor: " white" }} >
+
+                                        Submit
+                                    </Button>
+                                </center>
+
+                            </form>
                         </Grid>
-                    </Grid>
-
-
-                    <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
-
-
-                        <select id="venue" required style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
-
-
-
-                            <option value="">Select Class</option>
-                            <option value="saab">1</option>
-                            <option value="mercedes">2</option>
-                            <option value="audi">3 </option>
-                            <option value="audi">4 </option>
-                            <option value="audi">5 </option>
-                            <option value="audi">6 </option>
-                            <option value="audi">7 </option>
-                            <option value="audi">8 </option>
-                            <option value="audi">9 </option>
-                            <option value="audi">10 </option>
-
-
-
-                        </select>
-
-
-
-                        <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                            <select id="venue" required style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
-
-                                <option value="">Select Section</option>
-                                <option value="saab">A</option>
-                                <option value="mercedes">B</option>
-                                <option value="mercedes">c</option>
-
-
-                            </select>
-
-                        </Grid>
-                    </Grid>
-
-
-
-
-
-                    <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
-                        <Grid class="form-group" style={{ marginBottom: "15px", width: "520px", }}>
-
-                            <p> Select your Gender:</p>
-                            <RadioGroup
-                                row
-                                aria-labelledby="demo-form-control-label-placement"
-                                name="position"
-                                defaultValue="top"
-                            >
-
-                                <FormControlLabel style={{ marginLeft: "10px" }} value="1" control={<Radio />} label="Male" />
-                                <FormControlLabel value="2" control={<Radio />} label="Female" />
-                                <FormControlLabel value="3" control={<Radio />} label="Other" />
-                            </RadioGroup>
-
-
-
-
-                        </Grid>
-
-                        <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                            <input type="number " id="mobile" placeholder="Enter Roll No" required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
-                        </Grid>
-                    </Grid>
-
-
-
-
-                </form>
-            </Grid>
-
-
-
-
-            <Grid class="contact-form" style={{
-                backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
-
-            }}>
-
-
-                <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px" }}>Edit Parent's Details :</Typography>
-                <form style={{ paddingTop: "20px", paddingBottom: "20px" }}>
-
-                    <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
-
-                        <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                            <input type="text" id="Name" placeholder="Father's Name" required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
-                        </Grid>
-                        <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                            <input type="text" id="Name" placeholder="Mother's Name" required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
-                        </Grid>
-                    </Grid>
-
-                    <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
-
-                        <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                            <input type="email" id="Name" placeholder="Email" required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
-                        </Grid>
-                        <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                            <input type="number" id="Name" placeholder="Mobile No" required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
-                        </Grid>
-                    </Grid>
-
-                    <Grid style={{ display: "flex", marginLeft: "7%" }}>
-
-                        <textarea id="message" placeholder="Address" required
-                            style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}></textarea>
-                    </Grid>
-
-
-                    <center>
-                        <Button style={{ width: "130px", marginTop: "35px", fontWeight: 600, fontSize: "16px", backgroundColor: "#000066", fontColor: " white" }} >
-
-                            Submit
-                        </Button>
-                    </center>
-
-                </form>
-            </Grid>
 
 
                     </center>
@@ -426,10 +382,6 @@ const Studentm = () => {
 
 
             </Grid>
-
-
-
-
 
             <Modal open={openDelete} onClose={handleCloseDelete}>
                 <Box sx={style}>
@@ -445,9 +397,6 @@ const Studentm = () => {
             </Modal>
 
         </>
-
-
-
 
     );
 };
