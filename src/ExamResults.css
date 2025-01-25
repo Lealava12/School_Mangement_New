@@ -1,0 +1,99 @@
+.container {
+    background-color: rgb(248, 248, 248);
+    color: #333;
+    padding: 20px;
+    width: 75%;
+    margin-left: 256px;
+    font-family: 'Roboto', sans-serif;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.exam-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.student-info {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    line-height: 1.8;
+    font-size: 1rem;
+    text-align: left;
+    color: white;
+}
+
+.student-info p {
+    margin: 5px 0;
+}
+
+.student-info span {
+    font-weight: bold;
+    color: #FF6F00;
+    margin-right: 10px;
+}
+
+.result-table {
+    background-color: #e1e1e1;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 0.9rem;
+}
+
+table th,
+table td {
+    border: 1px solid #ccc;
+    padding: 14px 18px;
+    text-align: center;
+    color: #333;
+    font-size: 16px;
+}
+
+table th {
+    background-color: #f0f0f0;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+table tr:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.total-row,
+.percentage-row {
+    font-weight: bold;
+    background-color: #dcdcdc;
+}
+
+.total-row td,
+.percentage-row td {
+    color: red;
+}
+
+@media (max-width: 768px) {
+    .student-info {
+        text-align: center;
+    }
+
+    table th,
+    table td {
+        font-size: 0.85rem;
+        padding: 12px 15px;
+    }
+}
