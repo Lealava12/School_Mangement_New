@@ -77,11 +77,6 @@ const Assignmentm = () => {
                         </Grid>
                     </Grid>
 
-
-
-
-
-
                     <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
                     <Grid class="form-group" style={{ marginBottom: "15px" }}>
                         <textarea id="message" placeholder="Description" required
@@ -90,9 +85,6 @@ const Assignmentm = () => {
 
                         <Grid>
                             <select id="venue" required style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
-
-
-
                                 <option value="">Select Class</option>
                                 <option value="saab">1</option>
                                 <option value="mercedes">2</option>
@@ -104,9 +96,6 @@ const Assignmentm = () => {
                                 <option value="audi">8 </option>
                                 <option value="audi">9 </option>
                                 <option value="audi">10 </option>
-
-
-
                             </select>
 
                         </Grid>
@@ -126,10 +115,7 @@ const Assignmentm = () => {
                             '&:hover': {
                                 bgcolor: 'primary.dark',
                             },
-                        }}
-
-
-                    >
+                        }}  >
                         <AddSharpIcon style={{ fontSize: "25px", color: "white" }} />
                         <input
                             type="file"
@@ -146,83 +132,43 @@ const Assignmentm = () => {
                         </Button>
                     </center>
 
-
-
-
-
-
-
-
-
                 </form>
             </Grid>
-
-
-
-
 
 
             <TableContainer sx={{ marginTop: "50px", width: "72%", marginLeft: "20%" }} component={Paper}>
                 <Table aria-label="simple table">
                     <TableHead   >
                         <TableRow >
-                            <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px", fontStyle: " STL Calisto MT" }}>Sl No</TableCell>
-
-
-                            
+                            <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px", fontStyle: " STL Calisto MT" }}>Sl No</TableCell>    
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Assignment Title </TableCell>
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right"> Date</TableCell>
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Description</TableCell>
-                            <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Class</TableCell>
-                           
-
+                            <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Class</TableCell>           
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Action</TableCell>
-
                         </TableRow>
                     </TableHead>
                     <TableBody>
-
                         <TableRow  >
                             <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} >1</TableCell>
                             <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">9th</TableCell>
                             <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">10/11/24</TableCell>
                             <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">Smita</TableCell>
-
                             <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">Present</TableCell>
-
-
                             <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">
                                 <ModeEditOutlineIcon style={{ fontSize: "18px", color: "#000066", cursor: "pointer" }} />
                                 <DeleteIcon onClick={setOpenDelete1} style={{ fontSize: "18px", color: "red", cursor: "pointer" }} />
                             </TableCell>
-
                         </TableRow>
-
                     </TableBody>
                 </Table>
             </TableContainer>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
             <Modal open={openDelete} onClose={handleCloseDelete}>
                 <Box sx={style}>
                     <Typography variant="h6" component="h2">
                         Are you sure you want to delete this entry?
-
                     </Typography>
                     <center style={{ marginTop: "30px" }}>
                         <Button style={{ backgroundColor: '#000066' }} onClick={handleCloseDelete}>Yes</Button>
@@ -232,9 +178,6 @@ const Assignmentm = () => {
             </Modal>
 
         </>
-
-
-
 
     );
 };

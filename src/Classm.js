@@ -44,14 +44,9 @@ const Classm = () => {
 
     return (
         <>
-
-
             <Sidebar />
 
-
-
-
-            <Grid class="contact-form" style={{
+            <Grid class= "contact-form" style={{
                 backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
 
             }}>
@@ -66,9 +61,6 @@ const Classm = () => {
                         </Grid>
                         <Grid class="form-group" style={{ marginBottom: "15px" }}>
                             <select id="venue" required style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
-
-
-
                                 <option value="">Select Class</option>
                                 <option value="saab">1</option>
                                 <option value="mercedes">2</option>
@@ -80,17 +72,10 @@ const Classm = () => {
                                 <option value="audi">8 </option>
                                 <option value="audi">9 </option>
                                 <option value="audi">10 </option>
-
-
-
                             </select>
 
                         </Grid>
                     </Grid>
-
-
-                   
-
                         <Grid class="form-group" style={{ marginBottom: "15px",marginLeft:"7%" }}>
                             <select id="venue" required style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
                                 <option value="">Select Subject</option>
@@ -118,10 +103,7 @@ const Classm = () => {
                             '&:hover': {
                                 bgcolor: 'primary.dark',
                             },
-                        }}
-
-
-                    >
+                        }}>
                         <AddSharpIcon style={{ fontSize: "25px", color: "white" }} />
                         <input
                             type="file"
@@ -132,22 +114,8 @@ const Classm = () => {
                         />
                     </Box>
 
-
-
-
-
-
-
-
-
-
-
-
                 </form>
             </Grid>
-
-
-
 
 
 
@@ -157,56 +125,33 @@ const Classm = () => {
                         <TableRow >
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px", fontStyle: " STL Calisto MT" }}>Sl No</TableCell>
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Name</TableCell>
-                       
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Class</TableCell>
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Subject</TableCell>
-                            <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Image</TableCell>
-              
+                            <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Image</TableCell>            
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Action</TableCell>
-
                         </TableRow>
                     </TableHead>
                     <TableBody>
-
                         <TableRow  >
                             <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} >1</TableCell>
                             <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">Smita</TableCell>
                             <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">9th</TableCell>
                             <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">Maths</TableCell>
-                            <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right"> </TableCell>
-                           
+                            <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right"> </TableCell>                          
                             <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">
                                 <ModeEditOutlineIcon style={{ fontSize: "18px", color: "#000066", cursor: "pointer" }} />
                                 <DeleteIcon onClick={setOpenDelete1} style={{ fontSize: "18px", color: "red", cursor: "pointer" }} />
                             </TableCell>
-
                         </TableRow>
-
                     </TableBody>
                 </Table>
             </TableContainer>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
             <Modal open={openDelete} onClose={handleCloseDelete}>
                 <Box sx={style}>
                     <Typography variant="h6" component="h2">
                         Are you sure you want to delete this entry?
-
                     </Typography>
                     <center style={{ marginTop: "30px" }}>
                         <Button style={{ backgroundColor: '#000066' }} onClick={handleCloseDelete}>Yes</Button>

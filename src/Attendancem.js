@@ -1,5 +1,4 @@
 import React from 'react';
-// import '../src/Teacherm.css';
 import Sidebar from './Sidebar';
 import { Grid, Button, Typography } from '@mui/material';
 import Radio from '@mui/material/Radio';
@@ -45,11 +44,7 @@ const Attendancem = () => {
     return (
         <>
 
-
-            <Sidebar />
-
-
-
+    <Sidebar />
 
             <Grid class="contact-form" style={{
                 backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
@@ -63,9 +58,6 @@ const Attendancem = () => {
 
                         <Grid class="form-group" style={{ marginBottom: "15px" }}>
                             <select id="venue" required style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
-
-
-
                                 <option value="">Select Class</option>
                                 <option value="saab">1</option>
                                 <option value="mercedes">2</option>
@@ -77,14 +69,10 @@ const Attendancem = () => {
                                 <option value="audi">8 </option>
                                 <option value="audi">9 </option>
                                 <option value="audi">10 </option>
-
-
-
                             </select>
 
                         </Grid>
                         <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
-
 
                             <Grid class="form-group" style={{ marginBottom: "10px" }}>
                                 <Grid class="form-group" style={{ marginBottom: "15px" }}>
@@ -95,17 +83,13 @@ const Attendancem = () => {
                         </Grid>
                     </Grid>
 
-
-
-
-                    <Grid class="form-group" style={{ marginBottom: "10px", marginLeft: "7%" }}>
+          <Grid class="form-group" style={{ marginBottom: "10px", marginLeft: "7%" }}>
                         <Grid class="form-group" style={{ marginBottom: "15px" }}>
                             <input type="text" id="Name" placeholder="Student Name" required
                                 style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
                         </Grid>
 
                     </Grid>
-
 
                     <Grid style={{ display: "flex", marginLeft: "7%" }}>
                         <Grid class="form-group" style={{ marginBottom: "15px", width: "520px", }}>
@@ -123,9 +107,6 @@ const Attendancem = () => {
 
                             </RadioGroup>
 
-
-
-
                         </Grid>
                     </Grid>
 
@@ -136,76 +117,37 @@ const Attendancem = () => {
                             Submit
                         </Button>
                     </center>
-
-
-
-
-
-
-
-
-
                 </form>
             </Grid>
-
-
-
-
 
 
             <TableContainer sx={{ marginTop: "50px", width: "72%", marginLeft: "20%" }} component={Paper}>
                 <Table aria-label="simple table">
                     <TableHead   >
                         <TableRow >
-                            <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px", fontStyle: " STL Calisto MT" }}>Sl No</TableCell>
-                         
-
+                            <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px", fontStyle: " STL Calisto MT" }}>Sl No</TableCell>                       
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Class</TableCell>
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Attendance Date</TableCell>
-                            <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right"> Student's Name</TableCell>
-                          
+                            <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right"> Student's Name</TableCell>                          
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Status</TableCell>
-
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Action</TableCell>
-
                         </TableRow>
                     </TableHead>
                     <TableBody>
-
                         <TableRow  >
                             <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} >1</TableCell>
                             <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">9th</TableCell>
                             <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">10/11/24</TableCell>
-                            <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">Smita</TableCell>
-                          
+                            <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">Smita</TableCell>                    
                             <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">Present</TableCell>
-                       
-
                             <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">
                                 <ModeEditOutlineIcon style={{ fontSize: "18px", color: "#000066", cursor: "pointer" }} />
                                 <DeleteIcon onClick={setOpenDelete1} style={{ fontSize: "18px", color: "red", cursor: "pointer" }} />
                             </TableCell>
-
                         </TableRow>
-
                     </TableBody>
                 </Table>
             </TableContainer>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
             <Modal open={openDelete} onClose={handleCloseDelete}>
@@ -220,12 +162,7 @@ const Attendancem = () => {
                     </center>
                 </Box>
             </Modal>
-
         </>
-
-
-
-
     );
 };
 
