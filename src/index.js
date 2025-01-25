@@ -25,7 +25,7 @@ root.render(
     <Router>
       <Routes>
         {/* <PythonBackend /> */}
-        <Route path="/" element={<Sidebar />} />
+        <Route path="/" element={<Signup />} />
       
       <Route path="/python-backend" element={<PythonBackend />} />
 

@@ -57,6 +57,7 @@ def login_admin():
             session['user_type'] = user['type']  # Store user type in session
             return jsonify({
                 "message": "Login successful!",
+                "redirect": "./Teacherm",
                 "user": {"id": user['id'], "email": user['email'], "type": user['type']}
             }), 200
         else:
@@ -102,6 +103,96 @@ def signup_admin():
         cursor.close()
         connection.close()
 
+@user_routes.route('/admin/teacher', methods=['GET', 'POST'])
+def manage_teachers():
+    if request.method == 'GET':
+        # Fetch all teachers
+        connection = get_connection()
+        cursor = connection.cursor(dictionary=True)
+        try:
+            cursor.execute("SELECT * FROM teachers")
+            teachers = cursor.fetchall()
+            return jsonify(teachers), 200
+        except Exception as e:
+            return jsonify({"error": f"Failed to fetch teachers: {str(e)}"}), 500
+        finally:
+            cursor.close()
+            connection.close()
+
+    elif request.method == 'POST':
+        # Add a new teacher
+        data = request.json
+        required_fields = ['name', 'email', 'mobile', 'joining_date', 'subject', 'class', 'gender']
+        if not all(data.get(field) for field in required_fields):
+            return jsonify({"error": "All fields are required!"}), 400
+
+        connection = get_connection()
+        cursor = connection.cursor()
+        try:
+            insert_query = """
+                INSERT INTO teachers (name, email, mobile, joining_date, subject, class, gender)
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
+            """
+            cursor.execute(insert_query, (
+                data['name'], data['email'], data['mobile'], 
+                data['joining_date'], data['subject'], 
+                data['class'], data['gender']
+            ))
+            connection.commit()
+            return jsonify({"message": "Teacher added successfully!"}), 201
+        except Exception as e:
+            return jsonify({"error": f"Failed to add teacher: {str(e)}"}), 500
+        finally:
+            cursor.close()
+            connection.close()
+
+@user_routes.route('/teachers/<int:id>', methods=['PUT'])
+def update_teacher(id):
+    data = request.json
+    required_fields = ['name', 'email', 'mobile', 'joining_date', 'subject', 'class', 'gender']
+    if not all(data.get(field) for field in required_fields):
+        return jsonify({"error": "All fields are required!"}), 400
+
+    connection = get_connection()
+    cursor = connection.cursor()
+    try:
+        query = """
+            UPDATE teachers
+            SET name = %s, email = %s, mobile = %s, joining_date = %s, subject = %s, class = %s, gender = %s
+            WHERE id = %s
+        """
+        cursor.execute(query, (
+            data['name'], data['email'], data['mobile'], 
+            data['joining_date'], data['subject'], 
+            data['class'], data['gender'], id
+        ))
+        connection.commit()
+        if cursor.rowcount == 0:
+            return jsonify({"error": "Teacher not found!"}), 404
+        return jsonify({"message": "Teacher updated successfully!"}), 200
+    except Exception as e:
+        return jsonify({"error": f"Failed to update teacher: {str(e)}"}), 500
+    finally:
+        cursor.close()
+        connection.close()
+
+@user_routes.route('/teachers/<int:id>', methods=['DELETE'])
+def delete_teacher(id):
+    connection = get_connection()
+    cursor = connection.cursor()
+    try:
+        query = "DELETE FROM teachers WHERE id = %s"
+        cursor.execute(query, (id,))
+        connection.commit()
+        if cursor.rowcount == 0:
+            return jsonify({"error": "Teacher not found!"}), 404
+        return jsonify({"message": "Teacher deleted successfully!"}), 200
+    except Exception as e:
+        return jsonify({"error": f"Failed to delete teacher: {str(e)}"}), 500
+    finally:
+        cursor.close()
+        connection.close()
+        
 # Main Flask app
 app = Flask(__name__)
 app.secret_key = "126945c1bdc73d55bb3d364aed2611f8"
@@ -112,7 +203,10 @@ app.register_blueprint(user_routes, url_prefix='/api')
 
 @app.route('/')
 def home():
-    return "Welcome to the Flask Application!"
+    """
+    Serve a simple home page or message at the root endpoint.
+    """
+    return jsonify({"message": "Welcome to the School Management System API!"})
 
 if __name__ == '__main__':
     app.run(debug=True)
