@@ -17,13 +17,7 @@ import Paper from '@mui/material/Paper';
 const Fee = () => {
     return (
         <>
-        
-                <Sidebar />
-           
-
-
-
-             
+            <Sidebar />    
                   <Grid class="contact-form" style={{
                                   backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
                   
@@ -38,13 +32,8 @@ const Fee = () => {
                                     <input type="text" id="Name" placeholder="Student's Name" required
                                         style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
                                 </Grid>
-                                <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                                   
-
+                                <Grid class="form-group" style={{ marginBottom: "15px" }}>                          
                                     <select id="venue" required style={{ width: "500px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
-
-
-
                                         <option value="">Select Class</option>
                                         <option value="saab">1</option>
                                         <option value="mercedes">2</option>
@@ -56,13 +45,9 @@ const Fee = () => {
                                         <option value="audi">8 </option>
                                         <option value="audi">9 </option>
                                         <option value="audi">10 </option>
-
-
-
                                     </select>
                                 </Grid>
                             </Grid>
-
 
                             <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
                                 <Grid class="form-group" style={{ marginBottom: "15px" }}>
@@ -74,56 +59,34 @@ const Fee = () => {
                                 </Grid>
 
                                 <select id="venue" required style={{ width: "500px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
-
-
-
                                     <option value="">Payment Mode</option>
                                     <option value="saab">Cash</option>
                                     <option value="mercedes">Online</option>
                                     <option value="audi">Bank </option>
-
-
-
-
                                 </select>
                             </Grid>
-
 
                             <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
                                 <Grid class="form-group" style={{ marginBottom: "15px" }}>
                                     <input type="number " id="number" placeholder="Amount" required
                                         style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
-
-
-
                                 </Grid>
 
                                 <Grid class="form-group" style={{ marginBottom: "15px" }}>
                                     <input type="date" id="birthday" placeholder="Payment Date" style={{ width: "480px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
 
-
                                 </Grid>
                             </Grid>
-
-
 
                             <Grid style={{ display: "flex", marginLeft:"7.5%" }}>
                                 <Grid class="form-group" style={{ marginBottom: "15px" }}>
                                     <input type="number " id="number" placeholder="Receipt No" required
                                         style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
 
-
-
                                 </Grid>
-
-
                             </Grid>
-
-
                         </form>
                     </Grid>
-
-
 
 
                   <Grid class="contact-form" style={{
@@ -176,19 +139,6 @@ const Fee = () => {
                         </form>
                     </Grid>
               
-        
-
-
-
-
-
-               
-            
-
-
-
-
-
         </>
     );
 };

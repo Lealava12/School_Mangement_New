@@ -1,26 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-// import './index.css';
+import './index.css';
 
-import Signup from "./Signup";
+import Signup from "./Signup" ;
 import Signin from "./Signin";
-// import PythonBackend from './Python_backend';
+import PythonBackend from './Python_backend';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Teacherm from "./Teacherm";
-import Studentm from './Studentm';
+import Studentm from './Studentm'
 import reportWebVitals from './reportWebVitals';
 import Fee from "./Fee";
 import Reports from "./Reports";
 import Notice from './Notice';
 import Classm from "./Classm";
 import Attendancem from "./Attendancem";
-import Assignmentm from "./Assignmentm";
+import Assignmentm from "./Assignmentm"
 import Marksentry from "./Marksentry";
 import ProfileDetails from "./ProfileDetails";
-import ExamResults from "./Examresult";
-import NoticeView from "./NoticeView";
-import TimeTable from "./TimeTable";
+import ExamResults from "./Examresult"; // Import the ExamResults component
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -28,14 +26,14 @@ root.render(
     <Router>
       <Routes>
         {/* <PythonBackend /> */}
-        <Route path="/" element={<Teacherm />} />
+        <Route path="/" element={<Signup />} />
       
-        {/* <Route path="/python-backend" element={<PythonBackend />} /> */}
+      <Route path="/python-backend" element={<PythonBackend />} />
 
-        {/* <Route path="/" element={<Signup />} />
+        <Route path="/" element={<Teacherm />} />
         <Route path="/Signup" element={<Signup />} />
-        <Route path="/Signin" element={<Signin />} /> */}
-        {/* <Route path="/Login" element={<Login />} /> */}
+        <Route path="/Signin" element={<Signin />} />
+          {/* <Route path="/Login" element={<Login />} /> */}
         <Route path="/Teacherm" element={<Teacherm />} />
         <Route path="/Studentm" element={<Studentm />} />
         <Route path="/Fee" element={<Fee />} />
@@ -46,9 +44,7 @@ root.render(
         <Route path="/Assignmentm" element={<Assignmentm />} />
         <Route path="/Marksentry" element={<Marksentry />} />
         <Route path="/ProfileDetails" element={<ProfileDetails />} />
-        <Route path="/ExamResults" element={<ExamResults />} />
-        <Route path="/NoticeView" element={<NoticeView />} />
-        <Route path="/TimeTable" element={<TimeTable />} />
+        <Route path="/ExamResults" element={<ExamResults />} /> {/* Added the ExamResults route */}
       </Routes>
     </Router>
   </React.StrictMode>

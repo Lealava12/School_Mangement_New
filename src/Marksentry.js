@@ -43,11 +43,7 @@ const Marksentry = () => {
 
     return (
         <>
-
-
             <Sidebar />
-
-
 
 
             <Grid class="contact-form" style={{
@@ -55,7 +51,7 @@ const Marksentry = () => {
 
             }}>
                 <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "7%" }}>Mark's Entry :</Typography>
-                <form style={{ paddingTop: "20px", paddingBottom: "20px" }}>   
+                <form style={{ paddingTop: "20px", paddingBottom: "20px" }}>
 
                     <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
 
@@ -90,20 +86,20 @@ const Marksentry = () => {
 
                     <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
 
-                    <select id="venue" required style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
-                                <option value="">Select Subject</option>
-                                <option value="saab">Math</option>
-                                <option value="mercedes">English</option>
-                                <option value="audi">Physics </option>
-                                <option value="audi">Chemistry </option>
-                                <option value="audi">Odia </option>
-                                <option value="audi">Hindi </option>
-                            </select>
+                        <select id="venue" required style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
+                            <option value="">Select Subject</option>
+                            <option value="saab">Math</option>
+                            <option value="mercedes">English</option>
+                            <option value="audi">Physics </option>
+                            <option value="audi">Chemistry </option>
+                            <option value="audi">Odia </option>
+                            <option value="audi">Hindi </option>
+                        </select>
 
 
 
                         <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                        <input type="text" id="Name" placeholder="Student's Name" required
+                            <input type="text" id="Name" placeholder="Student's Name" required
                                 style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
                         </Grid>
                     </Grid>
@@ -117,16 +113,12 @@ const Marksentry = () => {
                             Submit
                         </Button>
                     </center>
-              
+
 
 
 
                 </form>
             </Grid>
-
-
-
-
 
             <TableContainer sx={{ marginTop: "50px", width: "72%", marginLeft: "20%" }} component={Paper}>
                 <Table aria-label="simple table">
@@ -174,20 +166,6 @@ const Marksentry = () => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             <Modal open={openDelete} onClose={handleCloseDelete}>
                 <Box sx={style}>
                     <Typography variant="h6" component="h2">
@@ -202,9 +180,6 @@ const Marksentry = () => {
             </Modal>
 
         </>
-
-
-
 
     );
 };

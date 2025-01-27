@@ -1,8 +1,9 @@
 // import React, { useEffect, useState } from 'react';
 // import axios from 'axios';
-import "../src/App.css";
-import React, { useState } from 'react';
+// import "../src/App.css";
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+
 
 const PythonBackend = () => {
   const [email, setEmail] = useState('');
@@ -40,5 +41,8 @@ const PythonBackend = () => {
 
   return <div>Backend interaction interface</div>;
 };
+
+
+
 
 export default PythonBackend;

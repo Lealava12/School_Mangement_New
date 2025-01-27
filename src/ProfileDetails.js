@@ -1,60 +1,31 @@
 import React, { useState } from 'react';
 import Sidebar from './Sidebar';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
-import AddSharpIcon from '@mui/icons-material/AddSharp';
+import { Grid, Typography } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 
 
 const ProfileDetails = () => {
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        mobile: '',
-        venue: 'Bhubaneswar',
-        message: ''
-    });
-
-    const handleChange = (e) => {
-        const { id, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [id]: value
-        }));
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Handle form submission logic here (e.g., send data to server)
-        console.log('Form submitted:', formData);
-    };
+   
 
     return (
         <>
 
-
             <Sidebar />
 
+            <Grid class="contact-form" style={{
+                backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
 
-            <div
-                className="contact-form"
-                style={{
-                    flex: '1 1 45%',
-                    backgroundColor: '#f8f8f8',
-                    padding: '20px',
-                    borderRadius: '8px',
-                    marginLeft: "20%",
-                    width: "70%",
-                }}
-            >
+            }}>
+                <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "7%" }}>Profile Details :</Typography>
 
-<center>
                 <Avatar
                     sx={{
                         width: 100,
                         height: 100,
-                     
+                        marginLeft: "7%",
+                        marginTop: "20px",
+
                         borderRadius: 50,
                         bgcolor: 'primary.main',
                         display: 'flex',
@@ -66,124 +37,78 @@ const ProfileDetails = () => {
                         },
                     }}>
 
-
                     <label htmlFor="file" style={{ display: "flex", flexDirection: "row", }}>
-                        <ModeEditIcon style={{ fontSize: "20px", color: "white",marginLeft:"85px",
-                            marginTop:"20px",
-                         }} />
+                        <ModeEditIcon style={{
+                            fontSize: "20px", color: "white", marginLeft: "85px",
+                            marginTop: "20px",
+                        }} />
 
                     </label>
 
                     <input style={{ display: "none" }} type="file" id="file" />
 
                 </Avatar>
-                </center>
-                <center>
-                <form onSubmit={handleSubmit}>
 
-                    
-                    <div className="form-group" style={{ marginBottom: '15px' }}>
-                        <input
-                            type="text"
-                            id="name"
-                            placeholder="Your full name"
-                            required
-                            value={formData.name}
-                            onChange={handleChange}
-                            style={{
-                                width: '50%',
-                                padding: '10px',
-                                borderRadius: '5px',
-                                border: '1px solid #ccc',
-                                marginTop:"10px",
-                            }}
-                        />
-                          
-                    </div>
-                  
-                    <div className="form-group" style={{ marginBottom: '15px' }}>
-                        <input
-                            type="email"
-                            id="email"
-                            placeholder="Active email address"
-                            required
-                            value={formData.email}
-                            onChange={handleChange}
-                            style={{
-                                width: '100%',
-                                padding: '10px',
-                                borderRadius: '5px',
-                                border: '1px solid #ccc'
-                            }}
-                        />
-                    </div>
-                    <div className="form-group" style={{ marginBottom: '15px' }}>
-                        <input
-                            type="tel"
-                            id="mobile"
-                            placeholder="Your cell phone number"
-                            required
-                            value={formData.mobile}
-                            onChange={handleChange}
-                            style={{
-                                width: '100%',
-                                padding: '10px',
-                                borderRadius: '5px',
-                                border: '1px solid #ccc'
-                            }}
-                        />
-                    </div>
-                    <div className="form-group" style={{ marginBottom: '15px' }}>
-                        <select
-                            id="venue"
-                            required
-                            value={formData.venue}
-                            onChange={handleChange}
-                            style={{
-                                width: '100%',
-                                padding: '10px',
-                                borderRadius: '5px',
-                                border: '1px solid #ccc'
-                            }}
-                        >
-                            <option value="Bhubaneswar">Bhubaneswar</option>
-                            {/* Add other venues here */}
-                        </select>
-                    </div>
-                    <div className="form-group" style={{ marginBottom: '15px' }}>
-                        <textarea
-                            id="message"
-                            placeholder="Additional information or comment"
-                            required
-                            value={formData.message}
-                            onChange={handleChange}
-                            style={{
-                                width: '100%',
-                                padding: '10px',
-                                borderRadius: '5px',
-                                border: '1px solid #ccc',
-                                height: '100px'
-                            }}
-                        ></textarea>
-                    </div>
-                    <button
-                        type="submit"
-                        className="submit-btn"
-                        style={{
-                            padding: '10px 20px',
-                            backgroundColor: '#020a22',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '5px',
-                            cursor: 'pointer'
-                        }}
-                    >
-                        Get in Touch
-                    </button>
-                  
+                <form style={{ paddingTop: "20px", paddingBottom: "20px" }}>
+
+                    <Grid style={{ display: "flex", justifgroupyContent: "space-evenly", }}>
+
+                        <Grid class="form-group" style={{ marginBottom: "15px" }}>
+                            <input type="text" id="Name" placeholder="Student's Name" required
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                        </Grid>
+                        <Grid class="form-" style={{ marginBottom: "15px" }}>
+                            <input type="number " id="mobile" placeholder="Enter Roll No" required
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                        </Grid>
+                    </Grid>
+                    <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
+
+
+                        <Grid class="form-group" style={{ marginBottom: "15px" }}>
+                            <input type="number " id="mobile" placeholder="Class" required
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                        </Grid>
+
+                        <Grid class="form-group" style={{ marginBottom: "15px" }}>
+                            <input type="number " id="mobile" placeholder="Section" required
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                        </Grid>
+
+                    </Grid>
+                    <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
+
+
+                        <Grid class="form-group" style={{ marginBottom: "15px" }}>
+                            <input type="text " id="mobile" placeholder="Parent's Name" required
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                        </Grid>
+
+
+                        <Grid class="form-group" style={{ marginBottom: "15px" }}>
+                            <input type="number " id="mobile" placeholder="Contact" required
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                        </Grid>
+
+                    </Grid>
+
+                    <Grid style={{ display: "flex",marginLeft:"7%" }}>
+
+                        <Grid class="form-group" style={{ marginBottom: "15px" }}>
+                            <input type="number " id="mobile" placeholder="Attendance Percentage" required
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                        </Grid>
+
+                    </Grid>
+
+
+
                 </form>
-                </center>
-            </div>
+            </Grid>
+
+-
+
+
         </>
     );
 };

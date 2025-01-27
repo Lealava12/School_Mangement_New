@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Sidebar.css";
-import { Grid, Button } from '@mui/material';
+import { Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 
@@ -46,6 +46,12 @@ const Sidebar = () => {
           onClick={() => handleLinkClick("about")}
         >
           Notice
+        </Link>
+        <Link style ={{color:"red"}}
+          className={activeLink === "about" ? "active" : ""}
+          onClick={() => handleLinkClick("about")}
+        >
+          Logout 
         </Link>
       </Grid>
      

@@ -24,7 +24,6 @@ const style = {
     transform: 'translate(-50%, -50%)',
     width: 400,
     bgcolor: 'background.paper',
-    // border: '2px solid #000',
     boxShadow: 24,
     p: 4,
 };
@@ -123,10 +122,6 @@ const Teacherm = () => {
                             <FormControlLabel value="2" control={<Radio />} label="Female" />
                             <FormControlLabel value="3" control={<Radio />} label="Other" />
                         </RadioGroup>
-
-
-
-
                     </Grid>
 
                     <center>
@@ -139,20 +134,6 @@ const Teacherm = () => {
 
                 </form>
             </Grid>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
           
                 <TableContainer sx={{ marginTop: "50px", width: "72%", marginLeft: "20%" }} component={Paper}>
                     <Table aria-label="simple table">
@@ -189,15 +170,7 @@ const Teacherm = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-           
-
-
-
-
-
             <Grid>
-
-
 
                 <Modal open={openEdit} onClose={handleCloseEdit} style={{ marginTop: "200px" }}>
                     <center>
@@ -299,9 +272,6 @@ const Teacherm = () => {
             </Grid>
                     </center>
                 </Modal>
-
-
-
             </Grid>
 
 
