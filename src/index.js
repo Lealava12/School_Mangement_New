@@ -18,7 +18,9 @@ import Attendancem from "./Attendancem";
 import Assignmentm from "./Assignmentm";
 import Marksentry from "./Marksentry";
 import ProfileDetails from "./ProfileDetails";
-import ExamResults from "./Examresult"; // Import the ExamResults component
+import ExamResults from "./Examresult";
+import NoticeView from "./NoticeView";
+import TimeTable from "./TimeTable";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -44,7 +46,9 @@ root.render(
         <Route path="/Assignmentm" element={<Assignmentm />} />
         <Route path="/Marksentry" element={<Marksentry />} />
         <Route path="/ProfileDetails" element={<ProfileDetails />} />
-        <Route path="/ExamResults" element={<ExamResults />} /> {/* Added the ExamResults route */}
+        <Route path="/ExamResults" element={<ExamResults />} />
+        <Route path="/NoticeView" element={<NoticeView />} />
+        <Route path="/TimeTable" element={<TimeTable />} />
       </Routes>
     </Router>
   </React.StrictMode>
