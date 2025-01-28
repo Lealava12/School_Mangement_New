@@ -34,7 +34,7 @@ export default function Signup() {
   };
 
   return (
-    <div className="container">
+    <div className="containers">
       <h1 className="title">SCHOOL MANAGEMENT</h1>
       <div className="login-box">
         <div className="avatar">

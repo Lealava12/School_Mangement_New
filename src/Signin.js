@@ -3,12 +3,10 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './Signin.css';
 
-
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // Access the API base URL from the environment variable
-  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+
   const handleLogin = (e) => {
     e.preventDefault();
     axios
@@ -29,7 +27,7 @@ export default function Login() {
   };
 
   return (
-    <div>
+    <div className="containers">
       <h1 className="title">SCHOOL MANAGEMENT</h1>
       <div className="login-box">
         <div className="avatar">
@@ -73,6 +71,75 @@ export default function Login() {
         </p>
       </div>
     </div>
-  
   );
 }
+
+
+// import React, { useState } from 'react';
+// import { useNavigate } from 'react-router-dom';
+// import './Signin.css';
+
+// export default function Login() {
+//   const [email, setEmail] = useState('');
+//   const [password, setPassword] = useState('');
+//   const navigate = useNavigate();
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     try {
+//       const response = await fetch('/api/login', {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({ email, password }),
+//       });
+//       const data = await response.json();
+
+//       if (response.ok) {
+//         if (data.user.type === 'Admin') {
+//           navigate('/admin-dashboard');
+//         } else {
+//           navigate('/signin');
+//         }
+//       } else {
+//         alert(data.error);
+//       }
+//     } catch (error) {
+//       console.error('Error logging in:', error);
+//       alert('Failed to login. Please try again.');
+//     }
+//   };
+
+//   return (
+//     <div className="container">
+//       <h1 className="title">SCHOOL MANAGEMENT</h1>
+//       <div className="login-box">
+//         <div className="avatar">
+//           <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="User Avatar" />
+//         </div>
+//         <h2 className="login-header">LOGIN</h2>
+//         <form onSubmit={handleSubmit}>
+//           <div className="user-box">
+//             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+//             <label>Email</label>
+//           </div>
+//           <div className="user-box">
+//             <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+//             <label>Password</label>
+//           </div>
+//           <div className="checkbox-forgot">
+//             <div className="checkbox-container">
+//               <input type="checkbox" id="remember" />
+//               <label htmlFor="remember">Remember me</label>
+//             </div>
+//             <div className="forgot-password">
+//               <a href="/">Forgot Password?</a>
+//             </div>
+//           </div>
+//           <button type="submit" className="login-button">Login</button>
+//         </form>
+//       </div>
+//     </div>
+//   );
+// }
