@@ -29,7 +29,7 @@ export default function Login() {
   };
 
   return (
-    <div className="container">
+    <div>
       <h1 className="title">SCHOOL MANAGEMENT</h1>
       <div className="login-box">
         <div className="avatar">
