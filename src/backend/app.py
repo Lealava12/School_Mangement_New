@@ -192,7 +192,15 @@ def delete_teacher(id):
     finally:
         cursor.close()
         connection.close()
-        
+@user_routes.route('/admin/logout', methods=['POST'])
+def logout_admin():
+    try:
+        session.clear()  # Clears all session data
+        return jsonify({"message": "Logout successful!"}), 200
+    except Exception as e:
+        print(f"Error during logout: {e}")  # Log the error for debugging
+        return jsonify({"error": "An error occurred during logout.", "redirect": "./Signin.js"}), 500
+
 # Main Flask app
 app = Flask(__name__)
 app.secret_key = "126945c1bdc73d55bb3d364aed2611f8"
