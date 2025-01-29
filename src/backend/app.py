@@ -12,11 +12,11 @@ def get_connection():
     """
     try:
         connection = mysql.connector.connect(
-            host="localhost",
+            host="93.127.206.58",
             user="root",
-            password="Liku@123#",
-            database="school_ma",
-            auth_plugin='mysql_native_password'
+            password="Lealava@123#",
+            database="school_ma"
+            # auth_plugin='mysql_native_password'
         )
         print("Database connected!")
         return connection
@@ -103,18 +103,18 @@ def signup_admin():
         cursor.close()
         connection.close()
 
-@user_routes.route('/admin/teacher', methods=['GET', 'POST'])
+@user_routes.route('/admin/Teachers', methods=['GET', 'POST'])
 def manage_teachers():
     if request.method == 'GET':
         # Fetch all teachers
         connection = get_connection()
         cursor = connection.cursor(dictionary=True)
         try:
-            cursor.execute("SELECT * FROM teachers")
-            teachers = cursor.fetchall()
-            return jsonify(teachers), 200
+            cursor.execute("SELECT * FROM Teachers")
+            Teachers = cursor.fetchall()
+            return jsonify(Teachers), 200
         except Exception as e:
-            return jsonify({"error": f"Failed to fetch teachers: {str(e)}"}), 500
+            return jsonify({"error": f"Failed to fetch Teachers: {str(e)}"}), 500
         finally:
             cursor.close()
             connection.close()
@@ -130,7 +130,7 @@ def manage_teachers():
         cursor = connection.cursor()
         try:
             insert_query = """
-                INSERT INTO teachers (name, email, mobile, joining_date, subject, class, gender)
+                INSERT INTO Teachers (name, email, mobile, joining_date, subject, class, gender)
                 VALUES (%s, %s, %s, %s, %s, %s, %s)
             """
             cursor.execute(insert_query, (
@@ -146,7 +146,7 @@ def manage_teachers():
             cursor.close()
             connection.close()
 
-@user_routes.route('/teachers/<int:id>', methods=['PUT'])
+@user_routes.route('/Teachers/<int:id>', methods=['PUT'])
 def update_teacher(id):
     data = request.json
     required_fields = ['name', 'email', 'mobile', 'joining_date', 'subject', 'class', 'gender']
@@ -157,7 +157,7 @@ def update_teacher(id):
     cursor = connection.cursor()
     try:
         query = """
-            UPDATE teachers
+            UPDATE Teachers
             SET name = %s, email = %s, mobile = %s, joining_date = %s, subject = %s, class = %s, gender = %s
             WHERE id = %s
         """
@@ -176,12 +176,12 @@ def update_teacher(id):
         cursor.close()
         connection.close()
 
-@user_routes.route('/teachers/<int:id>', methods=['DELETE'])
+@user_routes.route('/Teachers/<int:id>', methods=['DELETE'])
 def delete_teacher(id):
     connection = get_connection()
     cursor = connection.cursor()
     try:
-        query = "DELETE FROM teachers WHERE id = %s"
+        query = "DELETE FROM Teachers WHERE id = %s"
         cursor.execute(query, (id,))
         connection.commit()
         if cursor.rowcount == 0:
