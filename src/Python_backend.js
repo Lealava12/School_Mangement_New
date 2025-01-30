@@ -135,45 +135,6 @@ const PythonBackend = () => {
   }, []);
   return (
     <div>
-    {/* Add Teacher Form
-    <div>
-      <h2>Add Teacher</h2>
-      <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
-      <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-      <input type="text" placeholder="Mobile" value={mobile} onChange={(e) => setMobile(e.target.value)} />
-      <input type="date" placeholder="Joining Date" value={joiningDate} onChange={(e) => setJoiningDate(e.target.value)} />
-      <input type="text" placeholder="Subject" value={subject} onChange={(e) => setSubject(e.target.value)} />
-      <input type="text" placeholder="Class" value={teacherClass} onChange={(e) => setTeacherClass(e.target.value)} />
-      <input type="text" placeholder="Gender" value={gender} onChange={(e) => setGender(e.target.value)} />
-      <button onClick={addTeacher}>Add Teacher</button>
-    </div> */}
-
-    {/* Update Teacher Form */}
-    {/* <div>
-      <h2>Update Teacher</h2>
-      <input type="text" placeholder="Teacher ID" value={teacherId} onChange={(e) => setTeacherId(e.target.value)} />
-      <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
-      <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-      <input type="text" placeholder="Mobile" value={mobile} onChange={(e) => setMobile(e.target.value)} />
-      <input type="date" placeholder="Joining Date" value={joiningDate} onChange={(e) => setJoiningDate(e.target.value)} />
-      <input type="text" placeholder="Subject" value={subject} onChange={(e) => setSubject(e.target.value)} />
-      <input type="text" placeholder="Class" value={teacherClass} onChange={(e) => setTeacherClass(e.target.value)} />
-      <input type="text" placeholder="Gender" value={gender} onChange={(e) => setGender(e.target.value)} />
-      <button onClick={updateTeacher}>Update Teacher</button>
-    </div> */}
-
-    {/* Teachers List */}
-    {/* <div>
-      <h2>Teachers List</h2>
-      <ul>
-        {teachers.map((teacher) => (
-          <li key={teacher.id}>
-            {teacher.name} - {teacher.email} - {teacher.mobile} - {teacher.joining_date} - {teacher.subject} - {teacher.class} - {teacher.gender}
-            <button onClick={() => deleteTeacher(teacher.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
-    </div> */}
   </div>
   );
 };

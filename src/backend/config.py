@@ -1,4 +1,3 @@
-### config.py
 import mysql.connector
 
 def get_connection():
@@ -7,14 +6,15 @@ def get_connection():
     """
     try:
         connection = mysql.connector.connect(
-            host="localhost",
+            host="93.127.206.58",
             user="root",
-            password="Liku@123#",
-            database="school_ma",
-            auth_plugin='mysql_native_password'
+            password="Lealava@123#",
+            database="school_ma"
         )
         print("Database connected!")
         return connection
     except mysql.connector.Error as err:
         print(f"Error connecting to the database: {err}")
         raise
+
+SECRET_KEY = "126945c1bdc73d55bb3d364aed2611f8"
