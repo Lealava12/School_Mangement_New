@@ -235,4 +235,4 @@ def home():
     return jsonify({"message": "Welcome to the School Management System API!"})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True , port=5000)
