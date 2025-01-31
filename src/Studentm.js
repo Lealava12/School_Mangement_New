@@ -271,8 +271,8 @@ const Studentm = () => {
                             <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">8756989097</TableCell>
                             <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">BBSR</TableCell>
                             <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">
-                                <ModeEditOutlineIcon onClick={setOpenEdit1} style={{ fontSize: "18px", color: "#000066", cursor: "pointer" }} />
-                                <DeleteIcon onClick={setOpenDelete1} style={{ fontSize: "18px", color: "red", cursor: "pointer" }} />
+                                <ModeEditOutlineIcon  style={{ fontSize: "18px", color: "#000066", cursor: "pointer" }} />
+                                <DeleteIcon  style={{ fontSize: "18px", color: "red", cursor: "pointer" }} />
                             </TableCell>
 
                         </TableRow>
@@ -281,7 +281,7 @@ const Studentm = () => {
                 </Table>
             </TableContainer>
             <Grid>
-                <Modal open={openEdit} onClose={handleCloseEdit} style={{ marginTop: "200px" }}>
+                <Modal  style={{ marginTop: "200px" }}>
                     <center>
                         <Grid class="contact-form" style={{
                             backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
@@ -384,14 +384,14 @@ const Studentm = () => {
                     </center>
                 </Modal>
             </Grid>
-            <Modal open={openDelete} onClose={handleCloseDelete}>
+            <Modal >
                 <Box sx={style}>
                     <Typography variant="h6" component="h2">
                         Are you sure you want to delete this entry?
                     </Typography>
                     <center style={{ marginTop: "30px" }}>
-                        <Button style={{ backgroundColor: '#000066' }} onClick={handleCloseDelete}>Yes</Button>
-                        <Button style={{ backgroundColor: 'red', marginLeft: "30px" }} onClick={handleCloseDelete}>No</Button>
+                        <Button style={{ backgroundColor: '#000066' }} >Yes</Button>
+                        <Button style={{ backgroundColor: 'red', marginLeft: "30px" }}>No</Button>
                     </center>
                 </Box>
             </Modal>
