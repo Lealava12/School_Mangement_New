@@ -8,11 +8,11 @@ const Signup = () => {
   const [mobileNo, setMobileNo] = useState('');
   const [rollNo, setRollNo] = useState('');
   const [password, setPassword] = useState('');
-
+  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000/api';
   const handleSignup = (e) => {
     e.preventDefault();
     axios
-      .post('http://127.0.0.1:5000/api/admin/signup', {
+      .post(`${apiBaseUrl}/admin/signup`, {
         email,
         mobile_no: mobileNo,
         roll_no: rollNo,

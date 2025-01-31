@@ -5,11 +5,11 @@ import './Signin.css';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000/api';
   const handleLogin = (e) => {
     e.preventDefault();
     axios
-      .post('http://127.0.0.1:5000/api/admin/login', { email, password })
+      .post(`${apiBaseUrl}/admin/login`, { email, password })
       .then((response) => {
         alert(response.data.message);
         if (response.data.redirect) {
