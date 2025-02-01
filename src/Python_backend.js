@@ -18,7 +18,7 @@ const PythonBackend = () => {
   const [teacherId, setTeacherId] = useState('');
 
   // API base URL from the environment variable or default
-  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000/api';
+  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
 
   // Fetch all teachers from the backend
   const fetchTeachers = () => {

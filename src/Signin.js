@@ -5,7 +5,7 @@ import './Signin.css';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000/api';
+  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
   const handleLogin = (e) => {
     e.preventDefault();
     axios

@@ -7,10 +7,9 @@ import axios from "axios";
 const Sidebar = () => {
   const [activeLink, setActiveLink] = useState("home");
   const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
-
   const handleLogout = () => {
     axios
-      .post(`http://127.0.0.1:5000/api/admin/logout`)
+      .post(`${apiBaseUrl}/admin/logout`)
       .then((response) => {
         alert(response.data.message); // Display the success message
         if (response.data.redirect) {

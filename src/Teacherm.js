@@ -343,7 +343,7 @@ const Teacherm = () => {
   const [teacherId, setTeacherId] = useState('');
   const [editTeacherId, setEditTeacherId] = useState(null);
 
-  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000/api';
+  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
 
   // Fetch all teachers
   const fetchTeachers = () => {
