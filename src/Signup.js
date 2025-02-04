@@ -9,7 +9,6 @@ const Signup = () => {
   const [rollNo, setRollNo] = useState('');
   const [password, setPassword] = useState('');
   const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
-  console.log(process.env.REACT_APP_API_BASE_URL);
   const handleSignup = (e) => {
     e.preventDefault();
     axios
