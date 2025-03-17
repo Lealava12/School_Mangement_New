@@ -8,8 +8,8 @@ def get_connection():
         connection = mysql.connector.connect(
             host="93.127.206.58",
             user="root",
-            password="Lealava@123#",
-            database="school_ma"
+            password="Lealava@123",
+            database="school_management"
         )
         print("Database connected!")
         return connection

@@ -17,6 +17,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 
+
 const style = {
     position: 'absolute',
     top: '50%',
@@ -27,6 +28,7 @@ const style = {
     boxShadow: 24,
     p: 4,
 };
+
 const Studentm = () => {
     const [students, setStudents] = useState([]);
     const [openEdit, setOpenEdit] = useState(false);
@@ -47,12 +49,12 @@ const Studentm = () => {
     });
 
     useEffect(() => {
-        fetchStudents();
+        fetchStudentsData();
     }, []);
 
-    const fetchStudents = async () => {
+    const fetchStudentsData = async () => {
         try {
-            const data = await PythonBackend.getStudents();
+            const data = await PythonBackend.fetchStudents();
             setStudents(data);
         } catch (error) {
             alert('Failed to fetch students: ' + error.message);
@@ -62,7 +64,7 @@ const Studentm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await PythonBackend.createStudent(formData);
+            await PythonBackend.addStudent(formData);
             alert('Student created successfully!');
             setFormData({
                 name: '',
@@ -77,7 +79,7 @@ const Studentm = () => {
                 mobile: '',
                 address: ''
             });
-            fetchStudents();
+            fetchStudentsData();
         } catch (error) {
             alert(error.message);
         }
@@ -89,7 +91,7 @@ const Studentm = () => {
             await PythonBackend.updateStudent(selectedStudent.id, formData);
             alert('Student updated successfully!');
             setOpenEdit(false);
-            fetchStudents();
+            fetchStudentsData();
         } catch (error) {
             alert(error.message);
         }
@@ -99,7 +101,7 @@ const Studentm = () => {
         try {
             await PythonBackend.deleteStudent(selectedStudent.id);
             setOpenDelete(false);
-            fetchStudents();
+            fetchStudentsData();
         } catch (error) {
             if (error.message.includes('409')) {
                 alert('Cannot delete student with existing fee records!');
@@ -132,7 +134,7 @@ const Studentm = () => {
     };
     return (
         <>
-            <Sidebar />
+           <Sidebar />
             <Grid class="contact-form" style={{
                 backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
 
@@ -188,10 +190,10 @@ const Studentm = () => {
                             </RadioGroup>
                         </Grid>
 
-                        <Grid class="form-group" style={{ marginBottom: "15px" }}>
+                        {/* <Grid class="form-group" style={{ marginBottom: "15px" }}>
                             <input type="number " id="mobile" placeholder="Enter Roll No" required
                                 style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
-                        </Grid>
+                        </Grid> */}
                     </Grid>
                 </form>
             </Grid>
@@ -242,12 +244,13 @@ const Studentm = () => {
                     <TableHead   >
                         <TableRow >
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px", fontStyle: " STL Calisto MT" }}>Sl No</TableCell>
+                            <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Student_Id</TableCell>
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Name</TableCell>
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">DOB</TableCell>
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Class</TableCell>
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Section</TableCell>
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Gender</TableCell>
-                            <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Roll</TableCell>
+                            {/* <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Roll</TableCell> */}
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Father’s Name</TableCell>
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">mother’s Name</TableCell>
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Contact No</TableCell>
@@ -257,26 +260,34 @@ const Studentm = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-
-                        <TableRow  >
-                            <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} >1</TableCell>
-                            <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">Smita</TableCell>
-                            <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">02/12/24</TableCell>
-                            <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="roight">10th</TableCell>
-                            <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">B</TableCell>
-                            <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">Female</TableCell>
-                            <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">05</TableCell>
-                            <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">Haaaa</TableCell>
-                            <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">MMMM</TableCell>
-                            <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">8756989097</TableCell>
-                            <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">BBSR</TableCell>
-                            <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">
-                                <ModeEditOutlineIcon  style={{ fontSize: "18px", color: "#000066", cursor: "pointer" }} />
-                                <DeleteIcon  style={{ fontSize: "18px", color: "red", cursor: "pointer" }} />
-                            </TableCell>
-
-                        </TableRow>
-
+                        {students.map((student, index) => (
+                            <TableRow key={student.student_id}>
+                                <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }}>{index + 1}</TableCell>
+                                <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">{student.student_id}</TableCell>
+                                <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">{student.name}</TableCell>
+                                <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">{student.dob}</TableCell>
+                                <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">{student.class}</TableCell>
+                                <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">{student.section}</TableCell>
+                                <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">{student.gender}</TableCell>
+                                <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">{student.father_name}</TableCell>
+                                <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">{student.mother_name}</TableCell>
+                                <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">{student.mobile}</TableCell>
+                                <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">{student.address}</TableCell>
+                                <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">
+                                    <ModeEditOutlineIcon
+                                        onClick={() => handleEditClick(student)}
+                                        style={{ fontSize: "18px", color: "#000066", cursor: "pointer" }}
+                                    />
+                                    <DeleteIcon
+                                        onClick={() => {
+                                            setSelectedStudent(student);
+                                            setOpenDelete(true);
+                                        }}
+                                        style={{ fontSize: "18px", color: "red", cursor: "pointer" }}
+                                    />
+                                </TableCell>
+                            </TableRow>
+                        ))}
                     </TableBody>
                 </Table>
             </TableContainer>
@@ -395,7 +406,6 @@ const Studentm = () => {
                     </center>
                 </Box>
             </Modal>
-            {/* <PythonBackend /> */}
         </>
     );
 };

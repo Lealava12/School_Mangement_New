@@ -8,7 +8,7 @@ const Signup = () => {
   const [mobileNo, setMobileNo] = useState('');
   const [rollNo, setRollNo] = useState('');
   const [password, setPassword] = useState('');
-  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+  const apiBaseUrl = 'http://localhost:5000/api';
   const handleSignup = (e) => {
     e.preventDefault();
     axios
