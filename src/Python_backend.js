@@ -87,47 +87,47 @@ const deleteTeacher = (id) => {
       alert(error.response?.data?.error || 'Error deleting teacher!');
     });
 };
-  // Register a new admin (this could be modified to handle sign-up logic for an admin)
-  const registerAdmin = () => {
-    axios
-      .post(`${apiBaseUrl}/admin/signup`, {
-        email,
-        mobile_no: mobileNo,
-        roll_no: rollNo,
-        password,
-      })
-      .then((response) => {
-        alert(response.data.message);
-      })
-      .catch((error) => {
-        alert(error.response?.data?.error || 'Error during signup!');
-      });
-  };
+  // // Register a new admin (this could be modified to handle sign-up logic for an admin)
+  // const registerAdmin = () => {
+  //   axios
+  //     .post(`${apiBaseUrl}/admin/signup`, {
+  //       email,
+  //       mobile_no: mobileNo,
+  //       roll_no: rollNo,
+  //       password,
+  //     })
+  //     .then((response) => {
+  //       alert(response.data.message);
+  //     })
+  //     .catch((error) => {
+  //       alert(error.response?.data?.error || 'Error during signup!');
+  //     });
+  // };
 
-  // Log in as an admin
-  const loginAdmin = () => {
-    axios
-      .post(`${apiBaseUrl}/admin/login`, { email, password })
-      .then((response) => {
-        alert(response.data.message);
-      })
-      .catch((error) => {
-        alert(error.response?.data?.error || 'Error during login!');
-      });
-  };
+  // // Log in as an admin
+  // const loginAdmin = () => {
+  //   axios
+  //     .post(`${apiBaseUrl}/admin/login`, { email, password })
+  //     .then((response) => {
+  //       alert(response.data.message);
+  //     })
+  //     .catch((error) => {
+  //       alert(error.response?.data?.error || 'Error during login!');
+  //     });
+  // };
 
-  // Log out the current admin
-  const logoutAdmin = () => {
-    axios
-      .post(`${apiBaseUrl}/admin/logout`)
-      .then((response) => {
-        alert(response.data.message);
-        window.location.href = '/'; // Redirect to home after logging out
-      })
-      .catch((error) => {
-        alert(error.response?.data?.error || 'Error during logout!');
-      });
-  };
+  // // Log out the current admin
+  // const logoutAdmin = () => {
+  //   axios
+  //     .post(`${apiBaseUrl}/admin/logout`)
+  //     .then((response) => {
+  //       alert(response.data.message);
+  //       window.location.href = '/'; // Redirect to home after logging out
+  //     })
+  //     .catch((error) => {
+  //       alert(error.response?.data?.error || 'Error during logout!');
+  //     });
+  // };
 
   // Fetch teacher data on component mount
   useEffect(() => {
@@ -142,52 +142,52 @@ const deleteTeacher = (id) => {
 
 export default PythonBackend;
 
-import axios from 'axios';
+// import axios from 'axios';
 
-// API base URL
-const apiBaseUrl = 'http://localhost:5000/api';
+// // API base URL
+// const apiBaseUrl = 'http://localhost:5000/api';
 
-// Fetch all students
-export const fetchStudents = async (filters = {}) => {
-    try {
-        const params = {};
-        if (filters.class) params.class = filters.class;
-        if (filters.section) params.section = filters.section;
-        if (filters.roll_no) params.roll_no = filters.roll_no;
+// // Fetch all students
+// export const fetchStudents = async (filters = {}) => {
+//     try {
+//         const params = {};
+//         if (filters.class) params.class = filters.class;
+//         if (filters.section) params.section = filters.section;
+//         if (filters.roll_no) params.roll_no = filters.roll_no;
 
-        const response = await axios.get(`${apiBaseUrl}/admin/Students`, { params });
-        return response.data;
-    } catch (error) {
-        throw new Error(error.response?.data?.error || 'Error fetching students!');
-    }
-};
+//         const response = await axios.get(`${apiBaseUrl}/admin/Students`, { params });
+//         return response.data;
+//     } catch (error) {
+//         throw new Error(error.response?.data?.error || 'Error fetching students!');
+//     }
+// };
 
-// Add a new student
-export const addStudent = async (studentData) => {
-    try {
-        const response = await axios.post(`${apiBaseUrl}/admin/Students`, studentData);
-        return response.data;
-    } catch (error) {
-        throw new Error(error.response?.data?.error || 'Error adding student!');
-    }
-};
+// // Add a new student
+// export const addStudent = async (studentData) => {
+//     try {
+//         const response = await axios.post(`${apiBaseUrl}/admin/Students`, studentData);
+//         return response.data;
+//     } catch (error) {
+//         throw new Error(error.response?.data?.error || 'Error adding student!');
+//     }
+// };
 
-// Update a student
-export const updateStudent = async (studentId, studentData) => {
-    try {
-        const response = await axios.put(`${apiBaseUrl}/admin/Students`, { ...studentData, id: studentId });
-        return response.data;
-    } catch (error) {
-        throw new Error(error.response?.data?.error || 'Error updating student!');
-    }
-};
+// // Update a student
+// export const updateStudent = async (studentId, studentData) => {
+//     try {
+//         const response = await axios.put(`${apiBaseUrl}/admin/Students`, { ...studentData, id: studentId });
+//         return response.data;
+//     } catch (error) {
+//         throw new Error(error.response?.data?.error || 'Error updating student!');
+//     }
+// };
 
-// Delete a student
-export const deleteStudent = async (studentId) => {
-    try {
-        const response = await axios.delete(`${apiBaseUrl}/admin/Students`, { params: { id: studentId } });
-        return response.data;
-    } catch (error) {
-        throw new Error(error.response?.data?.error || 'Error deleting student!');
-    }
-};
+// // Delete a student
+// export const deleteStudent = async (studentId) => {
+//     try {
+//         const response = await axios.delete(`${apiBaseUrl}/admin/Students`, { params: { id: studentId } });
+//         return response.data;
+//     } catch (error) {
+//         throw new Error(error.response?.data?.error || 'Error deleting student!');
+//     }
+// };

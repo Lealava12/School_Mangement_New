@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
-import PythonBackend from './Python_backend';
+// import PythonBackend from './Python_backend';
 import { Grid, Button, Typography } from '@mui/material';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -16,8 +16,7 @@ import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-
-
+import axios from 'axios';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -28,110 +27,152 @@ const style = {
     boxShadow: 24,
     p: 4,
 };
-
 const Studentm = () => {
-    const [students, setStudents] = useState([]);
     const [openEdit, setOpenEdit] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
-    const [selectedStudent, setSelectedStudent] = useState(null);
-    const [formData, setFormData] = useState({
-        name: '',
-        dob: '',
-        class: '',
-        section: '',
-        gender: 'Male',
-        roll_no: '',
-        father_name: '',
-        mother_name: '',
-        email: '',
-        mobile: '',
-        address: ''
-    });
+    const [students, setStudents] = useState([]);
+    const [name, setName] = useState('');
+    const [dob, setDob] = useState('');
+    const [studentClass, setStudentClass] = useState('');
+    const [section, setSection] = useState('');
+    const [gender, setGender] = useState('Male');
+    const [fatherName, setFatherName] = useState('');
+    const [motherName, setMotherName] = useState('');
+    const [email, setEmail] = useState('');
+    const [mobile, setMobile] = useState('');
+    const [address, setAddress] = useState('');
+    const [studentId, setStudentId] = useState('');
+    const [editStudentId, setEditStudentId] = useState(null);
 
-    useEffect(() => {
-        fetchStudentsData();
-    }, []);
+    const apiBaseUrl = 'http://localhost:5000/api';
 
-    const fetchStudentsData = async () => {
-        try {
-            const data = await PythonBackend.fetchStudents();
-            setStudents(data);
-        } catch (error) {
-            alert('Failed to fetch students: ' + error.message);
-        }
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            await PythonBackend.addStudent(formData);
-            alert('Student created successfully!');
-            setFormData({
-                name: '',
-                dob: '',
-                class: '',
-                section: '',
-                gender: 'Male',
-                roll_no: '',
-                father_name: '',
-                mother_name: '',
-                email: '',
-                mobile: '',
-                address: ''
+    // Fetch all students
+    const fetchStudents = () => {
+        axios
+            .get(`${apiBaseUrl}/admin/Students`)
+            .then((response) => {
+                setStudents(response.data);
+            })
+            .catch((error) => {
+                console.error("Failed to fetch students:", error);
             });
-            fetchStudentsData();
-        } catch (error) {
-            alert(error.message);
-        }
     };
 
-    const handleUpdate = async (e) => {
+    // Add a new student
+    const addStudent = (e) => {
         e.preventDefault();
-        try {
-            await PythonBackend.updateStudent(selectedStudent.id, formData);
-            alert('Student updated successfully!');
-            setOpenEdit(false);
-            fetchStudentsData();
-        } catch (error) {
-            alert(error.message);
-        }
+        axios
+            .post(`${apiBaseUrl}/admin/Students`, {
+                name,
+                dob,
+                class: studentClass,
+                section,
+                gender,
+                father_name: fatherName,
+                mother_name: motherName,
+                email,
+                mobile,
+                address
+            })
+            .then((response) => {
+                alert(response.data.message);
+                fetchStudents(); // Refresh the list of students
+                clearForm();
+            })
+            .catch((error) => {
+                alert(error.response?.data?.error || 'Error adding student!');
+            });
     };
 
-    const handleDelete = async () => {
-        try {
-            await PythonBackend.deleteStudent(selectedStudent.id);
-            setOpenDelete(false);
-            fetchStudentsData();
-        } catch (error) {
-            if (error.message.includes('409')) {
-                alert('Cannot delete student with existing fee records!');
-            } else {
-                alert('Failed to delete student: ' + error.message);
-            }
-        }
+    // Update a student
+    const updateStudent = (e) => {
+        e.preventDefault();
+        axios
+            .put(`${apiBaseUrl}/admin/Students`, {
+                id: editStudentId,
+                name,
+                dob,
+                class: studentClass,
+                section,
+                gender,
+                father_name: fatherName,
+                mother_name: motherName,
+                email,
+                mobile,
+                address
+            })
+            .then((response) => {
+                alert(response.data.message);
+                fetchStudents(); // Refresh the list of students
+                clearForm();
+                setOpenEdit(false);
+            })
+            .catch((error) => {
+                alert(error.response?.data?.error || 'Error updating student!');
+            });
     };
 
+    // Delete a student
+    const deleteStudent = (id) => {
+        axios
+            .delete(`${apiBaseUrl}/admin/Students?id=${id}`)
+            .then((response) => {
+                alert(response.data.message);
+                fetchStudents(); // Refresh the list of students
+            })
+            .catch((error) => {
+                alert(error.response?.data?.error || 'Error deleting student!');
+            });
+    };
+
+    // Clear form fields
+    const clearForm = () => {
+        setName('');
+        setDob('');
+        setStudentClass('');
+        setSection('');
+        setGender('Male');
+        setFatherName('');
+        setMotherName('');
+        setEmail('');
+        setMobile('');
+        setAddress('');
+        setStudentId('');
+    };
+
+    // Handle edit button click
     const handleEditClick = (student) => {
-        setSelectedStudent(student);
-        setFormData({
-            name: student.name,
-            dob: student.dob.split('T')[0],
-            class: student.class,
-            section: student.section,
-            gender: student.gender,
-            roll_no: student.roll_no,
-            father_name: student.father_name,
-            mother_name: student.mother_name,
-            email: student.email,
-            mobile: student.mobile,
-            address: student.address
-        });
+        setEditStudentId(student.auto_id);
+        setName(student.name);
+        setDob(student.dob.split('T')[0]);
+        setStudentClass(student.class);
+        setSection(student.section);
+        setGender(student.gender);
+        setFatherName(student.father_name);
+        setMotherName(student.mother_name);
+        setEmail(student.email);
+        setMobile(student.mobile);
+        setAddress(student.address);
         setOpenEdit(true);
     };
 
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+    // Handle delete button click
+    const handleDeleteClick = (id) => {
+        setStudentId(id);
+        setOpenDelete(true);
     };
+
+    // Confirm delete
+    const confirmDelete = () => {
+        deleteStudent(studentId);
+        setOpenDelete(false);
+    };
+
+    // Fetch students on component mount
+    useEffect(() => {
+        fetchStudents();
+    }, []);
+
     return (
         <>
            <Sidebar />
@@ -139,21 +180,30 @@ const Studentm = () => {
                 backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
 
             }}>
-                <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "7%" }}>Student's Details :</Typography>
-                <form style={{ paddingTop: "20px", paddingBottom: "20px" }}>
+                <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "7%" }}>Student's and Parent's Details :</Typography>
+                <form onSubmit={addStudent} style={{ paddingTop: "20px", paddingBottom: "20px" }}>
 
                     <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
 
                         <Grid class="form-group" style={{ marginBottom: "15px" }}>
                             <input type="text" id="Name" placeholder="Student's Name" required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} 
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                            />
                         </Grid>
                         <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                            <input type="date" id="birthday" name="birthday" style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                            <input type="date" id="birthday" name="birthday" style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} 
+                                value={dob}
+                                onChange={(e) => setDob(e.target.value)}
+                            />
                         </Grid>
                     </Grid>
                     <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
-                        <select id="venue" required style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
+                        <select id="venue" required style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
+                            value={studentClass}
+                            onChange={(e) => setStudentClass(e.target.value)}
+                        >
                         <option value="">Select Class</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -167,7 +217,10 @@ const Studentm = () => {
                         <option value="10">10</option>
                     </select>
                         <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                            <select id="venue" required style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
+                            <select id="venue" required style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
+                                value={section}
+                                onChange={(e) => setSection(e.target.value)}
+                            >
                                 <option value="">Select Section</option>
                                 <option value="A">A</option>
                                 <option value="B">B</option>
@@ -183,10 +236,12 @@ const Studentm = () => {
                                 aria-labelledby="demo-form-control-label-placement"
                                 name="position"
                                 defaultValue="top"
+                                value={gender}
+                                onChange={(e) => setGender(e.target.value)}
                             >
-                                <FormControlLabel style={{ marginLeft: "10px" }} value="1" control={<Radio />} label="Male" />
-                                <FormControlLabel value="2" control={<Radio />} label="Female" />
-                                <FormControlLabel value="3" control={<Radio />} label="Other" />
+                                <FormControlLabel style={{ marginLeft: "10px" }} value="Male" control={<Radio />} label="Male" />
+                                <FormControlLabel value="Female" control={<Radio />} label="Female" />
+                                <FormControlLabel value="Other" control={<Radio />} label="Other" />
                             </RadioGroup>
                         </Grid>
 
@@ -195,45 +250,53 @@ const Studentm = () => {
                                 style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
                         </Grid> */}
                     </Grid>
-                </form>
-            </Grid>
-
-            <Grid class="contact-form" style={{
-                backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
-
-            }}>
-                <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "7%" }}>Parent's Details :</Typography>
-                <form style={{ paddingTop: "20px", paddingBottom: "20px" }}>
-
                     <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
 
                         <Grid class="form-group" style={{ marginBottom: "15px" }}>
                             <input type="text" id="Name" placeholder="Father's Name" required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} 
+                                value={fatherName}
+                                onChange={(e) => setFatherName(e.target.value)}
+                            />
                         </Grid>
                         <Grid class="form-group" style={{ marginBottom: "15px" }}>
                             <input type="text" id="Name" placeholder="Mother's Name" required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} 
+                                value={motherName}
+                                onChange={(e) => setMotherName(e.target.value)}
+                            />
                         </Grid>
                     </Grid>
                     <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
 
                         <Grid class="form-group" style={{ marginBottom: "15px" }}>
                             <input type="email" id="Name" placeholder="Email" required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} 
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
                         </Grid>
                         <Grid class="form-group" style={{ marginBottom: "15px" }}>
                             <input type="number" id="Name" placeholder="Mobile No" required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} 
+                                value={mobile}
+                                onChange={(e) => setMobile(e.target.value)}
+                            />
                         </Grid>
                     </Grid>
                     <Grid style={{ display: "flex", marginLeft: "7%" }}>
 
                         <textarea id="message" placeholder="Address" required
-                            style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}></textarea>
+                            style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
+                        ></textarea>
                     </Grid>
                     <center>
-                        <Button style={{ width: "130px", marginTop: "35px", fontWeight: 600, fontSize: "16px", backgroundColor: "#000066", fontColor: " white" }} >
+                        <Button
+                            type="submit"
+                            style={{ width: "130px", marginTop: "35px", fontWeight: 600, fontSize: "16px", backgroundColor: "#000066", color: "white" }}
+                        >
                             Submit
                         </Button>
                     </center>
@@ -279,10 +342,7 @@ const Studentm = () => {
                                         style={{ fontSize: "18px", color: "#000066", cursor: "pointer" }}
                                     />
                                     <DeleteIcon
-                                        onClick={() => {
-                                            setSelectedStudent(student);
-                                            setOpenDelete(true);
-                                        }}
+                                        onClick={() => handleDeleteClick(student.student_id)}
                                         style={{ fontSize: "18px", color: "red", cursor: "pointer" }}
                                     />
                                 </TableCell>
@@ -298,19 +358,27 @@ const Studentm = () => {
                             backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
                         }}>
                             <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", }}> Edit Student's Details :</Typography>
-                            <form style={{ paddingTop: "20px", paddingBottom: "20px" }}>
+                            <form onSubmit={updateStudent} style={{ paddingTop: "20px", paddingBottom: "20px" }}>
                                 <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
                                     <Grid class="form-group" style={{ marginBottom: "15px" }}>
                                         <input type="text" id="Name" placeholder="Student's Name" required
-                                            style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                                            style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} 
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
+                                        />
                                     </Grid>
                                     <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                                        <input type="date" id="birthday" name="birthday" style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
-
+                                        <input type="date" id="birthday" name="birthday" style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} 
+                                            value={dob}
+                                            onChange={(e) => setDob(e.target.value)}
+                                        />
                                     </Grid>
                                 </Grid>
                                 <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
-                                    <select id="venue" required style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
+                                    <select id="venue" required style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
+                                        value={studentClass}
+                                        onChange={(e) => setStudentClass(e.target.value)}
+                                    >
                                     <option value="">Select Class</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -324,7 +392,10 @@ const Studentm = () => {
                                     <option value="10">10</option>
                                 </select>
                                     <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                                        <select id="venue" required style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
+                                        <select id="venue" required style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
+                                            value={section}
+                                            onChange={(e) => setSection(e.target.value)}
+                                        >
                                             <option value="">Select Section</option>
                                             <option value="A">A</option>
                                             <option value="B">B</option>
@@ -341,17 +412,30 @@ const Studentm = () => {
                                             aria-labelledby="demo-form-control-label-placement"
                                             name="position"
                                             defaultValue="top"
+                                            value={gender}
+                                            onChange={(e) => setGender(e.target.value)}
                                         >
-                                            <FormControlLabel style={{ marginLeft: "10px" }} value="1" control={<Radio />} label="Male" />
-                                            <FormControlLabel value="2" control={<Radio />} label="Female" />
-                                            <FormControlLabel value="3" control={<Radio />} label="Other" />
+                                            <FormControlLabel style={{ marginLeft: "10px" }} value="Male" control={<Radio />} label="Male" />
+                                            <FormControlLabel value="Female" control={<Radio />} label="Female" />
+                                            <FormControlLabel value="Other" control={<Radio />} label="Other" />
                                         </RadioGroup>
                                     </Grid>
-                                    <Grid class="form-group" style={{ marginBottom: "15px" }}>
+                                    {/* <Grid class="form-group" style={{ marginBottom: "15px" }}>
                                         <input type="number " id="mobile" placeholder="Enter Roll No" required
-                                            style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
-                                    </Grid>
+                                            style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} 
+                                            value={rollNo}
+                                            onChange={(e) => setRollNo(e.target.value)}
+                                        />
+                                    </Grid> */}
                                 </Grid>
+                                <center>
+                                    <Button
+                                        type="submit"
+                                        style={{ width: "130px", marginTop: "35px", fontWeight: 600, fontSize: "16px", backgroundColor: "#000066", color: "white" }}
+                                    >
+                                    Update
+                                    </Button>
+                                </center>
                             </form>
                         </Grid>
 
@@ -364,29 +448,47 @@ const Studentm = () => {
                                 <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
                                     <Grid class="form-group" style={{ marginBottom: "15px" }}>
                                         <input type="text" id="Name" placeholder="Father's Name" required
-                                            style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                                            style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} 
+                                            value={fatherName}
+                                            onChange={(e) => setFatherName(e.target.value)}
+                                        />
                                     </Grid>
                                     <Grid class="form-group" style={{ marginBottom: "15px" }}>
                                         <input type="text" id="Name" placeholder="Mother's Name" required
-                                            style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                                            style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} 
+                                            value={motherName}
+                                            onChange={(e) => setMotherName(e.target.value)}
+                                        />
                                     </Grid>
                                 </Grid>
                                 <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
                                     <Grid class="form-group" style={{ marginBottom: "15px" }}>
                                         <input type="email" id="Name" placeholder="Email" required
-                                            style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                                            style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} 
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                        />
                                     </Grid>
                                     <Grid class="form-group" style={{ marginBottom: "15px" }}>
                                         <input type="number" id="Name" placeholder="Mobile No" required
-                                            style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                                            style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} 
+                                            value={mobile}
+                                            onChange={(e) => setMobile(e.target.value)}
+                                        />
                                     </Grid>
                                 </Grid>
                                 <Grid style={{ display: "flex", marginLeft: "7%" }}>
                                     <textarea id="message" placeholder="Address" required
-                                        style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}></textarea>
+                                        style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
+                                        value={address}
+                                        onChange={(e) => setAddress(e.target.value)}
+                                    ></textarea>
                                 </Grid>
                                 <center>
-                                    <Button style={{ width: "130px", marginTop: "35px", fontWeight: 600, fontSize: "16px", backgroundColor: "#000066", fontColor: " white" }} >
+                                    <Button
+                                        type="submit"
+                                        style={{ width: "130px", marginTop: "35px", fontWeight: 600, fontSize: "16px", backgroundColor: "#000066", color: "white" }}
+                                    >
                                     Update
                                     </Button>
                                 </center>
@@ -401,8 +503,8 @@ const Studentm = () => {
                         Are you sure you want to delete this entry?
                     </Typography>
                     <center style={{ marginTop: "30px" }}>
-                        <Button style={{ backgroundColor: '#000066' }} >Yes</Button>
-                        <Button style={{ backgroundColor: 'red', marginLeft: "30px" }}>No</Button>
+                        <Button style={{ backgroundColor: '#000066' }} onClick={confirmDelete}>Yes</Button>
+                        <Button style={{ backgroundColor: 'red', marginLeft: "30px" }} onClick={() => setOpenDelete(false)}>No</Button>
                     </center>
                 </Box>
             </Modal>
