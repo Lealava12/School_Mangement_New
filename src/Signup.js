@@ -8,9 +8,21 @@ const Signup = () => {
   const [mobileNo, setMobileNo] = useState('');
   const [rollNo, setRollNo] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+  const [userType, setUserType] = useState('');
+
   const apiBaseUrl = 'http://localhost:5000/api';
+
   const handleSignup = (e) => {
     e.preventDefault();
+
+    // Validate password and confirm password
+    if (password !== confirmPassword) {
+      setError('Passwords do not match!');
+      return;
+    }
+
     axios
       .post(`${apiBaseUrl}/admin/signup`, {
         email,
@@ -20,13 +32,16 @@ const Signup = () => {
       })
       .then((response) => {
         alert(response.data.message);
+        if (response.data.user_type) {
+          setUserType(response.data.user_type);
+        }
         if (response.data.redirect) {
           window.location.href = response.data.redirect;
         }
       })
       .catch((error) => {
         if (error.response && error.response.data && error.response.data.error) {
-          alert(error.response.data.error);
+          setError(error.response.data.error);
         } else {
           console.error('Error during signup:', error);
         }
@@ -58,6 +73,7 @@ const Signup = () => {
           </div>
           <h2 className="login-header">SIGN UP</h2>
           <form onSubmit={handleSignup}>
+            {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
             <div className="user-box">
               <input
                 type="email"
@@ -83,7 +99,7 @@ const Signup = () => {
                 onChange={(e) => setRollNo(e.target.value)}
                 required
               />
-              <label>Roll No</label>
+              <label>ID</label>
             </div>
             <div className="user-box">
               <input
@@ -94,6 +110,22 @@ const Signup = () => {
               />
               <label>Create Password</label>
             </div>
+            <div className="user-box">
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+              <label>Confirm Password</label>
+            </div>
+
+            {userType && (
+              <p style={{ color: 'green', textAlign: 'center' }}>
+                Registered as: {userType === '1' ? 'Admin' : userType === '2' ? 'Teacher' : 'Student'}
+              </p>
+            )}
+
             <button type="submit" className="login-button">
               Create Account
             </button>

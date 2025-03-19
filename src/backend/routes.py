@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from config import get_connection
+from flask_cors import CORS  # Import CORS
 import os
 from werkzeug.utils import secure_filename
 
@@ -12,6 +13,7 @@ if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
 user_routes = Blueprint('user_routes', __name__)
+CORS(user_routes, resources={r"/*": {"origins": "*"}})  # Enable CORS for all routes
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -721,100 +723,254 @@ def manage_notices():
 def manage_assignments():
     connection = get_connection()
     cursor = connection.cursor(dictionary=True)
-    
+
     try:
+        # GET: Fetch assignments
         if request.method == 'GET':
-            student_id = request.args.get('student_id')
-            subject = request.args.get('subject')
-            
-            query = "SELECT * FROM assignments WHERE 1"
-            params = []
-            
-            if student_id:
-                query += " AND student_id = %s"
-                params.append(student_id)
-            if subject:
-                query += " AND subject = %s"
-                params.append(subject)
-            
-            cursor.execute(query, params)
+            cursor.execute("SELECT * FROM assignments")
             assignments = cursor.fetchall()
             return jsonify(assignments), 200
 
+        # POST: Add new assignment
         elif request.method == 'POST':
             if 'file' not in request.files:
                 return jsonify({"error": "No file uploaded"}), 400
-            
+
             file = request.files['file']
-            student_id = request.form.get('student_id')
-            subject = request.form.get('subject')
-            
-            if not (student_id and subject):
-                return jsonify({"error": "Student ID and subject are required"}), 400
-            
+            title = request.form.get('title')
+            date = request.form.get('date')
+            description = request.form.get('description')
+            assignment_class = request.form.get('class')
+
+            if not (title and date and description and assignment_class):
+                return jsonify({"error": "All fields are required"}), 400
+
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
                 file_path = os.path.join(UPLOAD_FOLDER, filename)
                 file.save(file_path)
-                
-                cursor.execute("INSERT INTO assignments (student_id, subject, file_path) VALUES (%s, %s, %s)",
-                               (student_id, subject, file_path))
+
+                cursor.execute(
+                    "INSERT INTO assignments (title, date, description, class, file_path) VALUES (%s, %s, %s, %s, %s)",
+                    (title, date, description, assignment_class, file_path)
+                )
                 connection.commit()
                 return jsonify({"message": "Assignment uploaded successfully", "file_path": file_path}), 201
             else:
                 return jsonify({"error": "Invalid file type"}), 400
 
+        # PUT: Update an assignment
         elif request.method == 'PUT':
             assignment_id = request.form.get('assignment_id')
-            
+            title = request.form.get('title')
+            date = request.form.get('date')
+            description = request.form.get('description')
+            assignment_class = request.form.get('class')
+
             if not assignment_id:
                 return jsonify({"error": "Assignment ID is required"}), 400
-            
-            cursor.execute("SELECT file_path FROM assignments WHERE id = %s", (assignment_id,))
+
+            cursor.execute("SELECT * FROM assignments WHERE id = %s", (assignment_id,))
             assignment = cursor.fetchone()
             if not assignment:
                 return jsonify({"error": "Assignment not found"}), 404
-            
+
             file = request.files.get('file')
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
                 file_path = os.path.join(UPLOAD_FOLDER, filename)
                 file.save(file_path)
-                
-                # Delete old file
+
+                # Delete the old file
                 old_file_path = assignment['file_path']
                 if os.path.exists(old_file_path):
                     os.remove(old_file_path)
-                
-                cursor.execute("UPDATE assignments SET file_path = %s WHERE id = %s", (file_path, assignment_id))
+
+                cursor.execute(
+                    "UPDATE assignments SET title=%s, date=%s, description=%s, class=%s, file_path=%s WHERE id=%s",
+                    (title, date, description, assignment_class, file_path, assignment_id)
+                )
                 connection.commit()
                 return jsonify({"message": "Assignment updated successfully", "file_path": file_path}), 200
             else:
-                return jsonify({"error": "Invalid file type"}), 400
+                cursor.execute(
+                    "UPDATE assignments SET title=%s, date=%s, description=%s, class=%s WHERE id=%s",
+                    (title, date, description, assignment_class, assignment_id)
+                )
+                connection.commit()
+                return jsonify({"message": "Assignment updated successfully"}), 200
 
+        # DELETE: Delete an assignment
         elif request.method == 'DELETE':
             assignment_id = request.args.get('assignment_id')
             if not assignment_id:
                 return jsonify({"error": "Assignment ID is required"}), 400
-            
+
             cursor.execute("SELECT file_path FROM assignments WHERE id = %s", (assignment_id,))
             assignment = cursor.fetchone()
             if not assignment:
                 return jsonify({"error": "Assignment not found"}), 404
-            
-            # Delete file
+
+            # Delete the file
             file_path = assignment['file_path']
             if os.path.exists(file_path):
                 os.remove(file_path)
-            
+
             cursor.execute("DELETE FROM assignments WHERE id = %s", (assignment_id,))
             connection.commit()
             return jsonify({"message": "Assignment deleted successfully"}), 200
-    
+
     except Exception as e:
         connection.rollback()
         return jsonify({"error": str(e)}), 500
-    
+
     finally:
         cursor.close()
         connection.close()
+
+@user_routes.route('/admin/signup', methods=['POST'])
+def signup_user():
+    try:
+        data = request.json
+        email = data.get('email')
+        mobile = data.get('mobile_no')
+        roll_no = data.get('roll_no')  # This is the user ID
+        password = data.get('password')
+
+        if not all([email, mobile, roll_no, password]):
+            return jsonify({"error": "All fields are required!"}), 400
+
+        connection = get_connection()
+        cursor = connection.cursor()
+
+        # Check if the roll_no exists in Students or Teachers table
+        cursor.execute("SELECT student_id FROM Students WHERE student_id = %s", (roll_no,))
+        student_result = cursor.fetchone()
+
+        cursor.execute("SELECT teacher_id FROM Teachers WHERE teacher_id = %s", (roll_no,))
+        teacher_result = cursor.fetchone()
+
+        # Determine user type
+        if roll_no == "ADMIN01":
+            user_type = "1"  # Admin
+        elif student_result:
+            user_type = "3"  # Student
+        elif teacher_result:
+            user_type = "2"  # Teacher
+        else:
+            return jsonify({"error": "The provided ID does not exist in the Students or Teachers table."}), 404
+
+        # Check if email is already registered
+        cursor.execute("SELECT * FROM Login WHERE email = %s", (email,))
+        if cursor.fetchone():
+            return jsonify({"error": "Email is already registered!"}), 409
+
+        # Ensure the user_id exists in the appropriate table before inserting into Login
+        if user_type == "3" and not student_result:
+            return jsonify({"error": "Student ID does not exist in the Students table."}), 404
+        if user_type == "2" and not teacher_result:
+            return jsonify({"error": "Teacher ID does not exist in the Teachers table."}), 404
+
+        # Hash the password before storing
+        hashed_password = generate_password_hash(password)
+
+        # Insert user into Login table
+        insert_query = """
+            INSERT INTO Login (user_id, email, mobile, password_hash, user_type) 
+            VALUES (%s, %s, %s, %s, %s)
+        """
+        cursor.execute(insert_query, (roll_no, email, mobile, hashed_password, user_type))
+        connection.commit()
+
+        return jsonify({"message": "User registered successfully!", "user_type": user_type, "redirect": "/Signin"}), 201
+    except Exception as e:
+        return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
+    finally:
+        if 'cursor' in locals():
+            cursor.close()
+        if 'connection' in locals():
+            connection.close()
+
+@user_routes.route('/login', methods=['POST'])
+def login_user():
+    try:
+        data = request.json
+        roll_no = data.get('roll_no')  # user_id
+        password = data.get('password')
+
+        if not all([roll_no, password]):
+            return jsonify({"error": "Both User ID and Password are required!"}), 400
+
+        connection = get_connection()
+        cursor = connection.cursor()
+
+        # Fetch user info from Login table
+        cursor.execute("SELECT user_id, password_hash, user_type FROM Login WHERE user_id = %s", (roll_no,))
+        user = cursor.fetchone()
+
+        if not user:
+            return jsonify({"error": "Invalid User ID or Password!"}), 404
+
+        stored_user_id, stored_password_hash, user_type = user
+
+        # Verify password
+        if not check_password_hash(stored_password_hash, password):
+            return jsonify({"error": "Invalid User ID or Password!"}), 401
+
+        # Define which pages each user type has access to (example)
+        user_panels = {
+            "1": {  # Admin
+                "redirect": "/admin/dashboard",
+                "pages": [
+                    # You can list out all admin-specific pages here
+                    "Admindashboard.js",
+                    "Classm.js",
+                    "ExamResults.js",
+                    "Fee.js",
+                    "Studentm.js",
+                    "NoticeView.js",
+                    "Assignmentm.js",
+                    "marksEntry.js",
+                    "Studentm.js",
+                    "Teacherm.js",
+                    "TimeTable.js"
+                ]
+            },
+            "2": {  # Teacher
+                "redirect": "/teacher/dashboard",
+                "pages": [
+                    "NoticeView.js",
+                    "Assignmentm.js",
+                    "marksEntry.js"
+                ]
+            },
+            "3": {  # Student
+                "redirect": "/student/dashboard",
+                "pages": [
+                    "NoticeView.js",
+                    "Assignview.js",
+                    "Resultview.js"
+                ]
+            }
+        }
+
+        # Get the relevant info for this user type
+        panel_info = user_panels.get(user_type)
+        if not panel_info:
+            return jsonify({"error": "Unknown user type!"}), 500
+
+        return jsonify({
+            "message": "Login successful!",
+            "user_type": user_type,
+            "redirect": panel_info["redirect"],
+            "pages": panel_info["pages"]
+        }), 200
+
+    except Exception as e:
+        return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
+
+    finally:
+        if 'cursor' in locals():
+            cursor.close()
+        if 'connection' in locals():
+            connection.close()

@@ -1,24 +1,36 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // Added useNavigate for navigation
 import axios from 'axios';
 import './Signin.css';
+
 const Login = () => {
-  const [email, setEmail] = useState('');
+  const [rollNo, setRollNo] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(''); // Added error state for better error handling
+  const navigate = useNavigate(); // Initialize useNavigate for navigation
   const apiBaseUrl = 'http://localhost:5000/api';
+
   const handleLogin = (e) => {
     e.preventDefault();
+
     axios
-      .post(`${apiBaseUrl}/admin/login`, { email, password })
+      .post(`${apiBaseUrl}/login`, { roll_no: rollNo, password })
       .then((response) => {
         alert(response.data.message);
-        if (response.data.redirect) {
-          window.location.href = response.data.redirect;
+
+        // Store user info in local storage
+        const { user_type, pages, redirect } = response.data;
+        localStorage.setItem('user_type', user_type);
+        localStorage.setItem('user_pages', JSON.stringify(pages));
+
+        // Redirect user to the appropriate dashboard
+        if (redirect) {
+          navigate(redirect); // Use navigate for redirection
         }
       })
       .catch((error) => {
         if (error.response && error.response.data && error.response.data.error) {
-          alert(error.response.data.error);
+          setError(error.response.data.error); // Display error message
         } else {
           console.error('Error during login:', error);
         }
@@ -50,14 +62,15 @@ const Login = () => {
           </div>
           <h2 className="login-header">LOGIN</h2>
           <form onSubmit={handleLogin}>
+            {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
             <div className="user-box">
               <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type="text"
+                value={rollNo}
+                onChange={(e) => setRollNo(e.target.value)}
                 required
               />
-              <label>Email</label>
+              <label>User ID</label>
             </div>
             <div className="user-box">
               <input

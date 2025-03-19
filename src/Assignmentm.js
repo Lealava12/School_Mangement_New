@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
-import { Grid, Button, Typography } from '@mui/material';
+import { Grid, Button, Typography, Modal } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,11 +8,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
-import DeleteIcon from '@mui/icons-material/Delete';
 import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
 import AddSharpIcon from '@mui/icons-material/AddSharp';
+import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline'; // Import ModeEditOutlineIcon
+import DeleteIcon from '@mui/icons-material/Delete'; // Import DeleteIcon
 import axios from 'axios';
 
 const style = {
@@ -63,7 +62,7 @@ const Assignmentm = () => {
             // Upload file and assignment data
             const formData = new FormData();
             formData.append('file', selectedFile);
-            formData.append('title', title);
+            formData.append('title', title); // Ensure the field name matches the backend
             formData.append('date', date);
             formData.append('description', description);
             formData.append('class', assignmentClass);
@@ -91,6 +90,72 @@ const Assignmentm = () => {
         setAssignmentClass('');
         setSelectedFile(null);
         setEditAssignmentId(null);
+    };
+
+    // Handle edit button click
+    const handleEditClick = (assignment) => {
+        setEditAssignmentId(assignment.id);
+        setTitle(assignment.title);
+        setDate(assignment.date.split('T')[0]);
+        setDescription(assignment.description);
+        setAssignmentClass(assignment.class);
+        setOpenEdit(true);
+    };
+
+    // Handle delete button click
+    const handleDeleteClick = (assignmentId) => {
+        setDeleteAssignmentId(assignmentId);
+        setOpenDelete(true);
+    };
+
+    // Confirm delete
+    const confirmDelete = () => {
+        axios
+            .delete(`${apiBaseUrl}/admin/assignments?assignment_id=${deleteAssignmentId}`)
+            .then((response) => {
+                alert(response.data.message);
+                fetchAssignments(); // Refresh the list of assignments
+                setOpenDelete(false);
+            })
+            .catch((error) => {
+                alert(error.response?.data?.error || 'Error deleting assignment!');
+            });
+    };
+
+    // Update an assignment
+    const updateAssignment = (e) => {
+        e.preventDefault();
+        if (!title || !date || !description || !assignmentClass) {
+            alert('All fields are required!');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('assignment_id', editAssignmentId);
+        formData.append('title', title);
+        formData.append('date', date);
+        formData.append('description', description);
+        formData.append('class', assignmentClass);
+
+        if (selectedFile) {
+            formData.append('file', selectedFile);
+        }
+
+        axios
+            .put(`${apiBaseUrl}/admin/assignments`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
+            .then((response) => {
+                alert(response.data.message);
+                fetchAssignments(); // Refresh the list of assignments
+                setOpenEdit(false);
+                clearForm();
+            })
+            .catch((error) => {
+                alert(error.response?.data?.error || 'Error updating assignment!');
+            });
     };
 
     // Fetch assignments on component mount
@@ -202,6 +267,7 @@ const Assignmentm = () => {
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Date</TableCell>
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Description</TableCell>
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Class</TableCell>
+                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Actions</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -212,11 +278,97 @@ const Assignmentm = () => {
                                 <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">{assignment.date}</TableCell>
                                 <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">{assignment.description}</TableCell>
                                 <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">{assignment.class}</TableCell>
+                                <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">
+                                <ModeEditOutlineIcon
+                                    onClick={() => handleEditClick(assignment)}
+                                    style={{ fontSize: "18px", color: "#000066", cursor: "pointer" }}
+                                />
+                                <DeleteIcon
+                                    onClick={() => handleDeleteClick(assignment.assignment_id)}
+                                    style={{ fontSize: "18px", color: "red", cursor: "pointer" }}
+                                />
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
             </TableContainer>
+
+            {/* Edit Modal */}
+            <Modal open={openEdit} onClose={() => setOpenEdit(false)}>
+                <Box sx={style}>
+                    <Typography variant="h6" component="h2">
+                        Edit Assignment
+                    </Typography>
+                    <form onSubmit={updateAssignment}>
+                        <input
+                            type="text"
+                            placeholder="Assignment Title"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            required
+                            style={{ width: "100%", padding: "10px", margin: "10px 0", borderRadius: "5px" }}
+                        />
+                        <input
+                            type="date"
+                            value={date}
+                            onChange={(e) => setDate(e.target.value)}
+                            required
+                            style={{ width: "100%", padding: "10px", margin: "10px 0", borderRadius: "5px" }}
+                        />
+                        <textarea
+                            placeholder="Description"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            required
+                            style={{ width: "100%", padding: "10px", margin: "10px 0", borderRadius: "5px" }}
+                        ></textarea>
+                        <select
+                            value={assignmentClass}
+                            onChange={(e) => setAssignmentClass(e.target.value)}
+                            required
+                            style={{ width: "100%", padding: "10px", margin: "10px 0", borderRadius: "5px" }}
+                        >
+                            <option value="">Select Class</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                        <input
+                            type="file"
+                            onChange={(e) => setSelectedFile(e.target.files[0])}
+                            style={{ width: "100%", padding: "10px", margin: "10px 0", borderRadius: "5px" }}
+                        />
+                        <Button type="submit" style={{ backgroundColor: "#000066", color: "white", marginTop: "10px" }}>
+                            Update
+                        </Button>
+                    </form>
+                </Box>
+            </Modal>
+
+            {/* Delete Modal */}
+            <Modal open={openDelete} onClose={() => setOpenDelete(false)}>
+                <Box sx={style}>
+                    <Typography variant="h6" component="h2">
+                        Are you sure you want to delete this assignment?
+                    </Typography>
+                    <center style={{ marginTop: "30px" }}>
+                        <Button style={{ backgroundColor: '#000066', color: 'white' }} onClick={confirmDelete}>
+                            Yes
+                        </Button>
+                        <Button style={{ backgroundColor: 'red', color: 'white', marginLeft: "30px" }} onClick={() => setOpenDelete(false)}>
+                            No
+                        </Button>
+                    </center>
+                </Box>
+            </Modal>
         </>
     );
 };

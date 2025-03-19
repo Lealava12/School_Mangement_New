@@ -6,7 +6,7 @@ import axios from "axios";
 
 const Sidebar = () => {
   const [activeLink, setActiveLink] = useState("home");
-  const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+  const apiBaseUrl = 'http://localhost:5000/api';
   const handleLogout = () => {
     axios
       .post(`${apiBaseUrl}/admin/logout`)
