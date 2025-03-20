@@ -920,7 +920,7 @@ def login_user():
         # Define which pages each user type has access to (example)
         user_panels = {
             "1": {  # Admin
-                "redirect": "/admin/dashboard",
+                "redirect": "/admin/AdminDashboard",
                 "pages": [
                     # You can list out all admin-specific pages here
                     "Admindashboard.js",

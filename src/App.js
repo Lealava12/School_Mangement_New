@@ -16,7 +16,10 @@ import TimeTable from './TimeTable';
 import MarksEntry from './MarksEntry';
 import Assignview from './Assignview';
 import Resultview from './Resultview';
-
+import Teachersidebar from './Teachersidebar';
+import Studentsidebar from "./Studentsidebar";
+import TeacherDashboard from './TeacherDashboard';
+import StudentDashboard from './StudentDashboard';
 
 const App = () => {
   return (
@@ -24,7 +27,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/Signup" element={<Signup />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/AdminDashboard" element={<AdminDashboard />} />
         <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
         <Route path="/student/dashboard" element={<StudentDashboard />} />
         <Route path="/Assignmentm" element={<Assignmentm />} />
@@ -38,9 +41,14 @@ const App = () => {
         <Route path="/marksEntry" element={<MarksEntry />} />
         <Route path="/Assignview" element={<Assignview />} />
         <Route path="/Resultview" element={<Resultview />} />
+        <Route path="/Teachersidebar" element={<Teachersidebar />} />
+        <Route path="/Studentsidebar" element={<Studentsidebar />} />
+        <Route path="/StudentDashboard" element={<StudentDashboard />} />
+
+
       </Routes>
     </Router>
-    
+
   );
 };
 export default App;

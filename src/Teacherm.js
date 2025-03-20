@@ -162,7 +162,7 @@ const Teacherm = () => {
     <>
       <Sidebar />
       <Grid class="contact-form" style={{ backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%" }}>
-        <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "7%" }}>Teacher's Details :</Typography>
+        <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "65px" }}>Teacher's Details :</Typography>
         <form
           style={{ paddingTop: "20px", paddingBottom: "20px" }}
           onSubmit={(e) => {
@@ -220,7 +220,7 @@ const Teacherm = () => {
                 value={teacherClass}
                 onChange={(e) => setTeacherClass(e.target.value)}
                 required
-                style={{ width: "530px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
+                style={{ width: "525px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
               >
                 <option value="">Select Class</option>
                 <option value="1">1</option>
@@ -240,7 +240,7 @@ const Teacherm = () => {
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
                 required
-                style={{ width: "530px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
+                style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
               >
                 <option value="">Select Subject</option>
                 <option value="Math">Math</option>
@@ -252,7 +252,7 @@ const Teacherm = () => {
               </select>
             </Grid>
           </Grid>
-          <Grid class="form-group" style={{ marginBottom: "15px", marginLeft: "7%" }}>
+         <Grid style={{ display: "flex",marginLeft:"65px" }}>
             <p style={{ fontWeight: 500 }}> Select your Gender:</p>
             <RadioGroup
               row

@@ -175,25 +175,25 @@ const Studentm = () => {
 
     return (
         <>
-           <Sidebar />
+            <Sidebar />
             <Grid class="contact-form" style={{
                 backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
 
             }}>
-                <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "7%" }}>Student's and Parent's Details :</Typography>
+                <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "65px" }}>Student's and Parent's Details :</Typography>
                 <form onSubmit={addStudent} style={{ paddingTop: "20px", paddingBottom: "20px" }}>
 
                     <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
 
                         <Grid class="form-group" style={{ marginBottom: "15px" }}>
                             <input type="text" id="Name" placeholder="Student's Name" required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} 
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                             />
                         </Grid>
                         <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                            <input type="date" id="birthday" name="birthday" style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} 
+                            <input type="date" id="birthday" name="birthday" style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
                                 value={dob}
                                 onChange={(e) => setDob(e.target.value)}
                             />
@@ -204,18 +204,18 @@ const Studentm = () => {
                             value={studentClass}
                             onChange={(e) => setStudentClass(e.target.value)}
                         >
-                        <option value="">Select Class</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                    </select>
+                            <option value="">Select Class</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
                         <Grid class="form-group" style={{ marginBottom: "15px" }}>
                             <select id="venue" required style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
                                 value={section}
@@ -228,7 +228,7 @@ const Studentm = () => {
                             </select>
                         </Grid>
                     </Grid>
-                    <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
+                    <Grid style={{ display: "flex",marginLeft:"65px" }}>
                         <Grid class="form-group" style={{ marginBottom: "15px", width: "520px", }}>
                             <p> Select your Gender:</p>
                             <RadioGroup
@@ -254,14 +254,14 @@ const Studentm = () => {
 
                         <Grid class="form-group" style={{ marginBottom: "15px" }}>
                             <input type="text" id="Name" placeholder="Father's Name" required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} 
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
                                 value={fatherName}
                                 onChange={(e) => setFatherName(e.target.value)}
                             />
                         </Grid>
                         <Grid class="form-group" style={{ marginBottom: "15px" }}>
                             <input type="text" id="Name" placeholder="Mother's Name" required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} 
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
                                 value={motherName}
                                 onChange={(e) => setMotherName(e.target.value)}
                             />
@@ -271,20 +271,20 @@ const Studentm = () => {
 
                         <Grid class="form-group" style={{ marginBottom: "15px" }}>
                             <input type="email" id="Name" placeholder="Email" required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} 
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                         </Grid>
                         <Grid class="form-group" style={{ marginBottom: "15px" }}>
                             <input type="number" id="Name" placeholder="Mobile No" required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} 
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
                                 value={mobile}
                                 onChange={(e) => setMobile(e.target.value)}
                             />
                         </Grid>
                     </Grid>
-                    <Grid style={{ display: "flex", marginLeft: "7%" }}>
+                    <Grid style={{ display: "flex",marginLeft:"65px" }}>
 
                         <textarea id="message" placeholder="Address" required
                             style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
@@ -352,7 +352,7 @@ const Studentm = () => {
                 </Table>
             </TableContainer>
             <Grid>
-                <Modal  style={{ marginTop: "200px" }}>
+                <Modal style={{ marginTop: "200px" }}>
                     <center>
                         <Grid class="contact-form" style={{
                             backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
@@ -362,13 +362,13 @@ const Studentm = () => {
                                 <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
                                     <Grid class="form-group" style={{ marginBottom: "15px" }}>
                                         <input type="text" id="Name" placeholder="Student's Name" required
-                                            style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} 
+                                            style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
                                             value={name}
                                             onChange={(e) => setName(e.target.value)}
                                         />
                                     </Grid>
                                     <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                                        <input type="date" id="birthday" name="birthday" style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} 
+                                        <input type="date" id="birthday" name="birthday" style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
                                             value={dob}
                                             onChange={(e) => setDob(e.target.value)}
                                         />
@@ -379,18 +379,18 @@ const Studentm = () => {
                                         value={studentClass}
                                         onChange={(e) => setStudentClass(e.target.value)}
                                     >
-                                    <option value="">Select Class</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="8">8</option>
-                                    <option value="9">9</option>
-                                    <option value="10">10</option>
-                                </select>
+                                        <option value="">Select Class</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                    </select>
                                     <Grid class="form-group" style={{ marginBottom: "15px" }}>
                                         <select id="venue" required style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
                                             value={section}
@@ -433,7 +433,7 @@ const Studentm = () => {
                                         type="submit"
                                         style={{ width: "130px", marginTop: "35px", fontWeight: 600, fontSize: "16px", backgroundColor: "#000066", color: "white" }}
                                     >
-                                    Update
+                                        Update
                                     </Button>
                                 </center>
                             </form>
@@ -448,14 +448,14 @@ const Studentm = () => {
                                 <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
                                     <Grid class="form-group" style={{ marginBottom: "15px" }}>
                                         <input type="text" id="Name" placeholder="Father's Name" required
-                                            style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} 
+                                            style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
                                             value={fatherName}
                                             onChange={(e) => setFatherName(e.target.value)}
                                         />
                                     </Grid>
                                     <Grid class="form-group" style={{ marginBottom: "15px" }}>
                                         <input type="text" id="Name" placeholder="Mother's Name" required
-                                            style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} 
+                                            style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
                                             value={motherName}
                                             onChange={(e) => setMotherName(e.target.value)}
                                         />
@@ -464,14 +464,14 @@ const Studentm = () => {
                                 <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
                                     <Grid class="form-group" style={{ marginBottom: "15px" }}>
                                         <input type="email" id="Name" placeholder="Email" required
-                                            style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} 
+                                            style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
                                         />
                                     </Grid>
                                     <Grid class="form-group" style={{ marginBottom: "15px" }}>
                                         <input type="number" id="Name" placeholder="Mobile No" required
-                                            style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} 
+                                            style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
                                             value={mobile}
                                             onChange={(e) => setMobile(e.target.value)}
                                         />
@@ -489,7 +489,7 @@ const Studentm = () => {
                                         type="submit"
                                         style={{ width: "130px", marginTop: "35px", fontWeight: 600, fontSize: "16px", backgroundColor: "#000066", color: "white" }}
                                     >
-                                    Update
+                                        Update
                                     </Button>
                                 </center>
                             </form>

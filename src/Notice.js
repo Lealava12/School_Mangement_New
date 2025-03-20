@@ -87,14 +87,14 @@ const Notice = () => {
             <Grid className="contact-form" style={{
                 backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
             }}>
-                <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "1%" }}>Notice :</Typography>
+                <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "" }}>Notice :</Typography>
 
                 <input
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder="Enter notice title"
-                    style={{ width: "100%", margin: "10px 0", padding: "10px", borderRadius: "5px", borderColor: "#ccc" }}
+                    style={{ width: "500px", margin: "10px 0", padding: "10px", borderRadius: "5px", borderColor: "#ccc" }}
                 />
 
                 <Grid style={{ display: "flex", justifyContent: "space-between", marginTop: "20px" }}>
@@ -109,7 +109,7 @@ const Notice = () => {
                             alignItems: 'center',
                             cursor: 'pointer',
                             '&:hover': {
-                                bgcolor: 'primary.dark',
+                                // bgcolor: 'primary.dark',
                             },
                         }}>
                         <label htmlFor="file" style={{ display: "flex", flexDirection: "row", cursor: 'pointer' }}>
@@ -146,14 +146,12 @@ const Notice = () => {
                                 width: 300,
                                 height: 200,
                                 borderRadius: 1,
-                                bgcolor: 'primary.main',
+                                bgcolor: 'gray',
                                 display: 'flex',
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 cursor: 'pointer',
-                                '&:hover': {
-                                    bgcolor: 'primary.dark',
-                                },
+                               
                             }}
                         >
                             <Typography style={{ color: "white", textAlign: "center" }}>{notice.title}</Typography>

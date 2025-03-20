@@ -1,16 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Studentsidebar from "./Studentsidebar";
 
-const StudentDashboard = () => {
+export default function StudentDashboard() {
   return (
-    <div>
-      <h1>Student Dashboard</h1>
-      <ul>
-        <li><Link to="/NoticeView">View Notices</Link></li>
-        <li><Link to="/Assignmentm">View Assignments</Link></li>
-      </ul>
-    </div>
-  );
-};
-
-export default StudentDashboard;
+    <>
+    <Studentsidebar />
+    {/* <p>ry655555555555555555555555555555555</p> */}
+   
+</>
+  )
+}

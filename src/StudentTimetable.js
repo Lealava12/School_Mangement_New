@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import './ExamResults.css';
 import axios from 'axios';
-import Teachersidebar from "./Teachersidebar"
+import Studentsidebar from "./Studentsidebar";
 
-const NoticeView = () => {
+const StudentTimetable = () => {
   const [notices, setNotices] = useState([]);
 
   const apiBaseUrl = 'http://localhost:5000/api';
@@ -26,7 +26,7 @@ const NoticeView = () => {
 
   return (
     <div className="main-container">
-      <Teachersidebar />
+      <Studentsidebar />
       <div className="container">
         <div className="header">
           <h1 className="exam-title">Notice Board</h1>
@@ -57,4 +57,4 @@ const NoticeView = () => {
   );
 };
 
-export default NoticeView;
+export default StudentTimetable;

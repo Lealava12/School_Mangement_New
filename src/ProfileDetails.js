@@ -3,6 +3,7 @@ import Sidebar from './Sidebar';
 import { Grid, Typography } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import Studentsidebar from "./Studentsidebar";
 
 
 const ProfileDetails = () => {
@@ -11,7 +12,7 @@ const ProfileDetails = () => {
     return (
         <>
 
-            <Sidebar />
+            <Studentsidebar />
 
             <Grid class="contact-form" style={{
                 backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"

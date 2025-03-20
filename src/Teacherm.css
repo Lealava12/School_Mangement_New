@@ -1,6 +1,6 @@
 /* Card styling */
 .card {
-    width: 80%;
+    width: 80% !important;
     margin-top: 50px  !important;
     border: 1px solid #ccc;
     border-radius: 8px;

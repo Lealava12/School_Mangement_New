@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 
-import Signup from "./Signup" ;
+import Signup from "./Signup";
 import Signin from "./Signin";
 import PythonBackend from './Python_backend';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -19,6 +19,10 @@ import Assignmentm from "./Assignmentm"
 import Marksentry from "./Marksentry";
 import ProfileDetails from "./ProfileDetails";
 import ExamResults from "./Examresult"; // Import the ExamResults component
+import Teachersidebar from './Teachersidebar';
+import StudentDashboard from './StudentDashboard';
+
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -27,13 +31,13 @@ root.render(
       <Routes>
         {/* <PythonBackend /> */}
         <Route path="/" element={<Signup />} />
-      
-      <Route path="/python-backend" element={<PythonBackend />} />
+
+        <Route path="/python-backend" element={<PythonBackend />} />
 
         <Route path="/" element={<Teacherm />} />
         <Route path="/Signup" element={<Signup />} />
         <Route path="/Signin" element={<Signin />} />
-          {/* <Route path="/Login" element={<Login />} /> */}
+        {/* <Route path="/Login" element={<Login />} /> */}
         <Route path="/Teacherm" element={<Teacherm />} />
         <Route path="/Studentm" element={<Studentm />} />
         <Route path="/Fee" element={<Fee />} />
@@ -45,6 +49,8 @@ root.render(
         <Route path="/Marksentry" element={<Marksentry />} />
         <Route path="/ProfileDetails" element={<ProfileDetails />} />
         <Route path="/ExamResults" element={<ExamResults />} /> {/* Added the ExamResults route */}
+        <Route path="/Teachersidebar" element={<Teachersidebar />} />
+         <Route path="/StudentDashboard" element={<StudentDashboard />} />
       </Routes>
     </Router>
   </React.StrictMode>

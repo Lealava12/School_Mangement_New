@@ -193,11 +193,11 @@ const Fee = () => {
         <>
             <Sidebar />
             <Grid className="contact-form" style={{ backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%" }}>
-                <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "7%" }}>Student's Fee Details and Fee Reports:</Typography>
+                <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "65px" }}>Student's Fee Details and Fee Reports:</Typography>
                 <form onSubmit={handleSubmit} style={{ paddingTop: "20px", paddingBottom: "20px" }}>
                     {/* Student's Fee Details Section */}
-                    <Grid style={{ display: "flex", justifyContent: "space-evenly" }}>
-                        <Grid className="form-group" style={{ marginBottom: "15px" }}>
+                    <Grid style={{ display: "flex", justifyContent: "space-evenly" ,}}>
+                        <Grid className="form-group" style={{ marginBottom: "15px",marginLeft: "25px"  }}>
                             <input
                                 type="text"
                                 placeholder="Enter Student ID"
@@ -218,8 +218,8 @@ const Fee = () => {
                             />
                         </Grid>
                     </Grid>
-                    <Grid style={{ display: "flex", justifyContent: "space-evenly" }}>
-                        <Grid className="form-group" style={{ marginBottom: "15px" }}>
+                   <Grid style={{ display: "flex",marginLeft:"70px" }}>
+                        <Grid className="form-group" style={{ marginBottom: "15px" ,}}>
                             <input
                                 type="text"
                                 placeholder="Class"
@@ -239,7 +239,7 @@ const Fee = () => {
                         </Grid> */}
                     </Grid>
                     <Grid style={{ display: "flex", justifyContent: "space-evenly" }}>
-                        <Grid className="form-group" style={{ marginBottom: "15px" }}>
+                        <Grid className="form-group" style={{ marginBottom: "15px" ,marginLeft: "25px"}}>
                             <input
                                 type="number"
                                 placeholder="Amount"
@@ -254,7 +254,7 @@ const Fee = () => {
                                 value={paymentMode}
                                 onChange={(e) => setPaymentMode(e.target.value)}
                                 required
-                                style={{ width: "500px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
+                                style={{ width: "520px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
                             >
                                 <option value="">Payment Mode</option>
                                 <option value="Cash">Cash</option>
@@ -264,7 +264,7 @@ const Fee = () => {
                         </Grid>
                     </Grid>
                     <Grid style={{ display: "flex", justifyContent: "space-evenly" }}>
-                        <Grid className="form-group" style={{ marginBottom: "15px" }}>
+                        <Grid className="form-group" style={{ marginBottom: "15px",marginLeft: "25px" }}>
                             <input
                                 type="date"
                                 placeholder="Payment Date"

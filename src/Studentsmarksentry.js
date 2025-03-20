@@ -17,7 +17,7 @@ import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import Teachersidebar from "./Teachersidebar"
+import Studentsidebar from "./Studentsidebar";
 
 const style = {
     position: 'absolute',
@@ -32,7 +32,7 @@ const style = {
 };
 
 
-const Marksentry = () => {
+const Studentsmarksentry = () => {
     const [openEdit, setOpenEdit] = React.useState(false);
     const [openDelete, setOpenDelete1] = React.useState(false);
 
@@ -44,7 +44,7 @@ const Marksentry = () => {
 
     return (
         <>
-            <Teachersidebar />
+            <Studentsidebar />
 
 
             <Grid class="contact-form" style={{
@@ -185,4 +185,4 @@ const Marksentry = () => {
     );
 };
 
-export default Marksentry;
+export default Studentsmarksentry;

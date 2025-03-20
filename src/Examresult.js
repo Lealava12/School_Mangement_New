@@ -1,11 +1,13 @@
 import React from 'react';
 import Sidebar from './Sidebar';
 import './ExamResults.css';
+import Studentsidebar from "./Studentsidebar";
+
 
 function ExamResults() {
   return (
     <div className="main-container">
-      <Sidebar />
+      <Studentsidebar />
       <div className="container">
         <div className="header">
           <h1 className="exam-title">Exam Results</h1>

@@ -18,6 +18,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import AddSharpIcon from '@mui/icons-material/AddSharp';
+import Teachersidebar from "./Teachersidebar"
 
 const style = {
     position: 'absolute',
@@ -44,7 +45,7 @@ const Classm = () => {
 
     return (
         <>
-            <Sidebar />
+            <Teachersidebar />
 
             <Grid class= "contact-form" style={{
                 backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
