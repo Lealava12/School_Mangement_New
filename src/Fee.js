@@ -4,7 +4,6 @@ import { Grid, Button, Typography } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
@@ -218,7 +217,7 @@ const Fee = () => {
                             />
                         </Grid>
                     </Grid>
-                   <Grid style={{ display: "flex",marginLeft:"70px" }}>
+                   <Grid style={{ display: "flex",marginLeft:"100px" }}>
                         <Grid className="form-group" style={{ marginBottom: "15px" ,}}>
                             <input
                                 type="text"
@@ -328,8 +327,8 @@ const Fee = () => {
                     </center>
                 </form>
             </Grid>
-            <TableContainer sx={{ marginTop: "50px", width: "72%", marginLeft: "20%" }} component={Paper}>
-                <Table aria-label="simple table">
+            
+                <Table aria-label="simple table" sx={{ marginTop: "50px", width: "72%", marginLeft: "20%" }} component={Paper}>
                     <TableHead>
                         <TableRow>
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }}>Sl No</TableCell>
@@ -368,7 +367,7 @@ const Fee = () => {
                         ))}
                     </TableBody>
                 </Table>
-            </TableContainer>
+        
 
             {/* Edit Modal */}
             <Modal open={openEdit} onClose={() => setOpenEdit(false)}>

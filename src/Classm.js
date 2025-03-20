@@ -1,19 +1,13 @@
 import React from 'react';
-// import '../src/Teacherm.css';
-import Sidebar from './Sidebar';
+
 import { Grid, Button, Typography } from '@mui/material';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
-
 import DeleteIcon from '@mui/icons-material/Delete';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -60,8 +54,8 @@ const Classm = () => {
                             <input type="text" id="Name" placeholder="Student's Name" required
                                 style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
                         </Grid>
-                        <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                            <select id="venue" required style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
+                        <Grid class="form-group" style={{ marginBottom: "15px",marginLeft: "25px"  }}>
+                            <select id="venue" required style={{ width: "515px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
                                 <option value="">Select Class</option>
                                 <option value="saab">1</option>
                                 <option value="mercedes">2</option>
@@ -120,8 +114,8 @@ const Classm = () => {
 
 
 
-            <TableContainer sx={{ marginTop: "50px", width: "72%", marginLeft: "20%" }} component={Paper}>
-                <Table aria-label="simple table">
+
+                <Table aria-label="simple table" sx={{ marginTop: "50px", width: "72%", marginLeft: "20%" }} component={Paper}>
                     <TableHead   >
                         <TableRow >
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px", fontStyle: " STL Calisto MT" }}>Sl No</TableCell>
@@ -146,7 +140,7 @@ const Classm = () => {
                         </TableRow>
                     </TableBody>
                 </Table>
-            </TableContainer>
+        
 
 
             <Modal open={openDelete} onClose={handleCloseDelete}>

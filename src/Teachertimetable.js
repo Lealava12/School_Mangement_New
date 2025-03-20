@@ -1,66 +1,3 @@
-// import React, { useState, useEffect } from 'react';
-// import './ExamResults.css';
-// import axios from 'axios';
-// // import Studentsidebar from "./Studentsidebar";
-
-
-
-
-
-// const Studentsidebar = () => {
-//   const [notices, setNotices] = useState([]);
-
-//   const apiBaseUrl = 'http://localhost:5000/api';
-
-//   // Fetch all notices
-//   const fetchNotices = async () => {
-//     try {
-//       const response = await axios.get(`${apiBaseUrl}/admin/notices`);
-//       setNotices(response.data);
-//     } catch (error) {
-//       console.error("Failed to fetch notices:", error);
-//     }
-//   };
-
-//   // Fetch notices on component mount
-//   useEffect(() => {
-//     fetchNotices();
-//   }, []);
-
-//   return (
-//     <div className="main-container">
-//       <Studentsidebar />
-//       <div className="container">
-//         <div className="header">
-//           <h1 className="exam-title">Notice Board</h1>
-//         </div>
-
-//         <div className="notices-container" style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', padding: '20px' }}>
-        
-//             <div
-             
-//               style={{
-//                 border: '1px solid #ccc',
-//                 borderRadius: '8px',
-//                 padding: '15px',
-//                 width: '300px',
-//                 backgroundColor: '#f9f9f9',
-//                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-//               }}
-//             >
-//               {/* <h3 style={{ color: '#000066', fontWeight: '600', fontSize: '18px' }}>{notice.title}</h3> */}
-//               <p style={{ color: '#555', fontSize: '14px' }}>
-//                 {/* Uploaded on: {new Date(notice.uploaded_at).toLocaleDateString()} */}
-//               </p>
-//             </div>
-      
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Studentsidebar;
 
 
 
@@ -68,10 +5,15 @@ import React, { useState, useEffect } from 'react';
 import { Grid, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import axios from 'axios';  // Import axios
-import Studentsidebar from "./Studentsidebar";
+import AddSharpIcon from '@mui/icons-material/AddSharp';
+import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline'; // Import ModeEditOutlineIcon
+import DeleteIcon from '@mui/icons-material/Delete';
 
 
-const Studentsnoticeview = () => {
+import Teachersidebar from "./Teachersidebar"
+
+
+const Teachertimetable = () => {
   const [notices, setNotices] = useState([]);
   const [title, setTitle] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
@@ -138,11 +80,11 @@ const Studentsnoticeview = () => {
   }, []);
   return (
     <>
-      <Studentsidebar />
+      <Teachersidebar />
       <Grid className="contact-form" style={{
         backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
       }}>
-        <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "" }}>Notice :</Typography>
+        <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "" }}>Timetable :</Typography>
 
         <input disabled
           type="text"
@@ -160,18 +102,18 @@ const Studentsnoticeview = () => {
       <Grid className="contact-form" style={{
         backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
       }}>
-        <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "1%" }}>View Notices:</Typography>
+        <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "1%" }}>View Timetable:</Typography>
         <Grid style={{ display: "flex", justifyContent: "space-between", marginTop: "20px" }}>
 
           <Box
 
             sx={{
-              width: 300,
-              height: 200,
+              width: 600,
+              height: 300,
               borderRadius: 1,
               bgcolor: '#FFF5EE',
               borderStyle: 'solid',
-            
+
 
             }}
           >
@@ -182,42 +124,11 @@ const Studentsnoticeview = () => {
 
 
 
-          <Box
-
-            sx={{
-              width: 300,
-              height: 200,
-              borderRadius: 1,
-              bgcolor: '#FFF5EE',
-              borderStyle: 'solid',
-            
-
-            }}
-          >
-
-          </Box>
-
-          <Box
-
-            sx={{
-              width: 300,
-              height: 200,
-              borderRadius: 1,
-              bgcolor: '#FFF5EE',
-              borderStyle: 'solid',
-           
-
-            }}
-          >
-
-        
-
-          </Box>
-
+         
         </Grid>
       </Grid>
     </>
   );
 };
 
-export default Studentsnoticeview;
+export default Teachertimetable;

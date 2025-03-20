@@ -6,7 +6,7 @@ import Signup from "./Signup";
 import Signin from "./Signin";
 import PythonBackend from './Python_backend';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Sidebar from './Sidebar';
+// import Sidebar from './Sidebar';
 import Teacherm from "./Teacherm";
 import Studentm from './Studentm'
 import reportWebVitals from './reportWebVitals';
@@ -21,6 +21,16 @@ import ProfileDetails from "./ProfileDetails";
 import ExamResults from "./Examresult"; // Import the ExamResults component
 import Teachersidebar from './Teachersidebar';
 import StudentDashboard from './StudentDashboard';
+import NoticeView from './NoticeView';
+import Teachertimetable from "./Teachertimetable"
+import StudentTimetable from "./StudentTimetable";
+import Studentsidebar from './Studentsidebar';
+import Studentsnoticeview  from './Studentsnoticeview';
+import TeacherDashboard from './TeacherDashboard';
+import Sidebar  from "./Sidebar";
+import Dashboard from "./Dashboard";
+import  TimeTable from  "./TimeTable"
+
 
 
 
@@ -51,6 +61,21 @@ root.render(
         <Route path="/ExamResults" element={<ExamResults />} /> {/* Added the ExamResults route */}
         <Route path="/Teachersidebar" element={<Teachersidebar />} />
          <Route path="/StudentDashboard" element={<StudentDashboard />} />
+         <Route path="/NoticeView" element={<NoticeView />} />
+         <Route path="/Teachertimetable" element={<Teachertimetable />} />
+         <Route path="/StudentTimetable" element={<StudentTimetable />} />
+         <Route path="/Studentsidebar" element={<Studentsidebar />} />
+         <Route path="/Studentsnoticeview" element={<Studentsnoticeview />} />
+         <Route path="/StudentDashboard" element={<StudentDashboard />} />
+         <Route path="/TeacherDashboard" element={<TeacherDashboard />} />
+         <Route path="/Sidebar" element={<Sidebar />} />
+         <Route path="/Dashboard" element={<Dashboard />} />
+         <Route path="/TimeTable" element={<TimeTable />} />
+
+
+
+
+
       </Routes>
     </Router>
   </React.StrictMode>

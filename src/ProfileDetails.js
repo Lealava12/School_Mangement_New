@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Sidebar from './Sidebar';
 import { Grid, Typography } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
@@ -52,7 +51,7 @@ const ProfileDetails = () => {
 
                 <form style={{ paddingTop: "20px", paddingBottom: "20px" }}>
 
-                    <Grid style={{ display: "flex", justifgroupyContent: "space-evenly", }}>
+                    <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
 
                         <Grid class="form-group" style={{ marginBottom: "15px" }}>
                             <input type="text" id="Name" placeholder="Student's Name" required
@@ -93,7 +92,7 @@ const ProfileDetails = () => {
 
                     </Grid>
 
-                    <Grid style={{ display: "flex",marginLeft:"7%" }}>
+                    <Grid style={{ display: "flex",marginLeft:"7.2%" }}>
 
                         <Grid class="form-group" style={{ marginBottom: "15px" }}>
                             <input type="number " id="mobile" placeholder="Attendance Percentage" required

@@ -1,19 +1,12 @@
 import React from 'react';
-// import '../src/Teacherm.css';
-import Sidebar from './Sidebar';
 import { Grid, Button, Typography } from '@mui/material';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
-
 import DeleteIcon from '@mui/icons-material/Delete';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -51,18 +44,18 @@ const Marksentry = () => {
                 backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
 
             }}>
-                <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "7%" }}>Mark's Entry :</Typography>
+                <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "7%" }}>Marks Entry :</Typography>
                 <form style={{ paddingTop: "20px", paddingBottom: "20px" }}>
 
                     <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
 
                         <Grid class="form-group" style={{ marginBottom: "15px" }}>
                             <input type="text" id="Name" placeholder="Exam Name" required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px", }} />
                         </Grid>
                         <Grid class="form-group" style={{ marginBottom: "15px" }}>
 
-                            <select id="venue" required style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
+                            <select id="venue" required style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", }}>
 
 
 
@@ -87,7 +80,7 @@ const Marksentry = () => {
 
                     <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
 
-                        <select id="venue" required style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
+                        <select id="venue" required style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", }}>
                             <option value="">Select Subject</option>
                             <option value="saab">Math</option>
                             <option value="mercedes">English</option>
@@ -101,7 +94,7 @@ const Marksentry = () => {
 
                         <Grid class="form-group" style={{ marginBottom: "15px" }}>
                             <input type="text" id="Name" placeholder="Student's Name" required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px",  }} />
                         </Grid>
                     </Grid>
 
@@ -121,8 +114,8 @@ const Marksentry = () => {
                 </form>
             </Grid>
 
-            <TableContainer sx={{ marginTop: "50px", width: "72%", marginLeft: "20%" }} component={Paper}>
-                <Table aria-label="simple table">
+           
+                <Table aria-label="simple table"  sx={{ marginTop: "50px", width: "72%", marginLeft: "20%" }} component={Paper}>
                     <TableHead   >
                         <TableRow >
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px", fontStyle: " STL Calisto MT" }}>Sl No</TableCell>
@@ -163,7 +156,7 @@ const Marksentry = () => {
 
                     </TableBody>
                 </Table>
-            </TableContainer>
+        
 
 
 

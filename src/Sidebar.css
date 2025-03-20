@@ -6,29 +6,33 @@ body {
 .sidebar {
   margin: 0;
   padding: 0;
-  width: 240px;
-	background: linear-gradient(#F7A407 , #128A00 ) !important;
+  width: 290px;
+	background: rgb(0, 0, 102)!important;
   position: fixed;
+
+
   height: 100%;
 
 }
 
 .sidebar a {
   display: block;
-  color: black;
+  color: white;
   font-weight: 600;
-  padding: 16px;
+  padding: 13px;
   text-decoration: none;
+
+margin-left: 30px;
 }
 
 .sidebar a.active {
-  background-color: hwb(39 28% 24%);
-  color: white;
+color: hwb(39 28% 24%);
+
 }
 
 .sidebar a:hover:not(.active) {
   /* background-color: #8b0a1a; */
-  color: white;                                                       
+  color: #FBF6E2;                                                       
 }
 
 

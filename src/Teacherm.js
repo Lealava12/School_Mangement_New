@@ -9,7 +9,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
@@ -170,7 +169,7 @@ const Teacherm = () => {
             addTeacher();
           }}
         >
-          <Grid style={{ display: "flex", justifyContent: "space-evenly" }}>
+          <Grid style={{ display: "flex", justifyContent: "space-evenly",marginRight:"90px"}}>
             <Grid class="form-group" style={{ marginBottom: "15px" }}>
               <input
                 type="text"
@@ -178,7 +177,7 @@ const Teacherm = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
+                style={{ width: "500px", padding: "10px", borderRadius: "5px",}}
               />
             </Grid>
             <Grid class="form-group" style={{ marginBottom: "15px" }}>
@@ -188,11 +187,11 @@ const Teacherm = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
+                style={{ width: "500px", padding: "10px", borderRadius: "5px",  }}
               />
             </Grid>
           </Grid>
-          <Grid style={{ display: "flex", justifyContent: "space-evenly" }}>
+          <Grid style={{ display: "flex", justifyContent: "space-evenly" ,marginRight:"90px"}}>
             <Grid class="form-group" style={{ marginBottom: "15px" }}>
               <input
                 type="number"
@@ -200,7 +199,7 @@ const Teacherm = () => {
                 value={mobile}
                 onChange={(e) => setMobile(e.target.value)}
                 required
-                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
+                style={{ width: "500px", padding: "10px", borderRadius: "5px",  }}
               />
             </Grid>
             <Grid class="form-group" style={{ marginBottom: "15px" }}>
@@ -210,17 +209,17 @@ const Teacherm = () => {
                 value={joiningDate}
                 onChange={(e) => setJoiningDate(e.target.value)}
                 required
-                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
+                style={{ width: "500px", padding: "10px", borderRadius: "5px",}}
               />
             </Grid>
           </Grid>
-          <Grid style={{ display: "flex", justifyContent: "space-evenly" }}>
+          <Grid style={{ display: "flex", justifyContent: "space-evenly" ,marginRight:"90px"}}>
             <Grid class="form-group" style={{ marginBottom: "15px" }}>
               <select
                 value={teacherClass}
                 onChange={(e) => setTeacherClass(e.target.value)}
                 required
-                style={{ width: "525px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
+                style={{ width: "525px", padding: "10px", borderRadius: "5px", }}
               >
                 <option value="">Select Class</option>
                 <option value="1">1</option>
@@ -276,8 +275,8 @@ const Teacherm = () => {
           </center>
         </form>
       </Grid>
-      <TableContainer sx={{ marginTop: "50px", width: "72%", marginLeft: "20%" }} component={Paper}>
-        <Table aria-label="simple table">
+    
+        <Table aria-label="simple table"  sx={{ marginTop: "50px", width: "72%", marginLeft: "20%" }} component={Paper}>
           <TableHead>
             <TableRow>
               <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }}>Sl No</TableCell>
@@ -318,7 +317,7 @@ const Teacherm = () => {
             ))}
           </TableBody>
         </Table>
-      </TableContainer>
+ 
 
       {/* Edit Modal */}
       <Modal open={openEdit} onClose={() => setOpenEdit(false)}>

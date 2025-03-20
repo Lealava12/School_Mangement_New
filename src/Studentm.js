@@ -8,7 +8,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
@@ -183,24 +182,24 @@ const Studentm = () => {
                 <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "65px" }}>Student's and Parent's Details :</Typography>
                 <form onSubmit={addStudent} style={{ paddingTop: "20px", paddingBottom: "20px" }}>
 
-                    <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
+                    <Grid style={{ display: "flex", justifyContent: "space-evenly", marginRight:"90px"}}>
 
                         <Grid class="form-group" style={{ marginBottom: "15px" }}>
                             <input type="text" id="Name" placeholder="Student's Name" required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px", }}
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                             />
                         </Grid>
                         <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                            <input type="date" id="birthday" name="birthday" style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
+                            <input type="date" id="birthday" name="birthday" style={{ width: "500px", padding: "10px", borderRadius: "5px", }}
                                 value={dob}
                                 onChange={(e) => setDob(e.target.value)}
                             />
                         </Grid>
                     </Grid>
-                    <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
-                        <select id="venue" required style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
+                    <Grid style={{ display: "flex", justifyContent: "space-evenly",marginRight:"90px" }}>
+                        <select id="venue" required style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px",  }}
                             value={studentClass}
                             onChange={(e) => setStudentClass(e.target.value)}
                         >
@@ -217,7 +216,7 @@ const Studentm = () => {
                             <option value="10">10</option>
                         </select>
                         <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                            <select id="venue" required style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
+                            <select id="venue" required style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px",  }}
                                 value={section}
                                 onChange={(e) => setSection(e.target.value)}
                             >
@@ -247,27 +246,27 @@ const Studentm = () => {
 
                         {/* <Grid class="form-group" style={{ marginBottom: "15px" }}>
                             <input type="number " id="mobile" placeholder="Enter Roll No" required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px",  }} />
                         </Grid> */}
                     </Grid>
-                    <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
+                    <Grid style={{ display: "flex", justifyContent: "space-evenly", marginRight:"90px"}}>
 
                         <Grid class="form-group" style={{ marginBottom: "15px" }}>
                             <input type="text" id="Name" placeholder="Father's Name" required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px", }}
                                 value={fatherName}
                                 onChange={(e) => setFatherName(e.target.value)}
                             />
                         </Grid>
                         <Grid class="form-group" style={{ marginBottom: "15px" }}>
                             <input type="text" id="Name" placeholder="Mother's Name" required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px",  }}
                                 value={motherName}
                                 onChange={(e) => setMotherName(e.target.value)}
                             />
                         </Grid>
                     </Grid>
-                    <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
+                    <Grid style={{ display: "flex", justifyContent: "space-evenly", marginRight:"90px"}}>
 
                         <Grid class="form-group" style={{ marginBottom: "15px" }}>
                             <input type="email" id="Name" placeholder="Email" required
@@ -302,8 +301,8 @@ const Studentm = () => {
                     </center>
                 </form>
             </Grid>
-            <TableContainer sx={{ marginTop: "50px", width: "72%", marginLeft: "20%" }} component={Paper}>
-                <Table aria-label="simple table">
+        
+                <Table aria-label="simple table" sx={{ marginTop: "50px", width: "72%", marginLeft: "20%" }} component={Paper}>
                     <TableHead   >
                         <TableRow >
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px", fontStyle: " STL Calisto MT" }}>Sl No</TableCell>
@@ -350,7 +349,7 @@ const Studentm = () => {
                         ))}
                     </TableBody>
                 </Table>
-            </TableContainer>
+        
             <Grid>
                 <Modal style={{ marginTop: "200px" }}>
                     <center>

@@ -1,5 +1,4 @@
 import React from 'react';
-import Sidebar from './Sidebar';
 import { Grid, Button, Typography } from '@mui/material';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -12,7 +11,6 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
-
 import DeleteIcon from '@mui/icons-material/Delete';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -58,7 +56,7 @@ const Attendancem = () => {
 
 
                         <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                            <select id="venue" required style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
+                            <select id="venue" required style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", }}>
                                 <option value="">Select Class</option>
                                 <option value="saab">1</option>
                                 <option value="mercedes">2</option>
@@ -76,9 +74,9 @@ const Attendancem = () => {
                         <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
 
                             <Grid class="form-group" style={{ marginBottom: "10px" }}>
-                                <Grid class="form-group" style={{ marginBottom: "15px" }}>
+                                <Grid class="form-group" style={{ marginBottom: "15px",marginLeft: "15px"   }}>
                                     <input type="date" id="Name" placeholder="Date" required
-                                        style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                                        style={{ width: "500px", padding: "10px", borderRadius: "5px",  }} />
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -87,7 +85,7 @@ const Attendancem = () => {
           <Grid class="form-group" style={{ marginBottom: "10px", marginLeft: "7%" }}>
                         <Grid class="form-group" style={{ marginBottom: "15px" }}>
                             <input type="text" id="Name" placeholder="Student Name" required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px",}} />
                         </Grid>
 
                     </Grid>
@@ -95,7 +93,7 @@ const Attendancem = () => {
                     <Grid style={{ display: "flex", marginLeft: "7%" }}>
                         <Grid class="form-group" style={{ marginBottom: "15px", width: "520px", }}>
 
-                            <p> Attendance:</p>
+                            <p style={{fontWeight:600}}> Attendance:</p>
                             <RadioGroup
                                 row
                                 aria-labelledby="demo-form-control-label-placement"
@@ -122,8 +120,8 @@ const Attendancem = () => {
             </Grid>
 
 
-            <TableContainer sx={{ marginTop: "50px", width: "72%", marginLeft: "20%" }} component={Paper}>
-                <Table aria-label="simple table">
+           
+                <Table aria-label="simple table" sx={{ marginTop: "50px", width: "72%", marginLeft: "20%" }} component={Paper}>
                     <TableHead   >
                         <TableRow >
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px", fontStyle: " STL Calisto MT" }}>Sl No</TableCell>                       
@@ -148,7 +146,7 @@ const Attendancem = () => {
                         </TableRow>
                     </TableBody>
                 </Table>
-            </TableContainer>
+          
 
 
             <Modal open={openDelete} onClose={handleCloseDelete}>

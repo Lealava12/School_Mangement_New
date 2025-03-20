@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import Sidebar from './Sidebar';
 import { Grid, Button, Typography, Modal } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
@@ -178,7 +176,7 @@ const Assignmentm = () => {
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
                                 required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px", }}
                             />
                         </Grid>
                         <Grid className="form-group" style={{ marginBottom: "15px" }}>
@@ -187,7 +185,7 @@ const Assignmentm = () => {
                                 value={date}
                                 onChange={(e) => setDate(e.target.value)}
                                 required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px",}}
                             />
                         </Grid>
                     </Grid>
@@ -198,7 +196,7 @@ const Assignmentm = () => {
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
                                 required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px", }}
                             ></textarea>
                         </Grid>
                         <Grid>
@@ -206,7 +204,7 @@ const Assignmentm = () => {
                                 value={assignmentClass}
                                 onChange={(e) => setAssignmentClass(e.target.value)}
                                 required
-                                style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
+                                style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", }}
                             >
                                 <option value="">Select Class</option>
                                 <option value="1">1</option>
@@ -222,6 +220,7 @@ const Assignmentm = () => {
                             </select>
                         </Grid>
                     </Grid>
+                     <Typography style={{ color: "#000066", fontWeight: 500, fontSize: "16px", marginLeft: "7%" }}> Assignment Upload  :</Typography>
                     <Box
                         sx={{
                             width: 300,
@@ -259,8 +258,7 @@ const Assignmentm = () => {
                 </form>
             </Grid>
 
-            <TableContainer sx={{ marginTop: "50px", width: "72%", marginLeft: "20%" }} component={Paper}>
-                <Table aria-label="simple table">
+                <Table aria-label="simple table" sx={{ marginTop: "50px", width: "72%", marginLeft: "20%" }} component={Paper}>
                     <TableHead>
                         <TableRow>
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }}>Sl No</TableCell>
@@ -293,7 +291,7 @@ const Assignmentm = () => {
                         ))}
                     </TableBody>
                 </Table>
-            </TableContainer>
+         
 
             {/* Edit Modal */}
             <Modal open={openEdit} onClose={() => setOpenEdit(false)}>

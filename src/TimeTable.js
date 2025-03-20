@@ -1,8 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Sidebar from './Sidebar';
 import './ExamResults.css';
+import { Viewer, Worker } from "@react-pdf-viewer/core";
+import "@react-pdf-viewer/core/lib/styles/index.css";
+import { Grid, Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import axios from 'axios';  // Import axios
+import AddSharpIcon from '@mui/icons-material/AddSharp';
+import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline'; 
 
-function TimeTable() {
+
+
+const TimeTable = () => {
+  const pdfUrl = "/timetable.pdf"; 
+  ;
   return (
     <div className="main-container">
       <Sidebar />
@@ -11,13 +22,13 @@ function TimeTable() {
           <h1 className="exam-title">Time Table</h1>
         </div>
 
-        <div className="student-info">
+        {/* <div className="student-info">
           <p><span>School Name:</span>The Garden School</p>
           <p><span>Class:</span> 6<sup>th</sup></p>
           <p><span>Section:</span> B</p>
-        </div>
+        </div> */}
 
-        <div className="result-table">
+        {/* <div className="result-table">
           <table>
             <thead>
               <tr>
@@ -97,7 +108,36 @@ function TimeTable() {
               </tr>
             </tbody>
           </table>
-        </div>
+        </div> */}
+
+<Typography style={{ color: "#000066", fontWeight: 500, fontSize: "16px", marginLeft: "7%" }}>  Upload Timetable  :</Typography>
+                    <Box
+                        sx={{
+                            width: 300,
+                            height: 200,
+                            marginLeft: "7%",
+                            borderRadius: 1,
+                            bgcolor: 'primary.main',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            cursor: 'pointer',
+                            '&:hover': {
+                                bgcolor: 'primary.dark',
+                            },
+                        }}
+                    >
+                        <label htmlFor="file" style={{ display: "flex", flexDirection: "row", cursor: 'pointer' }}>
+                            <AddSharpIcon style={{ fontSize: "25px", color: "white" }} />
+                        </label>
+                        <input
+                            style={{ display: "none" }}
+                            type="file"
+                            id="file"
+                            // onChange={(e) => setSelectedFile(e.target.files[0])}
+                        />
+                    </Box>
+
       </div>
     </div>
   );

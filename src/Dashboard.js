@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Grid, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import axios from 'axios';  // Import axios
-import Studentsidebar from "./Studentsidebar";
+import Sidebar from "./Sidebar";
 
 
-const StudentDashboard = () => {
+const Dashboard = () => {
 
   return (
     <>
-      <Studentsidebar />
+      <Sidebar />
       <Grid className="contact-form" style={{
         backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
       }}>
@@ -20,4 +20,4 @@ const StudentDashboard = () => {
   );
 };
 
-export default StudentDashboard;
+export default Dashboard;

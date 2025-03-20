@@ -3,6 +3,8 @@ import "./Sidebar.css";
 import { Grid } from "@mui/material";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { FaTachometerAlt } from "react-icons/fa";
+import { FaUser, FaFileAlt, FaBullhorn, FaCalendarAlt, FaSignOutAlt } from "react-icons/fa";
 
 const Studentsidebar = () => {
   const [activeLink, setActiveLink] = useState("home");
@@ -33,55 +35,61 @@ const Studentsidebar = () => {
 
   return (
     <Grid>
-    <Grid className="sidebar">
-    <Link
+      <Grid className="sidebar">
+        {/* <Link
           to="/StudentDashboard"
-          className={activeLink === "home" ? "active" : ""}
-          onClick={() => handleLinkClick("home")}
+          className={activeLink === "StudentDashboard" ? "active" : ""}
+          onClick={() => handleLinkClick("StudentDashboard")}
         >
-          Dashboard
-        </Link>
+          <FaTachometerAlt style={{ marginRight: "8px" }} /> Dashboard
+        </Link> */}
         <Link
           to="/ProfileDetails"
-          className={activeLink === "home" ? "active" : ""}
-          onClick={() => handleLinkClick("home")}
+          className={activeLink === "ProfileDetails" ? "active" : ""}
+          onClick={() => handleLinkClick("ProfileDetails")}
         >
+          <FaUser style={{ marginRight: "8px" }} /> 
           Profile View
         </Link>
-        
+
         <Link
           to="/ExamResults"
-          className={activeLink === "contact" ? "active" : ""}
-          onClick={() => handleLinkClick("contact")}
+          className={activeLink === "ExamResults" ? "active" : ""}
+          onClick={() => handleLinkClick("ExamResults")}
         >
+          <FaFileAlt style={{ marginRight: "8px" }} />
           Exam Result
         </Link>
-        <Link
+        {/* <Link
           to="/Studentsmarksentry"
-          className={activeLink === "about" ? "active" : ""}
-          onClick={() => handleLinkClick("about")}
+          className={activeLink === "Studentsmarksentry" ? "active" : ""}
+          onClick={() => handleLinkClick("Studentsmarksentry")}
         >
+          <FaPen style={{ marginRight: "8px" }} />
           Marks Entry
-        </Link>
+        </Link> */}
         <Link
           to="/StudentsnoticeView"
-          className={activeLink === "about" ? "active" : ""}
-          onClick={() => handleLinkClick("about")}
+          className={activeLink === "StudentsnoticeView" ? "active" : ""}
+          onClick={() => handleLinkClick("StudentsnoticeView")}
         >
+          <FaBullhorn style={{ marginRight: "8px" }} />
           Notice
         </Link>
 
         <Link
           to="/StudentTimetable"
-          className={activeLink === "news" ? "active" : ""}
-          onClick={() => handleLinkClick("news")}
+          className={activeLink === "TimeTable" ? "active" : ""}
+          onClick={() => handleLinkClick("TimeTable")}
         >
+          <FaCalendarAlt style={{ marginRight: "8px" }} />
           TimeTable
         </Link>
         <Link
           style={{ color: "red", background: "none", border: "none", cursor: "pointer" }}
           onClick={handleLogout}
         >
+          <FaSignOutAlt style={{ marginRight: "8px" }} />
           Logout
         </Link>
       </Grid>
