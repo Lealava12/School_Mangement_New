@@ -1,9 +1,12 @@
-from flask import Blueprint, request, jsonify, session
+from flask import Blueprint, request, jsonify, session, redirect
 from werkzeug.security import generate_password_hash, check_password_hash
 from config import get_connection
 from flask_cors import CORS  # Import CORS
 import os
 from werkzeug.utils import secure_filename
+
+user_routes = Blueprint('user_routes', __name__)
+CORS(user_routes, supports_credentials=True)
 
 UPLOAD_FOLDER = 'uploads'  # Define the folder to store uploaded files
 ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg', 'docx'}  # Allowed file extensions
@@ -827,6 +830,12 @@ def manage_assignments():
     finally:
         cursor.close()
         connection.close()
+@user_routes.after_request
+def add_security_headers(response):
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
 
 @user_routes.route('/admin/signup', methods=['POST'])
 def signup_user():
@@ -917,40 +926,20 @@ def login_user():
         if not check_password_hash(stored_password_hash, password):
             return jsonify({"error": "Invalid User ID or Password!"}), 401
 
+        # Store user session
+        session['user_id'] = stored_user_id
+        session['user_type'] = user_type
+
         # Define which pages each user type has access to (example)
         user_panels = {
             "1": {  # Admin
-                "redirect": "/admin/AdminDashboard",
-                "pages": [
-                    # You can list out all admin-specific pages here
-                    "Admindashboard.js",
-                    "Classm.js",
-                    "ExamResults.js",
-                    "Fee.js",
-                    "Studentm.js",
-                    "NoticeView.js",
-                    "Assignmentm.js",
-                    "marksEntry.js",
-                    "Studentm.js",
-                    "Teacherm.js",
-                    "TimeTable.js"
-                ]
+                "redirect": "/Teacherm",
             },
             "2": {  # Teacher
-                "redirect": "/teacher/dashboard",
-                "pages": [
-                    "NoticeView.js",
-                    "Assignmentm.js",
-                    "marksEntry.js"
-                ]
+                "redirect": "/TeacherDashboard",
             },
             "3": {  # Student
-                "redirect": "/student/dashboard",
-                "pages": [
-                    "NoticeView.js",
-                    "Assignview.js",
-                    "Resultview.js"
-                ]
+                "redirect": "/StudentDashboard",
             }
         }
 
@@ -962,8 +951,7 @@ def login_user():
         return jsonify({
             "message": "Login successful!",
             "user_type": user_type,
-            "redirect": panel_info["redirect"],
-            "pages": panel_info["pages"]
+            "redirect": panel_info["redirect"]
         }), 200
 
     except Exception as e:
@@ -974,3 +962,63 @@ def login_user():
             cursor.close()
         if 'connection' in locals():
             connection.close()
+
+@user_routes.route('/admin/logout', methods=['POST'])
+def logout_admin():
+    try:
+        # Clear the session to log out the user
+        session.clear()
+
+        return jsonify({"message": "Logout successful!"}), 200
+    except Exception as e:
+        # Print the error for debugging (optional)
+        print(f"Error during logout: {e}")
+
+        # Provide a more user-friendly error message
+        return jsonify({
+            "error": "An error occurred during logout.",
+            "redirect": "/signin"  # Adjusted the redirect path to be a URL, not a JS file
+        }), 500
+    
+# Protect routes: Prevent access after logout
+# @user_routes.before_request
+# def require_login():
+#     # Allow preflight requests to pass
+#     if request.method == 'OPTIONS':
+#         return jsonify({"message": "Preflight request allowed"}), 200
+
+#     allowed_routes = ['login_user', 'signup_user']
+#     if request.endpoint not in allowed_routes and 'user_id' not in session:
+#         return jsonify({"error": "Unauthorized access", "redirect": "/signin"}), 403
+
+@user_routes.route('/upload-timetable', methods=['POST'])
+def upload_timetable():
+    if 'file' not in request.files:
+        return jsonify({"error": "No file part in the request"}), 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"error": "No file selected for uploading"}), 400
+
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(UPLOAD_FOLDER, filename)
+        file.save(file_path)
+        return jsonify({"message": "Timetable uploaded successfully", "file_path": f"/{file_path}"}), 200
+    else:
+        return jsonify({"error": "File type not allowed"}), 400
+
+@user_routes.route('/get-timetable', methods=['GET'])
+def get_timetable():
+    try:
+        timetable_files = [f for f in os.listdir(UPLOAD_FOLDER) if allowed_file(f)]
+        if not timetable_files:
+            return jsonify({"error": "No timetable found"}), 404
+
+        # Assuming the latest uploaded timetable is required
+        latest_timetable = max(timetable_files, key=lambda f: os.path.getctime(os.path.join(UPLOAD_FOLDER, f)))
+        file_path = os.path.join(UPLOAD_FOLDER, latest_timetable)
+        return jsonify({"file_path": f"/{file_path}"}), 200
+    except Exception as e:
+        return jsonify({"error": f"Failed to retrieve timetable: {str(e)}"}), 500
+    

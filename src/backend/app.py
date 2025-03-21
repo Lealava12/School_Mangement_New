@@ -226,7 +226,7 @@ from config import SECRET_KEY
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
-CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}},supports_credentials=True)
 
 app.register_blueprint(user_routes, url_prefix='/api')
 
