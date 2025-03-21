@@ -4,24 +4,23 @@ import Box from '@mui/material/Box';
 import axios from 'axios';
 import Studentsidebar from "./Studentsidebar";
 
-const Studentsnoticeview = () => {
-  const [notices, setNotices] = useState([]);
+const Studentsnoticeview = () => { // Corrected component name
+  const [timeTables, setTimeTables] = useState([]);
+  const apiBaseUrl = 'http://localhost:5000/api'; // Ensure this matches your backend base URL
 
-  const apiBaseUrl = 'http://localhost:5000/api';
-
-  // Fetch all notices
-  const fetchNotices = async () => {
+  // Fetch all timetables
+  const fetchTimeTables = async () => {
     try {
-      const response = await axios.get(`${apiBaseUrl}/admin/notices`);
-      setNotices(response.data);
+      const response = await axios.get(`${apiBaseUrl}/admin/timetable`);
+      setTimeTables(response.data);
     } catch (error) {
-      console.error("Failed to fetch notices:", error);
+      console.error("Failed to fetch timetables:", error);
     }
   };
 
-  // Fetch notices on component mount
+  // Fetch timetables on component mount
   useEffect(() => {
-    fetchNotices();
+    fetchTimeTables();
   }, []);
 
   return (
@@ -30,10 +29,10 @@ const Studentsnoticeview = () => {
       <Grid className="contact-form" style={{
         backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
       }}>
-        <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "1%" }}>View Notices:</Typography>
+        <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "1%" }}>View Timetables:</Typography>
         <Grid container spacing={3} style={{ marginTop: "20px" }}>
-          {notices.map((notice) => (
-            <Grid item xs={12} sm={6} md={4} key={notice.id}>
+          {timeTables.map((timeTable) => ( // Replaced `notices` with `timeTables`
+            <Grid item xs={12} sm={6} md={4} key={timeTable.id}>
               <Box
                 sx={{
                   width: 300,
@@ -48,16 +47,16 @@ const Studentsnoticeview = () => {
                   padding: 2,
                 }}
               >
-                <Typography style={{ fontWeight: 600, marginBottom: "10px" }}>{notice.title}</Typography>
-                {notice.file_path && (
+                <Typography style={{ fontWeight: 600, marginBottom: "10px" }}>{timeTable.title}</Typography>
+                {timeTable.file_path && (
                   <img
-                    src={`http://localhost:5000${notice.file_path}`}
-                    alt={notice.title}
+                    src={`http://localhost:5000${timeTable.file_path}`}
+                    alt={timeTable.title}
                     style={{ maxWidth: "100%", maxHeight: "100px", objectFit: "contain" }}
                   />
                 )}
                 <Typography style={{ fontSize: "12px", marginTop: "10px" }}>
-                  Uploaded on: {new Date(notice.uploaded_at).toLocaleDateString()}
+                  Uploaded on: {new Date(timeTable.uploaded_at).toLocaleDateString()}
                 </Typography>
               </Box>
             </Grid>
@@ -68,4 +67,4 @@ const Studentsnoticeview = () => {
   );
 };
 
-export default Studentsnoticeview;
+export default Studentsnoticeview; // Corrected export statement

@@ -1,40 +1,72 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import './ExamResults.css';
 import { Viewer, Worker } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
-import { Grid, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import axios from 'axios';
 import AddSharpIcon from '@mui/icons-material/AddSharp';
 
 const TimeTable = () => {
+  const [timeTables, setTimeTables] = useState([]);
+  const [title, setTitle] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
+  const [pdfUrl, setPdfUrl] = useState('');
   const [uploadMessage, setUploadMessage] = useState('');
-  const [pdfUrl, setPdfUrl] = useState(null); // To display uploaded timetable
+  const apiBaseUrl = 'http://localhost:5000/api';
 
+  // Fetch all timetables
+  const fetchTimeTables = async () => {
+    try {
+      const response = await axios.get(`${apiBaseUrl}/admin/timetable`);
+      setTimeTables(response.data);
+      if (response.data.length > 0) {
+        setPdfUrl(response.data[0].file_path);
+      }
+    } catch (error) {
+      console.error("Failed to fetch timetables:", error);
+    }
+  };
+
+  // Add a new timetable
   const handleFileUpload = async () => {
-    if (!selectedFile) {
-      setUploadMessage('Please select a file to upload.');
+    if (!title.trim() || !selectedFile) {
+      setUploadMessage('Both title and file are required!');
       return;
     }
 
-    const formData = new FormData();
-    formData.append('file', selectedFile);
-
     try {
-      const response = await axios.post('http://localhost:5000/api/upload-timetable', formData, {
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+      formData.append('title', title);
+
+      const response = await axios.post(`${apiBaseUrl}/admin/timetable`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
+
       setUploadMessage(response.data.message);
-      setPdfUrl(response.data.file_path); // Update the PDF URL to display the uploaded timetable
+      fetchTimeTables();
+      clearForm();
     } catch (error) {
-      setUploadMessage('Failed to upload the timetable. Please try again.');
-      console.error('Error uploading file:', error);
+      console.error("Error adding timetable:", error);
+      setUploadMessage(error.response?.data?.error || 'Error adding timetable!');
     }
   };
+
+  // Clear form fields
+  const clearForm = () => {
+    setTitle('');
+    setSelectedFile(null);
+    setUploadMessage('');
+  };
+
+  // Fetch timetables on component mount
+  useEffect(() => {
+    fetchTimeTables();
+  }, []);
 
   return (
     <div className="main-container">
@@ -83,9 +115,29 @@ const TimeTable = () => {
             style={{ display: "none" }}
             type="file"
             id="file"
-            onChange={(e) => setSelectedFile(e.target.files[0])}
+            onChange={(e) => {
+              setSelectedFile(e.target.files[0]);
+              setUploadMessage(''); // Clear error message when a file is selected
+            }}
           />
         </Box>
+        <input
+          type="text"
+          placeholder="Enter timetable title"
+          value={title}
+          onChange={(e) => {
+            setTitle(e.target.value);
+            setUploadMessage(''); // Clear error message when title is updated
+          }}
+          style={{
+            marginLeft: "7%",
+            marginTop: "10px",
+            padding: "10px",
+            width: "300px",
+            borderRadius: "5px",
+            border: "1px solid #ccc",
+          }}
+        />
         <button
           onClick={handleFileUpload}
           style={{

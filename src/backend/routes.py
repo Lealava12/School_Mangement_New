@@ -6,7 +6,7 @@ import os
 from werkzeug.utils import secure_filename
 
 user_routes = Blueprint('user_routes', __name__)
-CORS(user_routes, supports_credentials=True)
+CORS(user_routes, supports_credentials=True, resources={r"/*": {"origins": "http://localhost:3000"}})
 
 UPLOAD_FOLDER = 'uploads'  # Define the folder to store uploaded files
 ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg', 'docx'}  # Allowed file extensions
@@ -721,6 +721,65 @@ def manage_notices():
         finally:
             cursor.close()
             connection.close()
+@user_routes.route('/admin/timetable', methods=['GET', 'POST'])
+def manage_timetable():
+    if request.method == 'GET':
+        connection = get_connection()
+        cursor = connection.cursor(dictionary=True)  # Ensure results are returned as dictionaries
+        try:
+            # Fetching all timetables from the "TimeTable" table
+            cursor.execute("SELECT id, title, file_path, uploaded_at FROM TimeTable")
+            timetables = cursor.fetchall()
+            return jsonify(timetables), 200
+        except Exception as e:
+            return jsonify({"error": f"Failed to fetch timetables: {str(e)}"}), 500
+        finally:
+            cursor.close()
+            connection.close()
+
+    elif request.method == 'POST':
+        if 'file' not in request.files:
+            return jsonify({"error": "File is required!"}), 400
+
+        title = request.form.get('title')
+        if not title:
+            return jsonify({"error": "Title is required!"}), 400
+
+        uploaded_file = request.files['file']
+
+        # Ensure the directory exists
+        timetable_folder = os.path.join(UPLOAD_FOLDER, 'timetables')
+        if not os.path.exists(timetable_folder):
+            os.makedirs(timetable_folder)
+
+        # Save the file to the server
+        file_path = os.path.join(timetable_folder, uploaded_file.filename)
+        try:
+            uploaded_file.save(file_path)  # Save file to the desired location
+        except Exception as e:
+            return jsonify({"error": f"Failed to save file: {str(e)}"}), 500
+
+        connection = get_connection()
+        cursor = connection.cursor(dictionary=True)  # Ensure results are returned as dictionaries
+        try:
+            # Inserting a new timetable into the "TimeTable" table
+            insert_query = """
+                INSERT INTO TimeTable (title, file_path)
+                VALUES (%s, %s)
+            """
+            cursor.execute(insert_query, (title, file_path))
+            connection.commit()
+
+            # Retrieve the auto-generated timetable id
+            cursor.execute("SELECT LAST_INSERT_ID() AS id")
+            timetable_id = cursor.fetchone()['id']  # Access the dictionary key instead of tuple index
+
+            return jsonify({"message": "Timetable uploaded successfully!", "timetable_id": timetable_id}), 201
+        except Exception as e:
+            return jsonify({"error": f"Failed to upload timetable: {str(e)}"}), 500
+        finally:
+            cursor.close()
+            connection.close()
 
 @user_routes.route('/admin/assignments', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def manage_assignments():
@@ -930,6 +989,9 @@ def login_user():
         session['user_id'] = stored_user_id
         session['user_type'] = user_type
 
+        # Debug log for session values
+        print(f"User logged in: user_id={stored_user_id}, user_type={user_type}")
+
         # Define which pages each user type has access to (example)
         user_panels = {
             "1": {  # Admin
@@ -955,6 +1017,7 @@ def login_user():
         }), 200
 
     except Exception as e:
+        print(f"Error during login: {str(e)}")  # Debug log for errors
         return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
 
     finally:
@@ -1021,4 +1084,67 @@ def get_timetable():
         return jsonify({"file_path": f"/{file_path}"}), 200
     except Exception as e:
         return jsonify({"error": f"Failed to retrieve timetable: {str(e)}"}), 500
-    
+
+@user_routes.route('/details', methods=['GET'])
+def get_user_details():
+    # Check if the user is logged in
+    if 'user_id' not in session:
+        return jsonify({"error": "User not logged in!"}), 401
+
+    user_id = session['user_id']
+    user_type = session.get('user_type')  # 1 = Admin, 2 = Teacher, 3 = Student
+
+    # Debug log for session values
+    print(f"Fetching details for user_id: {user_id}, user_type: {user_type}")
+
+    # Validate user_type
+    if user_type not in ('1', '2', '3'):
+        print("Invalid user type!")  # Debug log
+        return jsonify({"error": "Invalid user type!"}), 400
+
+    connection = get_connection()
+    cursor = connection.cursor(dictionary=True)
+    try:
+        # Prepare the query based on user_type
+        if user_type == '1':  # Admin
+            query = """
+                SELECT user_id, email, mobile
+                FROM Login
+                WHERE user_id = %s AND user_type = '1'
+            """
+        elif user_type == '2':  # Teacher
+            query = """
+                SELECT t.teacher_id AS student_id, t.name, t.email, t.mobile, t.joining_date, t.subject AS class, t.gender
+                FROM Teachers t
+                WHERE t.teacher_id = %s
+            """
+        elif user_type == '3':  # Student
+            query = """
+                SELECT s.student_id, s.name, s.dob, s.class, s.section, s.gender, s.father_name, 
+                       s.mother_name, s.email, s.mobile, s.address
+                FROM Students s
+                WHERE s.student_id = %s
+            """
+        else:
+            return jsonify({"error": "Invalid user type!"}), 400
+
+        # Execute the query
+        cursor.execute(query, (user_id,))
+        user_details = cursor.fetchone()
+
+        if not user_details:
+            print(f"User details not found for user_id: {user_id}")  # Debug log
+            return jsonify({"error": "User details not found!"}), 404
+
+        # Ensure the response matches the expected structure
+        user_details['student_id'] = user_details.get('student_id', user_id)
+        print(f"User details fetched successfully: {user_details}")  # Debug log
+        return jsonify({"user_details": user_details}), 200
+
+    except Exception as e:
+        print(f"Error fetching user details: {str(e)}")  # Debug log for errors
+        return jsonify({"error": f"Failed to fetch user details: {str(e)}"}), 500
+
+    finally:
+        cursor.close()
+        connection.close()
