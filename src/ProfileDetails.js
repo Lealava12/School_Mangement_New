@@ -4,30 +4,49 @@ import { Grid, Typography } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import Studentsidebar from "./Studentsidebar";
+import { useNavigate } from 'react-router-dom';
 
 const ProfileDetails = () => {
     const [userDetails, setUserDetails] = useState(null);
     const [error, setError] = useState('');
+    const navigate = useNavigate();
     const apiBaseUrl = 'http://localhost:5000/api';
 
-    // Fetch user details
     const fetchUserDetails = async () => {
         try {
+            // Check if user is logged in
+            if (!document.cookie.includes('session')) {
+                navigate('/signin');
+                return;
+            }
+
             const response = await axios.get(`${apiBaseUrl}/details`, {
-                withCredentials: true, // Ensure cookies are sent with the request
+                withCredentials: true,
+                headers: {
+                    'Content-Type': 'application/json',
+                }
             });
-            console.log("User details fetched:", response.data); // Debug log
-            setUserDetails(response.data.user_details);
+            
+            if (response.data.user_details) {
+                setUserDetails(response.data.user_details);
+                setError('');
+            } else {
+                setError('No user details found');
+                navigate('/signin');
+            }
         } catch (err) {
-            console.error("Error fetching user details:", err); // Debug log for errors
-            setError(err.response?.data?.error || 'Failed to fetch user details.');
+            console.error("Error fetching user details:", err);
+            if (err.response?.status === 401) {
+                navigate('/signin');
+            } else {
+                setError(err.response?.data?.error || 'Failed to fetch user details');
+            }
         }
     };
 
-    // Fetch user details on component mount
     useEffect(() => {
         fetchUserDetails();
-    }, []);
+    }, [navigate]);
 
     return (
         <>

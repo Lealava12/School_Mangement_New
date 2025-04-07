@@ -7,7 +7,7 @@ const Reports = () => {
         <>
 
             <Sidebar />
-
+            
             <Grid class="contact-form" style={{
                 backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
 
