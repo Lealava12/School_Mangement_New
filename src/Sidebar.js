@@ -82,7 +82,7 @@ const Sidebar = () => {
           onClick={() => handleLinkClick("Reports")}
         >
           <FaChartBar style={{ marginRight: "8px" }} />
-          Reports
+          Stusdents Results
         </Link> */}
         <Link
           to="/Notice"
