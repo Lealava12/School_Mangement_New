@@ -76,14 +76,14 @@ const Sidebar = () => {
           <FaCalendarAlt style={{ marginRight: "8px" }} />
           TimeTable
         </Link>
-        <Link
+        {/* <Link
           to="/Reports"
           className={activeLink === "Reports" ? "active" : ""}
           onClick={() => handleLinkClick("Reports")}
         >
           <FaChartBar style={{ marginRight: "8px" }} />
           Reports
-        </Link>
+        </Link> */}
         <Link
           to="/Notice"
           className={activeLink === "Noticee" ? "active" : ""}

@@ -675,7 +675,7 @@ def login_user():
                 "message": "Login successful!",
                 "user_id": user['user_id'],
                 "user_type": user['user_type'],
-                "redirect": "/StudentDashboard" if user['user_type'] == '3' else "/TeacherDashboard"
+                "redirect": "/StudentDashboard" if user['user_type'] == '3' else "/TeacherDashboard" if user['user_type'] == '2' else "/Teacherm"
             })
 
             # Set cookie attributes
