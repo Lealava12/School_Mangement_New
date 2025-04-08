@@ -1,12 +1,21 @@
 from flask import Blueprint, request, jsonify, session, redirect
 from werkzeug.security import generate_password_hash, check_password_hash
 from config import get_connection
-from flask_cors import CORS  # Import CORS
+from flask_cors import CORS, cross_origin  # Add cross_origin import
 import os
 from werkzeug.utils import secure_filename
 
 user_routes = Blueprint('user_routes', __name__)
-CORS(user_routes, supports_credentials=True, resources={r"/*": {"origins": "http://localhost:3000"}})
+
+# Remove duplicate CORS setup and use a single configuration
+CORS(user_routes, supports_credentials=True, resources={
+    r"/*": {
+        "origins": "http://localhost:3000",
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "allow_headers": ["Content-Type"],
+        "supports_credentials": True
+    }
+})
 
 UPLOAD_FOLDER = 'uploads'  # Define the folder to store uploaded files
 ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg', 'docx'}  # Allowed file extensions
@@ -14,9 +23,6 @@ ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg', 'docx'}  # Allowed file exten
 # Ensure the upload folder exists
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
-
-user_routes = Blueprint('user_routes', __name__)
-CORS(user_routes, resources={r"/*": {"origins": "*"}})  # Enable CORS for all routes
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -38,74 +44,6 @@ def upload_file():
     else:
         return jsonify({"error": "File type not allowed"}), 400
 
-
-# @user_routes.route('/admin/login', methods=['POST'])
-# def login_admin():
-#     data = request.json
-#     email = data.get('email')
-#     password = data.get('password')
-
-#     if not email or not password:
-#         return jsonify({"error": "Email and password are required!"}), 400
-
-#     connection = get_connection()
-#     cursor = connection.cursor(dictionary=True)
-#     try:
-#         check_user_query = "SELECT * FROM users WHERE email = %s"
-#         cursor.execute(check_user_query, (email,))
-#         user = cursor.fetchone()
-
-#         if not user:
-#             return jsonify({"error": "Admin not registered! Please sign up."}), 401
-
-#         if user.get('type').lower() != 'admin':
-#             return jsonify({"error": "Access denied! Only admins can log in."}), 403
-
-#         if check_password_hash(user['password'], password):
-#             session['user_id'] = user['id']
-#             session['user_type'] = user['type']
-#             return jsonify({
-#                 "message": "Login successful!",
-#                 "redirect": "./Teacherm",
-#                 "user": {"id": user['id'], "email": user['email'], "type": user['type']}
-#             }), 200
-#         else:
-#             return jsonify({"error": "Incorrect password!"}), 401
-#     finally:
-#         cursor.close()
-#         connection.close()
-
-# @user_routes.route('/admin/signup', methods=['POST'])
-# def signup_admin():
-#     data = request.json
-#     email = data.get('email')
-#     mobile_no = data.get('mobile_no')
-#     roll_no = data.get('roll_no')
-#     password = data.get('password')
-#     user_type = 'Admin'
-
-#     if not all([email, mobile_no, roll_no, password]):
-#         return jsonify({"error": "All fields are required!"}), 400
-
-#     connection = get_connection()
-#     cursor = connection.cursor()
-#     try:
-#         check_query = "SELECT * FROM users WHERE email = %s"
-#         cursor.execute(check_query, (email,))
-#         if cursor.fetchone():
-#             return jsonify({"error": "Email already registered!"}), 409
-
-#         hashed_password = generate_password_hash(password)
-#         insert_query = """
-#             INSERT INTO users (email, mobile_no, roll_no, password, type) 
-#             VALUES (%s, %s, %s, %s, %s)
-#         """
-#         cursor.execute(insert_query, (email, mobile_no, roll_no, hashed_password, user_type))
-#         connection.commit()
-#         return jsonify({"message": "Admin registered successfully!"}), 201
-#     finally:
-#         cursor.close()
-#         connection.close()
 
 @user_routes.route('/admin/Teachers', methods=['GET', 'POST'])
 def manage_teachers():
@@ -201,261 +139,6 @@ def delete_teacher(auto_id):
         cursor.close()
         connection.close()
 
-
-# @user_routes.route('/admin/logout', methods=['POST'])
-# def logout_admin():
-#     try:
-#         session.clear()
-#         return jsonify({"message": "Logout successful!"}), 200
-#     except Exception as e:
-#         print(f"Error during logout: {e}")
-#         return jsonify({"error": "An error occurred during logout.", "redirect": "./Signin.js"}), 500
-    
-## Admin Student Page
-# @user_routes.route('/admin/Students', methods=['GET', 'POST', 'PUT', 'DELETE'])
-# def manage_students():
-#     connection = get_connection()
-#     cursor = connection.cursor(dictionary=True)
-
-#     try:
-#         if request.method == 'GET':
-#             # Add filtering parameters
-#             class_filter = request.args.get('class')
-#             section_filter = request.args.get('section')
-#             roll_no_filter = request.args.get('roll_no')
-
-#             base_query = "SELECT * FROM Students"
-#             params = []
-#             conditions = []       
-
-#             if class_filter:
-#                 conditions.append("class = %s")
-#                 params.append(class_filter)
-#             if section_filter:
-#                 conditions.append("section = %s")
-#                 params.append(section_filter)
-#             if roll_no_filter:
-#                 conditions.append("roll_no = %s")
-#                 params.append(roll_no_filter)
-
-#             if conditions:
-#                 base_query += " WHERE " + " AND ".join(conditions)
-
-#             cursor.execute(base_query, params)
-#             students = cursor.fetchall()
-#             return jsonify(students), 200
-
-#         elif request.method == 'POST':
-#             data = request.json
-#             required_fields = [
-#                 'name', 'dob', 'class', 'section', 'gender', 'roll_no',
-#                 'father_name', 'mother_name', 'email', 'mobile', 'address'
-#             ]
-            
-#             if not all(field in data for field in required_fields):
-#                 return jsonify({"error": "All fields are required!"}), 400
-
-#             # Check for existing student
-#             cursor.execute("""
-#                 SELECT auto_id FROM Students 
-#                 WHERE class = %s AND roll_no = %s
-#             """, (data['class'], data['roll_no']))
-            
-#             if cursor.fetchone():
-#                 return jsonify({"error": "Student with this class and roll number already exists!"}), 409
-
-#             # Insert student data
-#             cursor.execute("""
-#                 INSERT INTO Students (
-#                     name, dob, class, section, gender, roll_no,
-#                     father_name, mother_name, email, mobile, address
-#                 ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-#             """, (
-#                 data['name'], data['dob'], data['class'], data['section'],
-#                 data['gender'], data['roll_no'], data['father_name'],
-#                 data['mother_name'], data['email'], data['mobile'], data['address']
-#             ))
-#             connection.commit()
-
-#             # Fetch the last inserted auto_id to generate student_id
-#             cursor.execute("SELECT LAST_INSERT_ID() AS last_id")
-#             last_id = cursor.fetchone()['last_id']
-#             student_id = f"STU{last_id}"
-            
-#             # Update student_id
-#             cursor.execute("""
-#                 UPDATE Students SET student_id = %s WHERE auto_id = %s
-#             """, (student_id, last_id))
-#             connection.commit()
-
-#             return jsonify({"message": "Student created successfully!", "student_id": student_id}), 201
-
-#         elif request.method == 'PUT':
-#             data = request.json
-#             if 'id' not in data:
-#                 return jsonify({"error": "Student ID is required for update"}), 400
-
-#             # Check for class/roll_no conflict
-#             cursor.execute("""
-#                 SELECT auto_id FROM Students 
-#                 WHERE class = %s AND roll_no = %s AND auto_id != %s
-#             """, (data['class'], data['roll_no'], data['id']))
-            
-#             if cursor.fetchone():
-#                 return jsonify({"error": "Another student already has this class and roll number!"}), 409
-
-#             cursor.execute("""
-#                 UPDATE Students SET
-#                     name = %s,
-#                     dob = %s,
-#                     class = %s,
-#                     section = %s,
-#                     gender = %s,
-#                     roll_no = %s,
-#                     father_name = %s,
-#                     mother_name = %s,
-#                     email = %s,
-#                     mobile = %s,
-#                     address = %s
-#                 WHERE auto_id = %s
-#             """, (
-#                 data['name'], data['dob'], data['class'], data['section'],
-#                 data['gender'], data['roll_no'], data['father_name'],
-#                 data['mother_name'], data['email'], data['mobile'],
-#                 data['address'], data['id']
-#             ))
-#             connection.commit()
-#             return jsonify({"message": "Student updated successfully!"}), 200
-
-#         elif request.method == 'DELETE':
-#             student_id = request.args.get('id')
-#             if not student_id:
-#                 return jsonify({"error": "Student ID is required"}), 400
-
-#             # # Check for existing fee records
-#             # cursor.execute("""
-#             #     SELECT auto_id FROM Fees 
-#             #     WHERE student_id = %s
-#             # """, (student_id,))
-            
-#             if cursor.fetchone():
-#                 return jsonify({
-#                     "error": "Cannot delete student with existing fee records! Delete fee records first."
-#                 }), 409
-
-#             cursor.execute("DELETE FROM Students WHERE auto_id = %s", (student_id,))
-#             connection.commit()
-#             return jsonify({"message": "Student deleted successfully!"}), 200
-
-#     except Exception as e:
-#         connection.rollback()
-#         return jsonify({"error": str(e)}), 500
-#     finally:
-#         cursor.close()
-#         connection.close()
-
-# @user_routes.route('/admin/Fee', methods=['GET', 'POST', 'PUT', 'DELETE'])
-# def manage_fee():
-#     connection = get_connection()
-#     cursor = connection.cursor(dictionary=True)
-
-#     try:
-#         if request.method == 'GET':
-#             # Get query parameters for filtering
-#             class_filter = request.args.get('class')
-#             payment_date = request.args.get('payment_date')
-
-#             base_query = """
-#                 SELECT s.id as student_id, s.name, s.class, s.roll_no, 
-#                        f.amount, f.payment_mode, f.payment_date, f.receipt_no
-#                 FROM Students s
-#                 JOIN Fees f ON s.id = f.student_id
-#             """
-#             params = []
-            
-#             conditions = []
-#             if class_filter:
-#                 conditions.append("s.class = %s")
-#                 params.append(class_filter)
-#             if payment_date:
-#                 conditions.append("DATE(f.payment_date) = %s")
-#                 params.append(payment_date)
-            
-#             if conditions:
-#                 base_query += " WHERE " + " AND ".join(conditions)
-
-#             cursor.execute(base_query, params)
-#             fee_records = cursor.fetchall()
-#             return jsonify(fee_records), 200
-
-#         elif request.method == 'POST':
-#             data = request.json
-#             required_fields = [
-#                 'name', 'class', 'roll_no', 'amount',
-#                 'payment_mode', 'payment_date', 'receipt_no'
-#             ]
-            
-#             if not all(field in data for field in required_fields):
-#                 return jsonify({"error": "All fields are required!"}), 400
-
-#             # First find the student
-#             cursor.execute("""
-#                 SELECT id FROM Students 
-#                 WHERE name = %s AND class = %s AND roll_no = %s
-#             """, (data['name'], data['class'], data['roll_no']))
-            
-#             student = cursor.fetchone()
-#             if not student:
-#                 return jsonify({"error": "Student not found!"}), 404
-
-#             # Insert fee record
-#             cursor.execute("""
-#                 INSERT INTO Fees (
-#                     student_id, amount, payment_mode, 
-#                     payment_date, receipt_no
-#                 ) VALUES (%s, %s, %s, %s, %s)
-#             """, (
-#                 student['id'], data['amount'], data['payment_mode'],
-#                 data['payment_date'], data['receipt_no']
-#             ))
-            
-#             connection.commit()
-#             return jsonify({"message": "Fee record created successfully!"}), 201
-
-#         elif request.method == 'PUT':
-#             data = request.json
-#             if 'receipt_no' not in data:
-#                 return jsonify({"error": "Receipt number is required for update"}), 400
-
-#             cursor.execute("""
-#                 UPDATE Fees SET
-#                     amount = %s,
-#                     payment_mode = %s,
-#                     payment_date = %s
-#                 WHERE receipt_no = %s
-#             """, (
-#                 data['amount'], data['payment_mode'],
-#                 data['payment_date'], data['receipt_no']
-#             ))
-            
-#             connection.commit()
-#             return jsonify({"message": "Fee record updated successfully!"}), 200
-
-#         elif request.method == 'DELETE':
-#             receipt_no = request.args.get('receipt_no')
-#             if not receipt_no:
-#                 return jsonify({"error": "Receipt number is required"}), 400
-
-#             cursor.execute("DELETE FROM Fees WHERE receipt_no = %s", (receipt_no,))
-#             connection.commit()
-#             return jsonify({"message": "Fee record deleted successfully!"}), 200
-
-#     except Exception as e:
-#         connection.rollback()
-#         return jsonify({"error": str(e)}), 500
-#     finally:
-#         cursor.close()
-#         connection.close()
 @user_routes.route('/admin/Students', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def manage_students():
     connection = get_connection()
@@ -963,68 +646,57 @@ def signup_user():
 def login_user():
     try:
         data = request.json
-        roll_no = data.get('roll_no')  # user_id
+        roll_no = data.get('roll_no')
         password = data.get('password')
 
         if not all([roll_no, password]):
             return jsonify({"error": "Both User ID and Password are required!"}), 400
 
         connection = get_connection()
-        cursor = connection.cursor()
+        cursor = connection.cursor(dictionary=True)
 
-        # Fetch user info from Login table
-        cursor.execute("SELECT user_id, password_hash, user_type FROM Login WHERE user_id = %s", (roll_no,))
-        user = cursor.fetchone()
+        try:
+            cursor.execute("""
+                SELECT user_id, password_hash, user_type 
+                FROM Login 
+                WHERE user_id = %s
+            """, (roll_no,))
+            user = cursor.fetchone()
 
-        if not user:
-            return jsonify({"error": "Invalid User ID or Password!"}), 404
+            if not user or not check_password_hash(user['password_hash'], password):
+                return jsonify({"error": "Invalid User ID or Password!"}), 401
 
-        stored_user_id, stored_password_hash, user_type = user
+            # Set session data with permanent=True
+            session.permanent = True
+            session['user_id'] = user['user_id']
+            session['user_type'] = user['user_type']
 
-        # Verify password
-        if not check_password_hash(stored_password_hash, password):
-            return jsonify({"error": "Invalid User ID or Password!"}), 401
+            response = jsonify({
+                "message": "Login successful!",
+                "user_id": user['user_id'],
+                "user_type": user['user_type'],
+                "redirect": "/StudentDashboard" if user['user_type'] == '3' else "/TeacherDashboard"
+            })
 
-        # Store user session
-        session['user_id'] = stored_user_id
-        session['user_type'] = user_type
+            # Set cookie attributes
+            response.set_cookie(
+                'session', 
+                session['user_id'], 
+                httponly=True, 
+                samesite='Lax',
+                secure=False,  # Set to True in production with HTTPS
+                max_age=86400  # 24 hours
+            )
+            
+            return response, 200
 
-        # Debug log for session values
-        print(f"User logged in: user_id={stored_user_id}, user_type={user_type}")
-
-        # Define which pages each user type has access to (example)
-        user_panels = {
-            "1": {  # Admin
-                "redirect": "/Teacherm",
-            },
-            "2": {  # Teacher
-                "redirect": "/TeacherDashboard",
-            },
-            "3": {  # Student
-                "redirect": "/StudentDashboard",
-            }
-        }
-
-        # Get the relevant info for this user type
-        panel_info = user_panels.get(user_type)
-        if not panel_info:
-            return jsonify({"error": "Unknown user type!"}), 500
-
-        return jsonify({
-            "message": "Login successful!",
-            "user_type": user_type,
-            "redirect": panel_info["redirect"]
-        }), 200
+        finally:
+            cursor.close()
+            connection.close()
 
     except Exception as e:
-        print(f"Error during login: {str(e)}")  # Debug log for errors
-        return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
-
-    finally:
-        if 'cursor' in locals():
-            cursor.close()
-        if 'connection' in locals():
-            connection.close()
+        print(f"Login error: {str(e)}")
+        return jsonify({"error": "Login failed"}), 500
 
 @user_routes.route('/admin/logout', methods=['POST'])
 def logout_admin():
@@ -1042,17 +714,6 @@ def logout_admin():
             "error": "An error occurred during logout.",
             "redirect": "/signin"  # Adjusted the redirect path to be a URL, not a JS file
         }), 500
-    
-# Protect routes: Prevent access after logout
-# @user_routes.before_request
-# def require_login():
-#     # Allow preflight requests to pass
-#     if request.method == 'OPTIONS':
-#         return jsonify({"message": "Preflight request allowed"}), 200
-
-#     allowed_routes = ['login_user', 'signup_user']
-#     if request.endpoint not in allowed_routes and 'user_id' not in session:
-#         return jsonify({"error": "Unauthorized access", "redirect": "/signin"}), 403
 
 @user_routes.route('/upload-timetable', methods=['POST'])
 def upload_timetable():
@@ -1087,64 +748,285 @@ def get_timetable():
 
 @user_routes.route('/details', methods=['GET'])
 def get_user_details():
-    # Check if the user is logged in
-    if 'user_id' not in session:
-        return jsonify({"error": "User not logged in!"}), 401
-
-    user_id = session['user_id']
-    user_type = session.get('user_type')  # 1 = Admin, 2 = Teacher, 3 = Student
-
-    # Debug log for session values
-    print(f"Fetching details for user_id: {user_id}, user_type: {user_type}")
-
-    # Validate user_type
-    if user_type not in ('1', '2', '3'):
-        print("Invalid user type!")  # Debug log
-        return jsonify({"error": "Invalid user type!"}), 400
-
-    connection = get_connection()
-    cursor = connection.cursor(dictionary=True)
     try:
-        # Prepare the query based on user_type
-        if user_type == '1':  # Admin
-            query = """
-                SELECT user_id, email, mobile
-                FROM Login
-                WHERE user_id = %s AND user_type = '1'
-            """
-        elif user_type == '2':  # Teacher
-            query = """
-                SELECT t.teacher_id AS student_id, t.name, t.email, t.mobile, t.joining_date, t.subject AS class, t.gender
-                FROM Teachers t
-                WHERE t.teacher_id = %s
-            """
-        elif user_type == '3':  # Student
-            query = """
-                SELECT s.student_id, s.name, s.dob, s.class, s.section, s.gender, s.father_name, 
-                       s.mother_name, s.email, s.mobile, s.address
-                FROM Students s
-                WHERE s.student_id = %s
-            """
-        else:
-            return jsonify({"error": "Invalid user type!"}), 400
+        # Check session
+        if 'user_id' not in session:
+            return jsonify({"error": "Not authenticated"}), 401
 
-        # Execute the query
-        cursor.execute(query, (user_id,))
-        user_details = cursor.fetchone()
+        user_id = session.get('user_id')
+        user_type = session.get('user_type')
 
-        if not user_details:
-            print(f"User details not found for user_id: {user_id}")  # Debug log
-            return jsonify({"error": "User details not found!"}), 404
+        connection = get_connection()
+        cursor = connection.cursor(dictionary=True)
 
-        # Ensure the response matches the expected structure
-        user_details['student_id'] = user_details.get('student_id', user_id)
-        print(f"User details fetched successfully: {user_details}")  # Debug log
-        return jsonify({"user_details": user_details}), 200
+        try:
+            if user_type == '3':  # Student
+                query = """
+                    SELECT s.*, l.user_type, l.email as login_email
+                    FROM Students s
+                    JOIN Login l ON s.student_id = l.user_id
+                    WHERE s.student_id = %s
+                """
+                cursor.execute(query, (user_id,))
+                user_details = cursor.fetchone()
+
+                if not user_details:
+                    return jsonify({"error": "Student not found"}), 404
+
+                return jsonify({"user_details": user_details}), 200
+            else:
+                return jsonify({"error": "Access denied"}), 403
+
+        finally:
+            cursor.close()
+            connection.close()
 
     except Exception as e:
-        print(f"Error fetching user details: {str(e)}")  # Debug log for errors
-        return jsonify({"error": f"Failed to fetch user details: {str(e)}"}), 500
+        print(f"Error fetching details: {str(e)}")
+        return jsonify({"error": "Failed to fetch user details"}), 500
+
+@user_routes.route('/admin/marks', methods=['GET', 'POST', 'PUT', 'DELETE'])
+def manage_marks():
+    connection = get_connection()
+    cursor = connection.cursor(dictionary=True)
+
+    try:
+        # ----------------- GET -----------------
+        if request.method == 'GET':
+            cursor.execute("""
+                SELECT 
+                    m.id AS marks_id,
+                    s.student_id,
+                    s.name AS student_name,
+                    s.dob,
+                    s.class,
+                    s.section,
+                    s.gender,
+                    s.mobile AS contact_no,
+                    m.math,
+                    m.english,
+                    m.physics,
+                    m.chemistry,
+                    m.odia,
+                    m.hindi,
+                    m.total_marks,
+                    m.marks_obtained,
+                    CAST(m.percentage AS FLOAT) AS percentage
+                FROM marks_entry m
+                JOIN Students s ON m.student_id = s.student_id
+            """)
+            marks = cursor.fetchall()
+            return jsonify(marks), 200
+
+
+        # ----------------- POST -----------------
+        elif request.method == 'POST':
+            data = request.json
+
+            student_id = data.get('student_id')
+            exam_name = data.get('exam_name')
+            class_name = data.get('class')
+            math = int(data.get('math'))
+            english = int(data.get('english'))
+            physics = int(data.get('physics'))
+            chemistry = int(data.get('chemistry'))
+            odia = int(data.get('odia'))
+            hindi = int(data.get('hindi'))
+
+            total_marks = 600
+            marks_obtained = math + english + physics + chemistry + odia + hindi
+            percentage = (marks_obtained / total_marks) * 100
+
+            cursor.execute("""
+                INSERT INTO marks_entry (
+                    student_id, exam_name, class, math, english, physics, chemistry, odia, hindi,
+                    total_marks, marks_obtained, percentage
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, (
+                student_id, exam_name, class_name, math, english, physics, chemistry,
+                odia, hindi, total_marks, marks_obtained, percentage
+            ))
+
+            connection.commit()
+            return jsonify({"message": "Marks submitted successfully"}), 201
+
+        # ----------------- PUT -----------------
+        elif request.method == 'PUT':
+            data = request.json
+
+            entry_id = data.get('id')  # ID of the marks entry to update
+            if not entry_id:
+                return jsonify({"error": "Entry ID is required"}), 400
+
+            math = int(data.get('math'))
+            english = int(data.get('english'))
+            physics = int(data.get('physics'))
+            chemistry = int(data.get('chemistry'))
+            odia = int(data.get('odia'))
+            hindi = int(data.get('hindi'))
+            exam_name = data.get('exam_name')
+            class_name = data.get('class')
+
+            total_marks = 600
+            marks_obtained = math + english + physics + chemistry + odia + hindi
+            percentage = (marks_obtained / total_marks) * 100
+
+            cursor.execute("SELECT * FROM marks_entry WHERE id = %s", (entry_id,))
+            existing = cursor.fetchone()
+            if not existing:
+                return jsonify({"error": "Marks entry not found"}), 404
+
+            cursor.execute("""
+                UPDATE marks_entry
+                SET exam_name=%s, class=%s, math=%s, english=%s, physics=%s,
+                    chemistry=%s, odia=%s, hindi=%s, marks_obtained=%s, percentage=%s
+                WHERE id=%s
+            """, (
+                exam_name, class_name, math, english, physics, chemistry,
+                odia, hindi, marks_obtained, percentage, entry_id
+            ))
+
+            connection.commit()
+            return jsonify({"message": "Marks updated successfully"}), 200
+
+        # ----------------- DELETE -----------------
+        elif request.method == 'DELETE':
+            entry_id = request.args.get('id')
+            if not entry_id:
+                return jsonify({"error": "Entry ID is required"}), 400
+
+            cursor.execute("SELECT * FROM marks_entry WHERE id = %s", (entry_id,))
+            existing = cursor.fetchone()
+            if not existing:
+                return jsonify({"error": "Marks entry not found"}), 404
+
+            cursor.execute("DELETE FROM marks_entry WHERE id = %s", (entry_id,))
+            connection.commit()
+            return jsonify({"message": "Marks deleted successfully"}), 200
+
+    except Exception as e:
+        connection.rollback()
+        return jsonify({"error": str(e)}), 500
 
     finally:
         cursor.close()
         connection.close()
+
+@user_routes.route('/attendance', methods=['GET', 'POST', 'DELETE', 'PUT'])
+def manage_attendance():
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    try:
+        # ----------------- GET -----------------
+        if request.method == 'GET':
+            cursor.execute("SELECT * FROM attendance ORDER BY attendance_date DESC")
+            data = cursor.fetchall()
+            return jsonify(data), 200
+
+        # ----------------- POST -----------------
+        elif request.method == 'POST':
+            data = request.json
+
+            student_id = data.get('student_id')
+            student_name = data.get('student_name')
+            class_name = data.get('class')
+            attendance_date = data.get('attendance_date')
+            status = data.get('status')  # should be 'Present' or 'Absent'
+
+            if not all([student_id, student_name, class_name, attendance_date, status]):
+                return jsonify({"error": "All fields are required"}), 400
+
+            cursor.execute("""
+                INSERT INTO attendance (student_id, student_name, class, attendance_date, status)
+                VALUES (%s, %s, %s, %s, %s)
+            """, (student_id, student_name, class_name, attendance_date, status))
+
+            conn.commit()
+            return jsonify({"message": "Attendance marked successfully"}), 201
+
+        # ----------------- PUT -----------------
+        elif request.method == 'PUT':
+            data = request.json
+            attendance_id = data.get('id')
+
+            if not attendance_id:
+                return jsonify({"error": "Attendance ID is required"}), 400
+
+            student_id = data.get('student_id')
+            student_name = data.get('student_name')
+            class_name = data.get('class')
+            attendance_date = data.get('attendance_date')
+            status = data.get('status')
+
+            cursor.execute("SELECT * FROM attendance WHERE id = %s", (attendance_id,))
+            if not cursor.fetchone():
+                return jsonify({"error": "Attendance record not found"}), 404
+
+            cursor.execute("""
+                UPDATE attendance 
+                SET student_id=%s, student_name=%s, class=%s, attendance_date=%s, status=%s
+                WHERE id=%s
+            """, (student_id, student_name, class_name, attendance_date, status, attendance_id))
+
+            conn.commit()
+            return jsonify({"message": "Attendance updated successfully"}), 200
+
+        # ----------------- DELETE -----------------
+        elif request.method == 'DELETE':
+            attendance_id = request.args.get('id')
+            if not attendance_id:
+                return jsonify({"error": "ID is required"}), 400
+
+            cursor.execute("SELECT * FROM attendance WHERE id = %s", (attendance_id,))
+            if not cursor.fetchone():
+                return jsonify({"error": "Attendance record not found"}), 404
+
+            cursor.execute("DELETE FROM attendance WHERE id = %s", (attendance_id,))
+            conn.commit()
+            return jsonify({"message": "Attendance deleted successfully"}), 200
+
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"error": str(e)}), 500
+
+    finally:
+        cursor.close()
+        conn.close()
+@user_routes.route('/admin/marks', methods=['GET'])
+def get_marks():
+    try:
+        student_id = request.args.get('student_id')
+        if not student_id:
+            return jsonify({"error": "Student ID is required"}), 400
+
+        connection = get_connection()
+        cursor = connection.cursor(dictionary=True)
+
+        query = """
+            SELECT 
+                m.*,
+                s.student_id,
+                s.name AS student_name,
+                s.class,
+                CAST(m.percentage AS FLOAT) AS percentage
+            FROM marks_entry m
+            JOIN Students s ON m.student_id = s.student_id
+            WHERE s.student_id = %s
+        """
+        cursor.execute(query, (student_id,))
+        marks = cursor.fetchall()
+
+        if not marks:
+            return jsonify([]), 200
+
+        return jsonify(marks), 200
+
+    except Exception as e:
+        print(f"Error fetching marks: {str(e)}")
+        return jsonify({"error": str(e)}), 500
+    finally:
+        if 'cursor' in locals():
+            cursor.close()
+        if 'connection' in locals():
+            connection.close()
