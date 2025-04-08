@@ -29,7 +29,7 @@ const Studentsnoticeview = () => { // Corrected component name
       <Grid className="contact-form" style={{
         backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
       }}>
-        <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "1%" }}>View Timetables:</Typography>
+        <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "1%" }}>View Notice:</Typography>
         <Grid container spacing={3} style={{ marginTop: "20px" }}>
           {timeTables.map((timeTable) => ( // Replaced `notices` with `timeTables`
             <Grid item xs={12} sm={6} md={4} key={timeTable.id}>
