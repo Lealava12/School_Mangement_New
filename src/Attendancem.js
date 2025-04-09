@@ -165,28 +165,34 @@ const Attendancem = () => {
                             />
                         </Grid>
                     </Grid>
-                    <Grid className="form-group" style={{ marginBottom: "10px", marginLeft: "7%" }}>
-                        <input
-                            type="text"
-                            name="student_name"
-                            value={form.student_name}
-                            onChange={handleChange}
-                            placeholder="Student Name"
-                            required
-                            style={{ width: "500px", padding: "10px", borderRadius: "5px" }}
-                        />
+
+                    <Grid style={{ display: "flex", justifyContent: "space-evenly" }}>
+                        <Grid className="form-group" style={{ marginBottom: "10px", }}>
+                            <input
+                                type="text"
+                                name="student_name"
+                                value={form.student_name}
+                                onChange={handleChange}
+                                placeholder="Student Name"
+                                required
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px" }}
+                            />
+                        </Grid>
+                        <Grid className="form-group" style={{ marginBottom: "10px",  }}>
+                            <input
+                                type="text"
+                                name="student_id"
+                                value={form.student_id}
+                                onChange={handleChange}
+                                placeholder="Student ID"
+                                required
+                                style={{ width: "500px", padding: "10px", borderRadius: "5px" }}
+                            />
+                        </Grid>
+
                     </Grid>
-                    <Grid className="form-group" style={{ marginBottom: "10px", marginLeft: "7%" }}>
-                        <input
-                            type="text"
-                            name="student_id"
-                            value={form.student_id}
-                            onChange={handleChange}
-                            placeholder="Student ID"
-                            required
-                            style={{ width: "500px", padding: "10px", borderRadius: "5px" }}
-                        />
-                    </Grid>
+
+
                     <Grid style={{ display: "flex", marginLeft: "7%" }}>
                         <Grid className="form-group" style={{ marginBottom: "15px", width: "520px" }}>
                             <p style={{ fontWeight: 600 }}>Attendance:</p>
@@ -280,7 +286,7 @@ const Attendancem = () => {
                             style={{ width: "100%", padding: "10px", margin: "10px 0", borderRadius: "5px" }}
                         >
                             <option value="">Select Class</option>
-                            {[1,2,3,4,5,6,7,8,9,10].map(num => (
+                            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
                                 <option key={num} value={num}>{num}</option>
                             ))}
                         </select>
@@ -302,14 +308,14 @@ const Attendancem = () => {
                             <FormControlLabel value="Present" control={<Radio />} label="Present" />
                             <FormControlLabel value="Absent" control={<Radio />} label="Absent" />
                         </RadioGroup>
-                        <Button 
-                            type="submit" 
-                            style={{ 
-                                backgroundColor: "#000066", 
-                                color: "white", 
+                        <Button
+                            type="submit"
+                            style={{
+                                backgroundColor: "#000066",
+                                color: "white",
                                 width: "100%",
                                 padding: "10px",
-                                marginTop: "10px" 
+                                marginTop: "10px"
                             }}
                         >
                             Update

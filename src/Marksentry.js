@@ -231,7 +231,7 @@ const MarksEntry = () => {
                         </Grid>
                     </Grid>
 
-                    <Grid style={{ display: "flex", justifyContent: "space-evenly" }}>
+                    <Grid style={{ display: "flex",  marginLeft: "6.5%"  }}>
                         <Grid className="form-group" style={{ marginBottom: "15px" }}>
                             <input
                                 type="text"
