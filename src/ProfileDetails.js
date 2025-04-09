@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
-import { Grid, Typography } from '@mui/material';
+import { Grid, Typography, TextField, Button } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import Studentsidebar from "./Studentsidebar";
@@ -9,52 +9,87 @@ import { useNavigate } from 'react-router-dom';
 const ProfileDetails = () => {
     const [userDetails, setUserDetails] = useState(null);
     const [error, setError] = useState('');
+    const [searchId, setSearchId] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     const apiBaseUrl = 'http://localhost:5000/api';
 
-    const fetchUserDetails = async () => {
-        try {
-            // Check if user is logged in
-            if (!document.cookie.includes('session')) {
-                navigate('/signin');
-                return;
-            }
+    const handleSearch = async () => {
+        if (!searchId.trim()) {
+            setError('Please enter a User ID');
+            return;
+        }
 
-            const response = await axios.get(`${apiBaseUrl}/details`, {
+        setIsLoading(true);
+        try {
+            // Try to get details directly
+            const detailsRes = await axios.get(`${apiBaseUrl}/details`, {
+                params: { student_id: searchId },
                 withCredentials: true,
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
                 }
             });
-            
-            if (response.data.user_details) {
-                setUserDetails(response.data.user_details);
+
+            if (detailsRes.data.user_details) {
+                setUserDetails(detailsRes.data.user_details);
                 setError('');
             } else {
-                setError('No user details found');
-                navigate('/signin');
+                setError('Student not found');
             }
         } catch (err) {
-            console.error("Error fetching user details:", err);
+            console.error("Error:", err);
+            setUserDetails(null);
             if (err.response?.status === 401) {
                 navigate('/signin');
             } else {
                 setError(err.response?.data?.error || 'Failed to fetch user details');
             }
+        } finally {
+            setIsLoading(false);
         }
     };
-
-    useEffect(() => {
-        fetchUserDetails();
-    }, [navigate]);
 
     return (
         <>
             <Studentsidebar />
             <Grid className="contact-form" style={{
-                backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
+                backgroundColor: "#f8f8f8", 
+                padding: "20px", 
+                borderRadius: "8px", 
+                width: "70%", 
+                marginLeft: "20%"
             }}>
-                <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "7%" }}>Profile Details :</Typography>
+                <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "7%" }}>
+                    Profile Details
+                </Typography>
+
+                {/* Search Section */}
+                <Grid container spacing={2} style={{ padding: "20px", alignItems: "center" }}>
+                    <Grid item xs={8} md={4} style={{ marginLeft: "5%" }}>
+                        <TextField
+                            fullWidth
+                            label="Enter User ID"
+                            value={searchId}
+                            onChange={(e) => setSearchId(e.target.value)}
+                            variant="outlined"
+                            size="small"
+                        />
+                    </Grid>
+                    <Grid item>
+                        <Button
+                            variant="contained"
+                            onClick={handleSearch}
+                            disabled={isLoading}
+                            style={{
+                                backgroundColor: "#000066",
+                                color: "white"
+                            }}
+                        >
+                            {isLoading ? 'Searching...' : 'Search'}
+                        </Button>
+                    </Grid>
+                </Grid>
 
                 {error && (
                     <Typography style={{ color: "red", marginLeft: "7%", marginTop: "10px" }}>
@@ -62,7 +97,8 @@ const ProfileDetails = () => {
                     </Typography>
                 )}
 
-                {userDetails ? (
+                {/* Profile Display Section */}
+                {userDetails && (
                     <>
                         <Avatar
                             sx={{
@@ -189,8 +225,12 @@ const ProfileDetails = () => {
                             </Grid>
                         </form>
                     </>
-                ) : (
-                    <Typography style={{ marginLeft: "7%", marginTop: "20px" }}>Loading profile details...</Typography>
+                )}
+
+                {isLoading && (
+                    <Typography style={{ marginLeft: "7%", marginTop: "20px" }}>
+                        Loading profile details...
+                    </Typography>
                 )}
             </Grid>
         </>

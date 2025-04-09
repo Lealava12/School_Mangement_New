@@ -664,7 +664,10 @@ def login_user():
             user = cursor.fetchone()
 
             if not user or not check_password_hash(user['password_hash'], password):
-                return jsonify({"error": "Invalid User ID or Password!"}), 401
+                return jsonify({
+                    "error": "Invalid User ID or Password!",
+                    "isLoggedIn": False
+                }), 401
 
             # Set session data with permanent=True
             session.permanent = True
@@ -673,9 +676,12 @@ def login_user():
 
             response = jsonify({
                 "message": "Login successful!",
+                "isLoggedIn": True,
                 "user_id": user['user_id'],
                 "user_type": user['user_type'],
-                "redirect": "/StudentDashboard" if user['user_type'] == '3' else "/TeacherDashboard" if user['user_type'] == '2' else "/Teacherm"
+                "redirect": "/StudentDashboard" if user['user_type'] == '3' 
+                          else "/TeacherDashboard" if user['user_type'] == '2' 
+                          else "/Teacherm"
             })
 
             # Set cookie attributes
@@ -696,23 +702,69 @@ def login_user():
 
     except Exception as e:
         print(f"Login error: {str(e)}")
-        return jsonify({"error": "Login failed"}), 500
+        return jsonify({
+            "error": "Login failed",
+            "isLoggedIn": False
+        }), 500
 
 @user_routes.route('/admin/logout', methods=['POST'])
 def logout_admin():
     try:
-        # Clear the session to log out the user
+        # Clear the session
         session.clear()
+        response = jsonify({
+            "message": "Logout successful!",
+            "isLoggedIn": False
+        })
+        # Clear the session cookie
+        response.delete_cookie('session')
+        return response, 200
 
-        return jsonify({"message": "Logout successful!"}), 200
     except Exception as e:
-        # Print the error for debugging (optional)
         print(f"Error during logout: {e}")
-
-        # Provide a more user-friendly error message
         return jsonify({
             "error": "An error occurred during logout.",
-            "redirect": "/signin"  # Adjusted the redirect path to be a URL, not a JS file
+            "isLoggedIn": False,
+            "redirect": "/signin"
+        }), 500
+
+@user_routes.route('/login/status', methods=['GET'])
+def check_login_status():
+    try:
+        if 'user_id' in session:
+            connection = get_connection()
+            cursor = connection.cursor(dictionary=True)
+            try:
+                cursor.execute("""
+                    SELECT user_id, user_type 
+                    FROM Login 
+                    WHERE user_id = %s
+                """, (session['user_id'],))
+                user = cursor.fetchone()
+
+                if user:
+                    return jsonify({
+                        "isLoggedIn": True,
+                        "user_id": user['user_id'],
+                        "user_type": user['user_type'],
+                        "redirect": "/StudentDashboard" if user['user_type'] == '3' 
+                                  else "/TeacherDashboard" if user['user_type'] == '2' 
+                                  else "/Teacherm"
+                    }), 200
+            finally:
+                cursor.close()
+                connection.close()
+
+        return jsonify({
+            "isLoggedIn": False,
+            "redirect": "/signin"
+        }), 401
+
+    except Exception as e:
+        print(f"Login status check error: {str(e)}")
+        return jsonify({
+            "isLoggedIn": False,
+            "error": "Failed to check login status"
         }), 500
 
 @user_routes.route('/upload-timetable', methods=['POST'])
@@ -749,33 +801,36 @@ def get_timetable():
 @user_routes.route('/details', methods=['GET'])
 def get_user_details():
     try:
-        # Check session
-        if 'user_id' not in session:
-            return jsonify({"error": "Not authenticated"}), 401
+        student_id = request.args.get('student_id')
+        
+        # If no student_id provided, check session
+        if not student_id:
+            if 'user_id' not in session:
+                return jsonify({"error": "Not authenticated"}), 401
+            student_id = session.get('user_id')
 
-        user_id = session.get('user_id')
-        user_type = session.get('user_type')
+        # If user is logged in, check if they're requesting their own profile
+        if 'user_id' in session:
+            if session.get('user_type') != '1' and session.get('user_id') != student_id:
+                return jsonify({"error": "You can only view your own profile"}), 403
 
         connection = get_connection()
         cursor = connection.cursor(dictionary=True)
 
         try:
-            if user_type == '3':  # Student
-                query = """
-                    SELECT s.*, l.user_type, l.email as login_email
-                    FROM Students s
-                    JOIN Login l ON s.student_id = l.user_id
-                    WHERE s.student_id = %s
-                """
-                cursor.execute(query, (user_id,))
-                user_details = cursor.fetchone()
+            query = """
+                SELECT s.*, l.user_type, l.email as login_email
+                FROM Students s
+                JOIN Login l ON s.student_id = l.user_id
+                WHERE s.student_id = %s
+            """
+            cursor.execute(query, (student_id,))
+            user_details = cursor.fetchone()
 
-                if not user_details:
-                    return jsonify({"error": "Student not found"}), 404
+            if not user_details:
+                return jsonify({"error": "Student not found"}), 404
 
-                return jsonify({"user_details": user_details}), 200
-            else:
-                return jsonify({"error": "Access denied"}), 403
+            return jsonify({"user_details": user_details}), 200
 
         finally:
             cursor.close()
@@ -1030,3 +1085,60 @@ def get_marks():
             cursor.close()
         if 'connection' in locals():
             connection.close()
+
+@user_routes.route('/student/marks/<student_id>', methods=['GET'])
+def get_student_marks(student_id):
+    try:
+        #  # Check if user is authorized to view these marks
+        # if 'user_id' in session:
+        #     if session.get('user_type') != '1' and session.get('user_id') != student_id:
+        #         return jsonify({"error": "Unauthorized to view these marks"}), 403
+        # else:
+        #     return jsonify({"error": "Not authenticated"}), 401
+        connection = get_connection()
+        cursor = connection.cursor(dictionary=True)
+
+        try:
+            query = """
+                SELECT 
+                    m.id AS marks_id,
+                    s.student_id,
+                    s.name AS student_name,
+                    s.dob,
+                    s.class,
+                    s.section,
+                    s.gender,
+                    s.mobile AS contact_no,
+                    m.math,
+                    m.english,
+                    m.physics,
+                    m.chemistry,
+                    m.odia,
+                    m.hindi,
+                    m.total_marks,
+                    m.marks_obtained,
+                    CAST(m.percentage AS FLOAT) AS percentage
+                FROM marks_entry m
+                JOIN Students s ON m.student_id = s.student_id
+                WHERE s.student_id = %s
+                ORDER BY m.id DESC
+                LIMIT 1
+            """
+            cursor.execute(query, (student_id,))
+            marks = cursor.fetchone()
+
+            if not marks:
+                return jsonify({"error": "No marks found for this student"}), 404
+
+            return jsonify({
+                "student_marks": [marks],  # Wrap in array for consistency
+                "message": "Marks retrieved successfully"
+            }), 200
+
+        finally:
+            cursor.close()
+            connection.close()
+
+    except Exception as e:
+        print(f"Error fetching student marks: {str(e)}")
+        return jsonify({"error": "Failed to fetch student marks"}), 500

@@ -8,7 +8,8 @@ function ExamResults() {
   const [studentData, setStudentData] = useState(null);
   const [studentId, setStudentId] = useState('');
   const [error, setError] = useState('');
-  const apiBaseUrl = 'http://localhost:5000/api';
+  const [isLoading, setIsLoading] = useState(false);
+  const apiBaseUrl = 'http://localhost:5000/api';  // Make sure this matches your Flask route prefix
   const navigate = useNavigate();
 
   const formatPercentage = (value) => {
@@ -17,20 +18,33 @@ function ExamResults() {
   };
 
   const fetchMarks = async () => {
+    setIsLoading(true);
+    setError('');
     try {
-      const response = await axios.get(`${apiBaseUrl}/admin/marks`, {
-        params: { student_id: studentId },
-        withCredentials: true
+      const response = await axios.get(`${apiBaseUrl}/student/marks/${studentId}`, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
-      if (response.data && response.data.length > 0) {
-        setStudentData(response.data[0]);
+
+      if (response.data.student_marks && response.data.student_marks.length > 0) {
+        setStudentData(response.data.student_marks[0]);
         setError('');
       } else {
-        setError('No results found for this student ID');
+        setError('No exam results found for this Student ID');
+        setStudentData(null);
       }
     } catch (err) {
-      console.error('Error fetching marks:', err);
-      setError('Failed to fetch results');
+      console.error('Error:', err);
+      setStudentData(null);
+      if (err.response?.status === 404) {
+        setError('No marks found for this Student ID');
+      } else {
+        setError(err.response?.data?.error || 'Failed to fetch results');
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -81,6 +95,8 @@ function ExamResults() {
 
           {error && <p style={{ color: 'red', marginTop: '10px' }}>{error}</p>}
         </div>
+
+        {isLoading && <p>Loading...</p>}
 
         {studentData && (
           <>
