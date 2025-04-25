@@ -63,7 +63,7 @@ const Signup = () => {
       }}
     >
       <div className="containers">
-        <h1 className="title">SCHOOL MANAGEMENT</h1>
+        {/* <h1 className="title">SCHOOL MANAGEMENT</h1> */}
         <div className="login-box">
           <div className="avatar">
             <img
@@ -74,50 +74,65 @@ const Signup = () => {
           <h2 className="login-header">SIGN UP</h2>
           <form onSubmit={handleSignup}>
             {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
-            <div className="user-box">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-              <label>Email</label>
-            </div>
+
+            <style>
+              {`
+                .white-placeholder::placeholder {
+                  color: white;
+                }
+              `}
+            </style>
+
+
+          <div className="user-box">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+              required
+              className="white-placeholder"
+            />
+          </div>
             <div className="user-box">
               <input
                 type="text"
                 value={mobileNo}
                 onChange={(e) => setMobileNo(e.target.value)}
+                placeholder='Mobile No'
                 required
+                className="white-placeholder"
               />
-              <label>Mobile No</label>
             </div>
             <div className="user-box">
               <input
                 type="text"
                 value={rollNo}
                 onChange={(e) => setRollNo(e.target.value)}
+                placeholder='ID'
                 required
+                className="white-placeholder"
               />
-              <label>ID</label>
             </div>
             <div className="user-box">
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                placeholder='Create Password'
                 required
+                className="white-placeholder"
               />
-              <label>Create Password</label>
             </div>
             <div className="user-box">
               <input
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder='Confirm Password'
                 required
+                className="white-placeholder"
               />
-              <label>Confirm Password</label>
             </div>
 
             {userType && (

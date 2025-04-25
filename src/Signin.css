@@ -1,10 +1,7 @@
-
-
 .containers {
   text-align: center;
   color: #6a1b9a;
 }
-
 
 .title {
   font-size: 36px;
@@ -25,6 +22,7 @@
   width: 350px;
   animation: slideUp 1.2s ease-in-out;
   overflow: hidden;
+  margin: 0 auto;
 }
 
 .login-box::before,
@@ -83,22 +81,24 @@
 
 .user-box {
   position: relative;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
+  width: 100%;
 }
 
 .user-box input {
-  width: 85%; /* Restoring the original width */
-  padding: 10px;
+  width: 100%;
+  padding: 12px 16px;
   font-size: 16px;
-  color: white;
+  color: rgba(255, 255, 255, 0.8);
   background: rgba(255, 255, 255, 0.1);
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: 8px;
   outline: none;
-  border: 1px solid rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(5px);
   box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
   transition: all 0.3s ease;
+  box-sizing: border-box;
+  font-size: 16px;
 }
 
 .user-box input:focus {
@@ -106,48 +106,46 @@
   box-shadow: 0 4px 15px rgba(255, 204, 204, 0.6);
 }
 
-.user-box label {
-  position: absolute;
-  top: 12px;
-  left: 30px;
-  color: rgba(255, 255, 255, 0.8);
-  pointer-events: none;
-  transition: 0.3s;
+/* ✅ Placeholder Styling */
+.user-box input::placeholder,
+.user-box input::-webkit-input-placeholder,
+.user-box input::-moz-placeholder,
+.user-box input:-ms-input-placeholder,
+.user-box input:-moz-placeholder {
+  color: rgba(255, 255, 255, 0.9);
+  opacity: 1;
 }
 
-.user-box input:focus ~ label,
-.user-box input:valid ~ label {
-  top: -20px;
-  left: 15px;
-  font-size: 15px;
-  color: #ffcccb;
+.checkbox-forgot {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .checkbox-container {
-  text-align: left;
   color: white;
   margin: 10px 0;
   animation: fadeIn 2s ease-in-out;
+  width: auto;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
 }
 
 .checkbox-container input {
   margin-right: 5px;
 }
-.checkbox-forgot{
-  display: flex;
-}
-.checkbox-container{
-  width: 65%;
-}
+
 .forgot-password {
   text-align: right;
   margin: 10px 0;
+  font-size: 14px;
 }
 
 .forgot-password a {
   color: #ffcccb;
   text-decoration: none;
-  font-size: 14px;
   transition: color 0.3s;
 }
 
@@ -169,6 +167,7 @@
   transition: 0.4s ease;
   box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
   animation: fadeInUp 1.8s ease-in-out;
+  width: 100%;
 }
 
 .login-button:hover {
@@ -242,5 +241,86 @@
   }
   100% {
     transform: scale(1);
+  }
+}
+
+/* ✅ Responsive Styles */
+@media (max-width: 768px) {
+  .login-box {
+    width: 350px;
+    padding: 30px 20px;
+  }
+
+  .title {
+    font-size: 28px;
+  }
+
+  .login-header {
+    font-size: 22px;
+  }
+
+  .user-box input {
+    font-size: 15px;
+    padding: 10px 14px;
+  }
+
+  .login-button {
+    font-size: 15px;
+    padding: 10px 25px;
+  }
+
+  .checkbox-forgot {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 375px) {
+  .login-box {
+    padding: 25px 15px;
+    width: 280px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .login-header {
+    font-size: 20px;
+  }
+
+  .user-box input {
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+
+  .login-button {
+    font-size: 14px;
+    padding: 10px 20px;
+  }
+}
+
+@media (max-width: 320px) {
+  .login-box {
+    padding: 25px 15px;
+    width: 250px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .login-header {
+    font-size: 20px;
+  }
+
+  .user-box input {
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+
+  .login-button {
+    font-size: 14px;
+    padding: 10px 20px;
   }
 }

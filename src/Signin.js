@@ -52,7 +52,7 @@ const Login = () => {
       }}
     >
       <div className="containers">
-        <h1 className="title">SCHOOL MANAGEMENT</h1>
+        {/* <h1 className="title">SCHOOL MANAGEMENT</h1> */}
         <div className="login-box">
           <div className="avatar">
             <img
@@ -63,23 +63,35 @@ const Login = () => {
           <h2 className="login-header">LOGIN</h2>
           <form onSubmit={handleLogin}>
             {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
+
+            <style>
+              {`
+                .white-placeholder::placeholder {
+                  color: white;
+                }
+              `}
+            </style>
+
+            
             <div className="user-box">
               <input
                 type="text"
                 value={rollNo}
                 onChange={(e) => setRollNo(e.target.value)}
+                placeholder='User ID'
                 required
+                className="white-placeholder"
               />
-              <label>User ID</label>
             </div>
             <div className="user-box">
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                placeholder='Password'
                 required
+                className="white-placeholder"
               />
-              <label>Password</label>
             </div>
             <div className="checkbox-forgot">
               <div className="checkbox-container">
