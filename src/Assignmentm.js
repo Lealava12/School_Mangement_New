@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Button, Typography, Modal } from '@mui/material';
+import { Grid, Button, Typography, Modal, TextField } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -165,108 +165,143 @@ const Assignmentm = () => {
     return (
         <>
             <Teachersidebar />
-            <Grid className="contact-form" style={{ backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%" }}>
+            <Box
+                sx={{
+                    backgroundColor: "#f8f8f8",
+                    p: 3,
+                    borderRadius: 2,
+                    maxWidth: "1300px",
+                    mx: "auto",
+                    mt: 15,
+                }}
+            >
                 <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "7%" }}>Assignment Management:</Typography>
                 <form style={{ paddingTop: "20px", paddingBottom: "20px" }}>
-                    <Grid style={{ display: "flex", justifyContent: "space-evenly" }}>
-                        <Grid className="form-group" style={{ marginBottom: "15px" }}>
-                            <input
+                    <Grid container spacing={3} justifyContent="center">
+                        <Grid item xs={12} md={5}>
+                            <TextField
                                 type="text"
                                 placeholder="Assignment Title"
                                 value={title}
                                 onChange={(e) => setTitle(e.target.value)}
+                                fullWidth
                                 required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", }}
+
                             />
                         </Grid>
-                        <Grid className="form-group" style={{ marginBottom: "15px" }}>
-                            <input
+                        <Grid item xs={12} md={5}>
+                            <TextField
                                 type="date"
                                 value={date}
                                 onChange={(e) => setDate(e.target.value)}
+                                fullWidth
                                 required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px",}}
+
                             />
                         </Grid>
-                    </Grid>
-                    <Grid style={{ display: "flex", justifyContent: "space-evenly" }}>
-                        <Grid className="form-group" style={{ marginBottom: "15px" }}>
+
+                        <Grid item xs={10}>
+                            {/*  */}
+
+                            <select
+                                value={assignmentClass}
+                                onChange={(e) => setAssignmentClass(e.target.value)}
+                                fullWidth
+                                required
+                                style={{ width: "100%", height: "40px", padding: "10px", borderRadius: "5px" }}
+                            >
+                                <option value="">Select Class</option>
+                                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
+                                    <option key={num} value={num}>{num}</option>
+                                ))}
+                            </select>
+
+                        </Grid>
+                        <Grid item xs={10}>
                             <textarea
                                 placeholder="Description"
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
+                                fullWidth
                                 required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", }}
+                                style={{ width: "100%", padding: "10px", borderRadius: "5px", height: "100px" }}
                             ></textarea>
                         </Grid>
-                        <Grid>
-                            <select
-                                value={assignmentClass}
-                                onChange={(e) => setAssignmentClass(e.target.value)}
-                                required
-                                style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", }}
+
+                        <Grid item xs={12}>
+                            <Typography sx={{ color: "#000066", fontWeight: 500, fontSize: "16px", ml: "8%", mt: 2 }}>
+                                Assignment Upload:
+                            </Typography>
+
+                            <Box
+                                sx={{
+                                    width: { xs: "100%", sm: 300 },
+                                    height: 200,
+                                    borderRadius: 1,
+                                    bgcolor: 'primary.main',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    cursor: 'pointer',
+                                    ml: "8%",
+                                    mt:2,
+                                    '&:hover': {
+                                        bgcolor: 'primary.dark',
+                                    },
+                                }}
                             >
-                                <option value="">Select Class</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
-                                <option value="7">7</option>
-                                <option value="8">8</option>
-                                <option value="9">9</option>
-                                <option value="10">10</option>
-                            </select>
+                                <label htmlFor="file" style={{ display: "flex", flexDirection: "row", cursor: 'pointer' }}>
+                                    <AddSharpIcon style={{ fontSize: "25px", color: "white" }} />
+                                </label>
+                                <input
+                                    style={{ display: "none" }}
+                                    type="file"
+                                    id="file"
+                                    onChange={(e) => setSelectedFile(e.target.files[0])}
+                                />
+                            </Box>
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <Box textAlign="center">
+                                <Button
+                                    style={{
+                                        width: "130px",
+                                        marginTop: "35px",
+                                        fontWeight: 600,
+                                        fontSize: "16px",
+                                        backgroundColor: "#000066",
+                                        color: "white",
+                                    }}
+                                    onClick={addAssignment}
+                                >
+                                    Submit
+                                </Button>
+                            </Box>
                         </Grid>
                     </Grid>
-                     <Typography style={{ color: "#000066", fontWeight: 500, fontSize: "16px", marginLeft: "7%" }}> Assignment Upload  :</Typography>
-                    <Box
-                        sx={{
-                            width: 300,
-                            height: 200,
-                            marginLeft: "7%",
-                            borderRadius: 1,
-                            bgcolor: 'primary.main',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            cursor: 'pointer',
-                            '&:hover': {
-                                bgcolor: 'primary.dark',
-                            },
-                        }}
-                    >
-                        <label htmlFor="file" style={{ display: "flex", flexDirection: "row", cursor: 'pointer' }}>
-                            <AddSharpIcon style={{ fontSize: "25px", color: "white" }} />
-                        </label>
-                        <input
-                            style={{ display: "none" }}
-                            type="file"
-                            id="file"
-                            onChange={(e) => setSelectedFile(e.target.files[0])}
-                        />
-                    </Box>
-                    <center>
-                        <Button
-                            style={{ width: "130px", marginTop: "35px", fontWeight: 600, fontSize: "16px", backgroundColor: "#000066", color: "white" }}
-                            onClick={addAssignment}
-                        >
-                            Submit
-                        </Button>
-                    </center>
                 </form>
-            </Grid>
+            </Box >
 
-                <Table aria-label="simple table" sx={{ marginTop: "50px", width: "72%", marginLeft: "20%" }} component={Paper}>
+            <div style={{ overflowX: "auto", marginTop: "30px" }}>
+                <Table
+                    style={{
+                        marginLeft: "15%",
+                        maxWidth: "1300px",
+                        margin: "0 auto",
+                        textAlign: "center",
+                        borderCollapse: "collapse",
+                    }}
+                >
                     <TableHead>
                         <TableRow>
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }}>Sl No</TableCell>
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Assignment Title</TableCell>
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Date</TableCell>
+                            <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Image</TableCell>
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Description</TableCell>
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Class</TableCell>
-                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Actions</TableCell>
+                            <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Actions</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -275,23 +310,24 @@ const Assignmentm = () => {
                                 <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }}>{index + 1}</TableCell>
                                 <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">{assignment.title}</TableCell>
                                 <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">{assignment.date}</TableCell>
+                                <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">{}</TableCell>
                                 <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">{assignment.description}</TableCell>
                                 <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">{assignment.class}</TableCell>
                                 <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">
-                                <ModeEditOutlineIcon
-                                    onClick={() => handleEditClick(assignment)}
-                                    style={{ fontSize: "18px", color: "#000066", cursor: "pointer" }}
-                                />
-                                <DeleteIcon
-                                    onClick={() => handleDeleteClick(assignment.assignment_id)}
-                                    style={{ fontSize: "18px", color: "red", cursor: "pointer" }}
-                                />
+                                    <ModeEditOutlineIcon
+                                        onClick={() => handleEditClick(assignment)}
+                                        style={{ fontSize: "18px", color: "#000066", cursor: "pointer" }}
+                                    />
+                                    <DeleteIcon
+                                        onClick={() => handleDeleteClick(assignment.assignment_id)}
+                                        style={{ fontSize: "18px", color: "red", cursor: "pointer" }}
+                                    />
                                 </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
-         
+            </div>
 
             {/* Edit Modal */}
             <Modal open={openEdit} onClose={() => setOpenEdit(false)}>

@@ -27,43 +27,89 @@ const NoticeView = () => {
   return (
     <>
       <Teachersidebar />
-      <Grid className="contact-form" style={{
-        backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
-      }}>
-        <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "1%" }}>View Notices:</Typography>
-        <Grid container spacing={3} style={{ marginTop: "20px" }}>
-          {notices.map((notice) => (
-            <Grid item xs={12} sm={6} md={4} key={notice.id}>
-              <Box
+      <Box
                 sx={{
-                  width: 300,
-                  height: 200,
-                  borderRadius: 1,
-                  bgcolor: '#FFF5EE',
-                  borderStyle: 'solid',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  padding: 2,
+                    // backgroundColor: "#f8f8f8",
+                    p: 3,
+                    borderRadius: 2,
+                    maxWidth: "1300px",
+                    mx: "auto",
+                    mt: 13,
                 }}
-              >
-                <Typography style={{ fontWeight: 600, marginBottom: "10px" }}>{notice.title}</Typography>
-                {notice.file_path && (
-                  <img
-                    src={`http://localhost:5000${notice.file_path}`}
-                    alt={notice.title}
-                    style={{ maxWidth: "100%", maxHeight: "100px", objectFit: "contain" }}
-                  />
-                )}
-                <Typography style={{ fontSize: "12px", marginTop: "10px" }}>
-                  Uploaded on: {new Date(notice.uploaded_at).toLocaleDateString()}
-                </Typography>
-              </Box>
-            </Grid>
-          ))}
+            >
+        <Grid item xs={12}>
+          <Typography
+            sx={{
+              color: "#000066",
+              fontWeight: 600,
+              fontSize: { xs: "16px", sm: "18px" },
+              mb: 2,
+            }}
+          >
+            View Notices:
+          </Typography>
         </Grid>
-      </Grid>
+<Grid container spacing={3}>
+  {notices.map((notice) => (
+    <Grid item xs={12} sm={6} md={4} key={notice.id} display="flex" justifyContent="center">
+      <Box
+        sx={{
+          width: '95%', // Slightly less than full width to create nice gap
+          height: 230,
+          borderRadius: 2,
+          bgcolor: '#FFF5EE',
+          border: '1px solid #ddd',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: 2,
+          textAlign: 'center',
+          transition: '0.3s',
+          '&:hover': {
+            boxShadow: 4, // Optional: nice hover effect
+            transform: 'scale(1.02)',
+          },
+        }}
+      >
+        <Typography
+          sx={{
+            fontWeight: 600,
+            fontSize: { xs: "14px", sm: "16px" },
+            mb: 1,
+          }}
+        >
+          {notice.title}
+        </Typography>
+
+        {notice.file_path && (
+          <img
+            src={`http://localhost:5000${notice.file_path}`}
+            alt={notice.title}
+            style={{
+              maxWidth: "100%",
+              maxHeight: "100px",
+              objectFit: "contain",
+            }}
+          />
+        )}
+
+        <Typography
+          sx={{
+            fontSize: "12px",
+            color: "gray",
+            mt: 1,
+          }}
+        >
+          Uploaded on: {new Date(notice.uploaded_at).toLocaleDateString()}
+        </Typography>
+      </Box>
+    </Grid>
+  ))}
+</Grid>
+
+      </Box>
+
     </>
   );
 };

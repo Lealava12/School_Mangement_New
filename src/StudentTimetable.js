@@ -26,28 +26,53 @@ const StudentTimetable = () => {
   return (
     <>
       <Studentsidebar />
-      <Grid className="contact-form" style={{
-        backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
-      }}>
-        <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "1%" }}>View Timetables:</Typography>
-        <Grid container spacing={3} style={{ marginTop: "20px" }}>
+      <Box
+        sx={{
+
+          p: 3,
+          borderRadius: 2,
+          maxWidth: "1300px",
+          mx: "auto",
+          mt: 13,
+        }}
+      >
+        <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", }}>View Timetables:</Typography>
+        <Grid container spacing={3} sx={{ marginTop: "5px" }}>
           {timetables.map((timetable) => (
             <Grid item xs={12} sm={6} md={4} key={timetable.id}>
               <Box
                 sx={{
-                  width: 300,
-                  height: 200,
+                  width: '100%',
+                  maxWidth: 300,
+                  minHeight: 200,
                   borderRadius: 1,
                   bgcolor: '#FFF5EE',
-                  borderStyle: 'solid',
+                  border: '1px solid #ddd',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'center',
                   alignItems: 'center',
                   padding: 2,
+                  boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+                  transition: 'transform 0.2s',
+                  mx: 'auto',
+                  textAlign: 'center',
+                  '&:hover': {
+                    transform: 'scale(1.02)',
+                  },
                 }}
               >
-                <Typography style={{ fontWeight: 600, marginBottom: "10px" }}>{timetable.title}</Typography>
+                <Typography
+                  sx={{
+                    fontWeight: 600,
+                    marginBottom: "10px",
+                    wordBreak: 'break-word',
+                    color: '#000066',
+                    fontSize: '16px'
+                  }}
+                >
+                  {timetable.title}
+                </Typography>
                 {timetable.file_path && (
                   <a
                     href={`http://localhost:5000${timetable.file_path}`}
@@ -58,14 +83,21 @@ const StudentTimetable = () => {
                     View Timetable
                   </a>
                 )}
-                <Typography style={{ fontSize: "12px", marginTop: "10px" }}>
+                <Typography
+                  sx={{
+                    fontSize: "12px",
+                    marginTop: "10px",
+                    color: "#666"
+                  }}
+                >
                   Uploaded on: {new Date(timetable.uploaded_at).toLocaleDateString()}
                 </Typography>
               </Box>
             </Grid>
           ))}
         </Grid>
-      </Grid>
+
+      </Box>
     </>
   );
 };

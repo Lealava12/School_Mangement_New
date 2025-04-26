@@ -1,32 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import '../src/Teacherm.css';
+
 import PythonBackend from './Python_backend';
+
+import {
+  Grid,
+  Typography,
+  TextField,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  Button,
+  Box, Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import Sidebar from './Sidebar';
-import { Grid, Button, Typography } from '@mui/material';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
-import DeleteIcon from '@mui/icons-material/Delete';
-import Box from '@mui/material/Box';
+import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
+import DeleteIcon from "@mui/icons-material/Delete";
 import Modal from '@mui/material/Modal';
+
 import axios from 'axios';
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-  p: 4,
+
+
+const cellStyle = {
+  color: "gray",
+  fontWeight: 600,
+  fontSize: "15px",
+  whiteSpace: "nowrap",
 };
 
 const Teacherm = () => {
@@ -153,286 +162,433 @@ const Teacherm = () => {
   };
 
   // Fetch teachers on component mount
-   useEffect(() => {
-      fetchTeachers();
-    }, []);
+  useEffect(() => {
+    fetchTeachers();
+  }, []);
+
+
+
+
+
+
+
+
+
+
+
 
   return (
     <>
       <Sidebar />
-      <Grid class="contact-form" style={{ backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%" }}>
-        <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "65px" }}>Teacher's Details :</Typography>
+      <Box
+        sx={{
+          backgroundColor: "#f8f8f8",
+          p: 3,
+          borderRadius: 2,
+          maxWidth: "1300px",
+          mx: "auto",
+          mt: 13,
+        }}
+      >
+        <Typography
+          sx={{
+            color: "#000066",
+            fontWeight: 600,
+            fontSize: 18,
+            mb: 2,
+          }}
+        >
+          Teacher's Details :
+        </Typography>
+
         <form
-          style={{ paddingTop: "20px", paddingBottom: "20px" }}
           onSubmit={(e) => {
             e.preventDefault();
             addTeacher();
           }}
         >
-          <Grid style={{ display: "flex", justifyContent: "space-evenly",marginRight:"90px"}}>
-            <Grid class="form-group" style={{ marginBottom: "15px" }}>
-              <input
-                type="text"
-                placeholder="Name"
+          <Grid container spacing={2}>
+            {/* Name and Email */}
+            <Grid item xs={12} md={6}>
+              <TextField
+                fullWidth
+                label="Name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                style={{ width: "500px", padding: "10px", borderRadius: "5px",}}
               />
             </Grid>
-            <Grid class="form-group" style={{ marginBottom: "15px" }}>
-              <input
+            <Grid item xs={12} md={6}>
+              <TextField
+                fullWidth
+                label="Enter Email"
                 type="email"
-                placeholder="Enter Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                style={{ width: "500px", padding: "10px", borderRadius: "5px",  }}
               />
             </Grid>
-          </Grid>
-          <Grid style={{ display: "flex", justifyContent: "space-evenly" ,marginRight:"90px"}}>
-            <Grid class="form-group" style={{ marginBottom: "15px" }}>
-              <input
+
+            {/* Number and Joining Date */}
+            <Grid item xs={12} md={6}>
+              <TextField
+                fullWidth
+                label="Enter Number"
                 type="number"
-                placeholder="Enter Number"
                 value={mobile}
                 onChange={(e) => setMobile(e.target.value)}
                 required
-                style={{ width: "500px", padding: "10px", borderRadius: "5px",  }}
               />
             </Grid>
-            <Grid class="form-group" style={{ marginBottom: "15px" }}>
-              <input
+            <Grid item xs={12} md={6}>
+              <TextField
+                fullWidth
+                label="Joining Date"
                 type="date"
-                placeholder="Joining Date"
+                InputLabelProps={{ shrink: true }}
                 value={joiningDate}
                 onChange={(e) => setJoiningDate(e.target.value)}
                 required
-                style={{ width: "500px", padding: "10px", borderRadius: "5px",}}
               />
             </Grid>
-          </Grid>
-          <Grid style={{ display: "flex", justifyContent: "space-evenly" ,marginRight:"90px"}}>
-            <Grid class="form-group" style={{ marginBottom: "15px" }}>
-              <select
-                value={teacherClass}
-                onChange={(e) => setTeacherClass(e.target.value)}
-                required
-                style={{ width: "525px", padding: "10px", borderRadius: "5px", }}
-              >
-                <option value="">Select Class</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-              </select>
+
+            {/* Class and Subject */}
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth required>
+                <InputLabel>Select Class</InputLabel>
+                <Select
+                  value={teacherClass}
+                  onChange={(e) => setTeacherClass(e.target.value)}
+                  label="Select Class"
+                >
+                  {[...Array(10)].map((_, i) => (
+                    <MenuItem key={i + 1} value={i + 1}>
+                      {i + 1}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Grid>
-            <Grid class="form-group" style={{ marginBottom: "15px" }}>
-              <select
-                value={subject}
-                onChange={(e) => setSubject(e.target.value)}
-                required
-                style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
+            <Grid item xs={12} md={6}>
+              <FormControl fullWidth required>
+                <InputLabel>Select Subject</InputLabel>
+                <Select
+                  value={subject}
+                  onChange={(e) => setSubject(e.target.value)}
+                  label="Select Subject"
+                >
+                  {["Math", "English", "Physics", "Chemistry", "Odia", "Hindi"].map((subj) => (
+                    <MenuItem key={subj} value={subj}>
+                      {subj}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+
+            {/* Gender */}
+            <Grid item xs={12}>
+              <Typography sx={{ fontWeight: 500, mb: 1 }}>Select your Gender:</Typography>
+              <RadioGroup
+                row
+                name="gender"
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
               >
-                <option value="">Select Subject</option>
-                <option value="Math">Math</option>
-                <option value="English">English</option>
-                <option value="Physics">Physics</option>
-                <option value="Chemistry">Chemistry</option>
-                <option value="Odia">Odia</option>
-                <option value="Hindi">Hindi</option>
-              </select>
+                <FormControlLabel value="Male" control={<Radio />} label="Male" />
+                <FormControlLabel value="Female" control={<Radio />} label="Female" />
+                <FormControlLabel value="Other" control={<Radio />} label="Other" />
+              </RadioGroup>
+            </Grid>
+
+            {/* Submit Button */}
+            <Grid item xs={12} textAlign="center">
+              <Button
+                type="submit"
+                variant="contained"
+                sx={{
+                  mt: 2,
+                  fontWeight: 600,
+                  fontSize: "16px",
+                  backgroundColor: "#000066",
+                  color: "white",
+                  px: 4,
+                }}
+              >
+                Submit
+              </Button>
             </Grid>
           </Grid>
-         <Grid style={{ display: "flex",marginLeft:"65px" }}>
-            <p style={{ fontWeight: 500 }}> Select your Gender:</p>
-            <RadioGroup
-              row
-              aria-labelledby="demo-form-control-label-placement"
-              name="position"
-              value={gender}
-              onChange={(e) => setGender(e.target.value)}
-            >
-              <FormControlLabel value="Male" control={<Radio />} label="Male" />
-              <FormControlLabel value="Female" control={<Radio />} label="Female" />
-              <FormControlLabel value="Other" control={<Radio />} label="Other" />
-            </RadioGroup>
-          </Grid>
-          <center>
-            <Button
-              type="submit"
-              style={{ width: "130px", marginTop: "35px", fontWeight: 600, fontSize: "16px", backgroundColor: "#000066", color: "white" }}
-            >
-              Submit
-            </Button>
-          </center>
         </form>
-      </Grid>
-    
-        <Table aria-label="simple table"  sx={{ marginTop: "50px", width: "72%", marginLeft: "20%" }} component={Paper}>
+      </Box>
+
+
+
+
+
+      <div style={{ overflowX: "auto", marginTop: "30px" }}>
+        <Table
+          style={{
+            marginLeft: "15%",
+            maxWidth: "600px",
+            margin: "0 auto",
+            textAlign: "center",
+            borderCollapse: "collapse",
+          }}
+        >
+
           <TableHead>
             <TableRow>
-              <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }}>Sl No</TableCell>
-              <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Teacher ID</TableCell>
-              <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Name</TableCell>
-              <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Email</TableCell>
-              <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Mobile No</TableCell>
-              <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Joining Date</TableCell>
-              <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Subject</TableCell>
-              <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Class</TableCell>
-              <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Gender</TableCell>
-              <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Actions</TableCell>
+              {[
+                "Sl No",
+                "Teacher ID",
+                "Name",
+                "Email",
+                "Mobile No",
+                "Joining Date",
+                "Subject",
+                "Class",
+                "Gender",
+                "Actions",
+              ].map((head, idx) => (
+                <TableCell
+                  key={idx}
+                  align={idx === 0 ? "left" : "right"}
+                  sx={{ color: "#000066", fontWeight: 600, fontSize: 15, whiteSpace: "nowrap" }}
+                >
+                  {head}
+                </TableCell>
+              ))}
             </TableRow>
           </TableHead>
+
           <TableBody>
             {teachers.map((teacher, index) => (
               <TableRow key={teacher.teacher_id}>
-                <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }}>{index + 1}</TableCell>
-                <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">{teacher.teacher_id}</TableCell>
-                <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">{teacher.name}</TableCell>
-                <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">{teacher.email}</TableCell>
-                <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">{teacher.mobile}</TableCell>
-                <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">{teacher.joining_date}</TableCell>
-                <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">{teacher.subject}</TableCell>
-                <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">{teacher.class}</TableCell>
-                <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">{teacher.gender}</TableCell>
-                <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">
+                <TableCell sx={cellStyle}>{index + 1}</TableCell>
+                <TableCell sx={cellStyle} align="right">{teacher.teacher_id}</TableCell>
+                <TableCell sx={cellStyle} align="right">{teacher.name}</TableCell>
+                <TableCell sx={cellStyle} align="right">{teacher.email}</TableCell>
+                <TableCell sx={cellStyle} align="right">{teacher.mobile}</TableCell>
+                <TableCell sx={cellStyle} align="right">{teacher.joining_date}</TableCell>
+                <TableCell sx={cellStyle} align="right">{teacher.subject}</TableCell>
+                <TableCell sx={cellStyle} align="right">{teacher.class}</TableCell>
+                <TableCell sx={cellStyle} align="right">{teacher.gender}</TableCell>
+                <TableCell sx={cellStyle} align="right">
                   <ModeEditOutlineIcon
                     onClick={() => handleEditClick(teacher)}
-                    style={{ fontSize: "18px", color: "#000066", cursor: "pointer" }}
+                    sx={{ fontSize: 18, color: "#000066", cursor: "pointer", mr: 1 }}
                   />
                   <DeleteIcon
                     onClick={() => handleDeleteClick(teacher.teacher_id)}
-                    style={{ fontSize: "18px", color: "red", cursor: "pointer" }}
+                    sx={{ fontSize: 18, color: "red", cursor: "pointer" }}
                   />
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
- 
 
-      {/* Edit Modal */}
-      <Modal open={openEdit} onClose={() => setOpenEdit(false)}>
-        <Box sx={style}>
-          <Typography variant="h6" component="h2">
-            Edit Teacher
-          </Typography>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              updateTeacher();
+
+
+
+
+
+
+
+        {/* Edit Modal */}
+
+
+        <Modal open={openEdit} onClose={() => setOpenEdit(false)}>
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: { xs: "90%", sm: "70%", md: "50%", lg: "40%" }, // responsive width
+              bgcolor: "background.paper",
+              boxShadow: 24,
+              p: 4,
+              borderRadius: 2,
+              maxHeight: "90vh",
+              overflowY: "auto",
             }}
           >
-            <input
-              type="text"
-              placeholder="Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-              style={{ width: "100%", padding: "10px", margin: "10px 0", borderRadius: "5px" }}
-            />
-            <input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              style={{ width: "100%", padding: "10px", margin: "10px 0", borderRadius: "5px" }}
-            />
-            <input
-              type="number"
-              placeholder="Mobile"
-              value={mobile}
-              onChange={(e) => setMobile(e.target.value)}
-              required
-              style={{ width: "100%", padding: "10px", margin: "10px 0", borderRadius: "5px" }}
-            />
-            <input
-              type="date"
-              placeholder="Joining Date"
-              value={joiningDate}
-              onChange={(e) => setJoiningDate(e.target.value)}
-              required
-              style={{ width: "100%", padding: "10px", margin: "10px 0", borderRadius: "5px" }}
-            />
-            <select
-              value={subject}
-              onChange={(e) => setSubject(e.target.value)}
-              required
-              style={{ width: "100%", padding: "10px", margin: "10px 0", borderRadius: "5px" }}
-            >
-              <option value="">Select Subject</option>
-              <option value="Math">Math</option>
-              <option value="English">English</option>
-              <option value="Physics">Physics</option>
-              <option value="Chemistry">Chemistry</option>
-              <option value="Odia">Odia</option>
-              <option value="Hindi">Hindi</option>
-            </select>
-            <select
-              value={teacherClass}
-              onChange={(e) => setTeacherClass(e.target.value)}
-              required
-              style={{ width: "100%", padding: "10px", margin: "10px 0", borderRadius: "5px" }}
-            >
-              <option value="">Select Class</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-              <option value="10">10</option>
-            </select>
-            <RadioGroup
-              row
-              aria-labelledby="demo-form-control-label-placement"
-              name="position"
-              value={gender}
-              onChange={(e) => setGender(e.target.value)}
-            >
-              <FormControlLabel value="Male" control={<Radio />} label="Male" />
-              <FormControlLabel value="Female" control={<Radio />} label="Female" />
-              <FormControlLabel value="Other" control={<Radio />} label="Other" />
-            </RadioGroup>
-            <Button type="submit" style={{ backgroundColor: "#000066", color: "white", marginTop: "10px" }}>
-              Update
-            </Button>
-          </form>
-        </Box>
-      </Modal>
+            <Typography variant="h6" component="h2" sx={{ mb: 2 }}>
+              Edit Teacher
+            </Typography>
 
-      
-      {/* Delete Modal */}
-      <Modal open={openDelete} onClose={() => setOpenDelete(false)}>
-        <Box sx={style}>
-          <Typography variant="h6" component="h2">
-            Are you sure you want to delete this entry?
-          </Typography>
-          <center style={{ marginTop: "30px" }}>
-            <Button style={{ backgroundColor: '#000066', color: 'white' }} onClick={confirmDelete}>
-              Yes
-            </Button>
-            <Button style={{ backgroundColor: 'red', color: 'white', marginLeft: "30px" }} onClick={() => setOpenDelete(false)}>
-              No
-            </Button>
-          </center>
-        </Box>
-      </Modal>
-      <PythonBackend />
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                updateTeacher();
+              }}
+            >
+              {[
+                { type: "text", placeholder: "Name", value: name, onChange: setName },
+                { type: "email", placeholder: "Email", value: email, onChange: setEmail },
+                { type: "number", placeholder: "Mobile", value: mobile, onChange: setMobile },
+                { type: "date", placeholder: "Joining Date", value: joiningDate, onChange: setJoiningDate },
+              ].map((field, i) => (
+                <input
+                  key={i}
+                  type={field.type}
+                  placeholder={field.placeholder}
+                  value={field.value}
+                  onChange={(e) => field.onChange(e.target.value)}
+                  required
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                    margin: "10px 0",
+                    borderRadius: "5px",
+                    boxSizing: "border-box",
+                  }}
+                />
+              ))}
+
+              <select
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+                required
+                style={{
+                  width: "100%",
+                  padding: "10px",
+                  margin: "10px 0",
+                  borderRadius: "5px",
+                }}
+              >
+                <option value="">Select Subject</option>
+                {["Math", "English", "Physics", "Chemistry", "Odia", "Hindi"].map((subj) => (
+                  <option key={subj} value={subj}>
+                    {subj}
+                  </option>
+                ))}
+              </select>
+
+              <select
+                value={teacherClass}
+                onChange={(e) => setTeacherClass(e.target.value)}
+                required
+                style={{
+                  width: "100%",
+                  padding: "10px",
+                  margin: "10px 0",
+                  borderRadius: "5px",
+                }}
+              >
+                <option value="">Select Class</option>
+                {[...Array(10)].map((_, i) => (
+                  <option key={i + 1} value={i + 1}>
+                    {i + 1}
+                  </option>
+                ))}
+              </select>
+
+              <Box sx={{ mt: 2, mb: 2 }}>
+                <Typography variant="body1" sx={{ mb: 1 }}>
+                  Gender:
+                </Typography>
+                <RadioGroup
+                  row
+                  aria-labelledby="demo-form-control-label-placement"
+                  name="gender"
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
+                >
+                  <FormControlLabel value="Male" control={<Radio />} label="Male" />
+                  <FormControlLabel value="Female" control={<Radio />} label="Female" />
+                  <FormControlLabel value="Other" control={<Radio />} label="Other" />
+                </RadioGroup>
+              </Box>
+
+              <Button
+                type="submit"
+                fullWidth
+                sx={{ backgroundColor: "#000066", color: "white", mt: 2, py: 1 }}
+              >
+                Update
+              </Button>
+            </form>
+          </Box>
+        </Modal>
+
+
+
+
+        {/* Delete Modal */}
+
+
+        <Modal open={openDelete} onClose={() => setOpenDelete(false)}>
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: { xs: "80%", sm: "60%", md: "40%", lg: "30%" }, // responsive width
+              bgcolor: "background.paper",
+              boxShadow: 24,
+              p: 4,
+              borderRadius: 2,
+              textAlign: "center",
+            }}
+          >
+            <Typography variant="h6" component="h2" sx={{ mb: 3 }}>
+              Are you sure you want to delete this entry?
+            </Typography>
+
+            <Box sx={{ display: "flex", justifyContent: "center", gap: 3 }}>
+              <Button
+                onClick={confirmDelete}
+                sx={{
+                  backgroundColor: "#000066",
+                  color: "white",
+                  "&:hover": { backgroundColor: "#000044" },
+                }}
+              >
+                Yes
+              </Button>
+              <Button
+                onClick={() => setOpenDelete(false)}
+                sx={{
+                  backgroundColor: "red",
+                  color: "white",
+                  "&:hover": { backgroundColor: "#cc0000" },
+                }}
+              >
+                No
+              </Button>
+            </Box>
+          </Box>
+        </Modal>
+
+
+        <PythonBackend />
+
+
+
+
+      </div>
+
+
+
+
+
+
+
+
     </>
   );
 };
+
+
+
+
+
+
+
+
 
 export default Teacherm;

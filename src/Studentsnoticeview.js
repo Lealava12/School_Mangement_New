@@ -26,22 +26,30 @@ const Studentsnoticeview = () => {
   return (
     <>
       <Studentsidebar />
-      <Grid className="contact-form" style={{
-        backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
-      }}>
-        <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "1%" }}>
+      <Box
+        sx={{
+
+          p: 3,
+          borderRadius: 2,
+          maxWidth: "1300px",
+          mx: "auto",
+          mt: 13,
+        }}
+      >
+        <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", }}>
           Notice Board:
         </Typography>
-        <Grid container spacing={3} style={{ marginTop: "20px" }}>
+        <Grid container spacing={3} style={{ marginTop: "10px" }}>
           {notices.map((notice) => (
             <Grid item xs={12} sm={6} md={4} key={notice.id}>
               <Box
                 sx={{
-                  width: 300,
-                  height: 200,
+                  width: '100%',
+                  maxWidth: 300,
+                  minHeight: 200,
                   borderRadius: 1,
                   bgcolor: '#FFF5EE',
-                  borderStyle: 'solid',
+                  border: '1px solid #ddd',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'center',
@@ -49,12 +57,20 @@ const Studentsnoticeview = () => {
                   padding: 2,
                   boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
                   transition: 'transform 0.2s',
+                  mx: 'auto', // center box inside Grid item
                   '&:hover': {
                     transform: 'scale(1.02)',
-                  }
+                  },
                 }}
               >
-                <Typography style={{ fontWeight: 600, marginBottom: "10px", color: "#000066" }}>
+                <Typography
+                  sx={{
+                    fontWeight: 600,
+                    marginBottom: "10px",
+                    color: "#000066",
+                    textAlign: 'center',
+                  }}
+                >
                   {notice.title}
                 </Typography>
                 {notice.file_path && (
@@ -64,7 +80,14 @@ const Studentsnoticeview = () => {
                     style={{ maxWidth: "100%", maxHeight: "100px", objectFit: "contain" }}
                   />
                 )}
-                <Typography style={{ fontSize: "12px", marginTop: "10px", color: "#666" }}>
+                <Typography
+                  sx={{
+                    fontSize: "12px",
+                    marginTop: "10px",
+                    color: "#666",
+                    textAlign: 'center',
+                  }}
+                >
                   Posted on: {new Date(notice.uploaded_at).toLocaleDateString()}
                 </Typography>
               </Box>
@@ -78,7 +101,8 @@ const Studentsnoticeview = () => {
             </Grid>
           )}
         </Grid>
-      </Grid>
+
+      </Box>
     </>
   );
 };

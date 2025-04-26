@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Grid, Typography, TextField, Button } from '@mui/material';
+import { Grid, Typography, TextField, Button,Box } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import Studentsidebar from "./Studentsidebar";
@@ -53,13 +53,16 @@ const ProfileDetails = () => {
     return (
         <>
             <Studentsidebar />
-            <Grid className="contact-form" style={{
-                backgroundColor: "#f8f8f8", 
-                padding: "20px", 
-                borderRadius: "8px", 
-                width: "70%", 
-                marginLeft: "20%"
-            }}>
+            <Box
+                sx={{
+                    backgroundColor: "#f8f8f8",
+                    p: 3,
+                    borderRadius: 2,
+                    maxWidth: "1300px",
+                    mx: "auto",
+                    mt: 13,
+                }}
+            >
                 <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "7%" }}>
                     Profile Details
                 </Typography>
@@ -232,7 +235,7 @@ const ProfileDetails = () => {
                         Loading profile details...
                     </Typography>
                 )}
-            </Grid>
+            </Box>
         </>
     );
 };

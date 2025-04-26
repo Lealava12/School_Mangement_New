@@ -3,10 +3,13 @@ import Sidebar from './Sidebar';
 import './ExamResults.css';
 import { Viewer, Worker } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
-import { Typography } from '@mui/material';
+import { Typography, TextField } from '@mui/material';
 import Box from '@mui/material/Box';
 import axios from 'axios';
 import AddSharpIcon from '@mui/icons-material/AddSharp';
+
+
+
 
 const TimeTable = () => {
   const [timeTables, setTimeTables] = useState([]);
@@ -69,34 +72,55 @@ const TimeTable = () => {
   }, []);
 
   return (
-    <div className="main-container">
+    <>
       <Sidebar />
-      <div className="container">
-        <div className="header">
-          <h1 className="exam-title">Time Table</h1>
-        </div>
 
+      <Box
+                sx={{
+                    backgroundColor: "#f8f8f8",
+                    p: 3,
+                    borderRadius: 2,
+                    maxWidth: "1300px",
+                    mx: "auto",
+                    mt: 13,
+                }}
+            >
+
+        {/* Header */}
+        <Box className="header" sx={{ textAlign: 'center', mb: 3 ,mt:5 }}>
+          <Typography variant="h4" className="exam-title" >
+            Time Table
+          </Typography>
+        </Box>
+
+        {/* Display Uploaded Timetable */}
         {pdfUrl && (
-          <div style={{ margin: '20px 0' }}>
-            <Typography style={{ color: "#000066", fontWeight: 500, fontSize: "16px" }}>
+          <Box sx={{ mb: 3 }}>
+            <Typography sx={{ color: "#000066", fontWeight: 500, fontSize: { xs: 14, sm: 16 }, mb: 1 }}>
               Uploaded Timetable:
             </Typography>
             <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js">
-              <div style={{ height: '500px', border: '1px solid #ccc' }}>
+              <Box sx={{
+                height: { xs: 300, sm: 400, md: 500 },
+                border: '1px solid #ccc',
+                overflow: 'auto',
+              }}>
                 <Viewer fileUrl={pdfUrl} />
-              </div>
+              </Box>
             </Worker>
-          </div>
+          </Box>
         )}
 
-        <Typography style={{ color: "#000066", fontWeight: 500, fontSize: "16px", marginLeft: "7%" }}>
+        {/* Upload Timetable Section */}
+        <Typography sx={{ color: "#000066", fontWeight: 500, fontSize: { xs: 14, sm: 16 }, mb: 1 }}>
           Upload Timetable:
         </Typography>
+
+        {/* File Upload Box */}
         <Box
           sx={{
-            width: 300,
+            width: { xs: '100%', sm: 300 },
             height: 200,
-            marginLeft: "7%",
             borderRadius: 1,
             bgcolor: 'primary.main',
             display: 'flex',
@@ -106,60 +130,65 @@ const TimeTable = () => {
             '&:hover': {
               bgcolor: 'primary.dark',
             },
+            mb: 2,
           }}
         >
           <label htmlFor="file" style={{ display: "flex", flexDirection: "row", cursor: 'pointer' }}>
-            <AddSharpIcon style={{ fontSize: "25px", color: "white" }} />
+            <AddSharpIcon style={{ fontSize: 25, color: "white" }} />
           </label>
           <input
-            style={{ display: "none" }}
             type="file"
             id="file"
+            style={{ display: 'none' }}
             onChange={(e) => {
               setSelectedFile(e.target.files[0]);
-              setUploadMessage(''); // Clear error message when a file is selected
+              setUploadMessage('');
             }}
           />
         </Box>
-        <input
+
+        {/* Timetable Title Input */}
+       
+        <TextField
+          fullWidth
           type="text"
           placeholder="Enter timetable title"
           value={title}
           onChange={(e) => {
             setTitle(e.target.value);
-            setUploadMessage(''); // Clear error message when title is updated
+            setUploadMessage('');
           }}
-          style={{
-            marginLeft: "7%",
-            marginTop: "10px",
-            padding: "10px",
-            width: "300px",
-            borderRadius: "5px",
-            border: "1px solid #ccc",
-          }}
+
         />
-        <button
+        {/* Upload Button */}
+        <Box
+          component="button"
           onClick={handleFileUpload}
-          style={{
-            marginLeft: "7%",
-            marginTop: "10px",
-            padding: "10px 20px",
+          sx={{
+            width: { xs: '100%', sm: 'auto' },
+            px: 3,
+            py: 1.5,
             backgroundColor: "#000066",
             color: "white",
             border: "none",
-            borderRadius: "5px",
+            borderRadius: 1,
             cursor: "pointer",
+            mb: 2,
+            mt:2,
           }}
         >
           Upload
-        </button>
+        </Box>
+
+        {/* Error or Message Display */}
         {uploadMessage && (
-          <Typography style={{ marginLeft: "7%", marginTop: "10px", color: "red" }}>
+          <Typography sx={{ color: "red", mt: 1 }}>
             {uploadMessage}
           </Typography>
         )}
-      </div>
-    </div>
+      </Box>
+
+    </>
   );
 };
 

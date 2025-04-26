@@ -73,23 +73,42 @@ const Notice = () => {
     return (
         <>
             <Sidebar />
-            <Grid className="contact-form" style={{
-                backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
+            <Box
+                sx={{
+                    backgroundColor: "#f8f8f8",
+                    p: 3,
+                    borderRadius: 2,
+                    maxWidth: "1300px",
+                    mx: "auto",
+                    mt: 13,
+                }}
+            >
+            <Grid className="contact-form" sx={{
+             
             }}>
-                <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "" }}>Notice :</Typography>
+                <Typography sx={{ color: "#000066", fontWeight: 600, fontSize: { xs: '16px', sm: '18px' }, mb: 2, mt: 6 }}>
+                    Notice :
+                </Typography>
 
                 <input
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder="Enter notice title"
-                    style={{ width: "500px", margin: "10px 0", padding: "10px", borderRadius: "5px", borderColor: "#ccc" }}
+                    style={{
+                        width: "100%",
+                        maxWidth: "500px",
+                        margin: "10px 0",
+                        padding: "10px",
+                        borderRadius: "5px",
+                        borderColor: "#ccc"
+                    }}
                 />
 
-                <Grid style={{ display: "flex", justifyContent: "space-between", marginTop: "20px" }}>
+                <Grid sx={{ display: "flex", justifyContent: "space-between", mt: 3, flexDirection: { xs: 'column', sm: 'row' } }}>
                     <Box
                         sx={{
-                            width: 300,
+                            width: { xs: '100%', sm: 300 },
                             height: 200,
                             borderRadius: 1,
                             bgcolor: 'primary.main',
@@ -98,7 +117,7 @@ const Notice = () => {
                             alignItems: 'center',
                             cursor: 'pointer',
                             '&:hover': {
-                                // bgcolor: 'primary.dark',
+                                // Add hover effect if needed
                             },
                         }}>
                         <label htmlFor="file" style={{ display: "flex", flexDirection: "row", cursor: 'pointer' }}>
@@ -115,24 +134,39 @@ const Notice = () => {
 
                 <center>
                     <Button
-                        style={{ width: "130px", marginTop: "35px", fontWeight: 600, fontSize: "16px", backgroundColor: "#000066", color: "white" }}
+                        sx={{
+                            width: "130px",
+                            mt: 4,
+                            fontWeight: 600,
+                            fontSize: { xs: '14px', sm: '16px' },
+                            backgroundColor: "#000066",
+                            color: "white"
+                        }}
                         onClick={addNotice}
                     >
                         Submit
                     </Button>
                 </center>
             </Grid>
-
-            <Grid className="contact-form" style={{
-                backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
+            </Box >
+            <Grid className="contact-form" sx={{
+                backgroundColor: "#f8f8f8", padding: 2, borderRadius: "8px", width: { xs: '90%', sm: '80%', md: '70%' }, marginLeft: 'auto', marginRight: 'auto', mt: 4
             }}>
-                <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "1%" }}>View Notices:</Typography>
-                <Grid style={{ display: "flex", justifyContent: "space-between", marginTop: "20px" }}>
+                <Typography sx={{ color: "#000066", fontWeight: 600, fontSize: { xs: '16px', sm: '18px' }, mb: 2 }}>
+                    View Notices:
+                </Typography>
+                <Grid sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    flexWrap: "wrap", // Allows wrapping on smaller screens
+                    gap: 2,
+                    mt: 2
+                }}>
                     {notices.map((notice) => (
                         <Box
                             key={notice.id}
                             sx={{
-                                width: 300,
+                                width: { xs: '100%', sm: 300 },
                                 height: 200,
                                 borderRadius: 1,
                                 bgcolor: 'gray',
@@ -140,19 +174,19 @@ const Notice = () => {
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 cursor: 'pointer',
-                               
+                                textAlign: 'center',
+                                p: 2,
                             }}
                         >
-                            <Typography style={{ color: "white", textAlign: "center" }}>{notice.title}</Typography>
-                            <Typography style={{ color: "white", textAlign: "center", fontSize: "12px" }}>
+                            <Typography sx={{ color: "white", fontSize: { xs: '14px', sm: '16px' } }}>{notice.title}</Typography>
+                            <Typography sx={{ color: "white", fontSize: { xs: '10px', sm: '12px' } }}>
                                 Uploaded on: {new Date(notice.uploaded_at).toLocaleDateString()}
                             </Typography>
-                            {/* <Button onClick={() => handleEditClick(notice)}>Edit</Button>
-                            <Button onClick={() => handleDeleteClick(notice.id)}>Delete</Button> */}
                         </Box>
                     ))}
                 </Grid>
             </Grid>
+
         </>
     );
 };

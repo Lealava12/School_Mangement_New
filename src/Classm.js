@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Grid, Button, Typography } from '@mui/material';
+import { Grid, Button, Typography ,TextField} from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -40,89 +40,131 @@ const Classm = () => {
     return (
         <>
             <Teachersidebar />
+            <Box
+                sx={{
+                    backgroundColor: "#f8f8f8",
+                    p: 3,
+                    borderRadius: 2,
+                    maxWidth: "1300px",
+                    mx: "auto",
+                    mt: 15,
+                }}
+            >
+                <Typography sx={{ color: "#000066", fontWeight: 600, fontSize: "18px", ml: "8%" }}>
+                    Class Management :
+                </Typography>
 
-            <Grid class= "contact-form" style={{
-                backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%"
+                <form style={{  }}>
+                    <Grid container spacing={3} justifyContent="center" sx={{ mt: 1 }}>
 
-            }}>
-                <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "7%" }}>Class Management :</Typography>
-                <form style={{ paddingTop: "20px", paddingBottom: "20px" }}>
-
-                    <Grid style={{ display: "flex", justifyContent: "space-evenly", }}>
-
-                        <Grid class="form-group" style={{ marginBottom: "15px" }}>
-                            <input type="text" id="Name" placeholder="Student's Name" required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }} />
+                        <Grid item xs={12} md={5}>
+                            <TextField
+                                fullWidth
+                                required
+                                id="Name"
+                                label="Student's Name"
+                                variant="outlined"
+                                sx={{ borderRadius: "5px" }}
+                            />
                         </Grid>
-                        <Grid class="form-group" style={{ marginBottom: "15px",marginLeft: "25px"  }}>
-                            <select id="venue" required style={{ width: "515px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
+
+                        <Grid item xs={12} md={5}>
+                            <TextField
+                                fullWidth
+                                required
+                                select
+                                id="class"
+                              
+                                variant="outlined"
+                                SelectProps={{ native: true }}
+                                sx={{ borderRadius: "5px" }}
+                            >
                                 <option value="">Select Class</option>
-                                <option value="saab">1</option>
-                                <option value="mercedes">2</option>
-                                <option value="audi">3 </option>
-                                <option value="audi">4 </option>
-                                <option value="audi">5 </option>
-                                <option value="audi">6 </option>
-                                <option value="audi">7 </option>
-                                <option value="audi">8 </option>
-                                <option value="audi">9 </option>
-                                <option value="audi">10 </option>
-                            </select>
-
+                                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((cls) => (
+                                    <option key={cls} value={cls}>{cls}</option>
+                                ))}
+                            </TextField>
                         </Grid>
-                    </Grid>
-                        <Grid class="form-group" style={{ marginBottom: "15px",marginLeft:"7%" }}>
-                            <select id="venue" required style={{ width: "525px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}>
+
+                        <Grid item xs={12} md={10}>
+                            <TextField
+                                fullWidth
+                                required
+                                select
+                                id="subject"
+                              
+                                variant="outlined"
+                                SelectProps={{ native: true }}
+                                sx={{ borderRadius: "5px" }}
+                            >
                                 <option value="">Select Subject</option>
-                                <option value="saab">Math</option>
-                                <option value="mercedes">English</option>
-                                <option value="audi">Physics </option>
-                                <option value="audi">Chemistry </option>
-                                <option value="audi">Odia </option>
-                                <option value="audi">Hindi </option>
-                            </select>
+                                {["Math", "English", "Physics", "Chemistry", "Odia", "Hindi"].map((subject) => (
+                                    <option key={subject} value={subject}>{subject}</option>
+                                ))}
+                            </TextField>
                         </Grid>
-                        <Typography style={{ color: "#000066", fontWeight: 500, fontSize: "16px", marginLeft: "7%" }}> Time Table Upload  :</Typography>
-                        <Box
-                        sx={{
-                            marginLeft:"7%",
-                            marginTop:"10px",
-                            width: 200,
-                            height: 200,
-                            borderRadius: 1,
-                            bgcolor: 'primary.main',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            cursor: 'pointer',
-                            '&:hover': {
-                                bgcolor: 'primary.dark',
-                            },
-                        }}>
-                        <AddSharpIcon style={{ fontSize: "25px", color: "white" }} />
-                        <input
-                            type="file"
 
-                            style={{ display: 'none' }}
-                            id="myfile"
-                            name="myfile"
-                        />
-                    </Box>
+                        <Grid item xs={12}>
+                            <Typography sx={{ color: "#000066", fontWeight: 500, fontSize: "16px", ml: "8%", mt: 2 }}>
+                                Time Table Upload :
+                            </Typography>
+                        </Grid>
 
+                        <Grid item xs={12} sx={{ ml: "8%"}}>
+                            <Box
+                                component="label"
+                                htmlFor="myfile"
+                                sx={{
+                                  
+                                    width: 200,
+                                    height: 200,
+                                    borderRadius: 1,
+                                    bgcolor: 'primary.main',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    cursor: 'pointer',
+                                    '&:hover': {
+                                        bgcolor: 'primary.dark',
+                                    },
+                                }}
+                            >
+                                <AddSharpIcon sx={{ fontSize: "25px", color: "white" }} />
+                            </Box>
+                            <input
+                                type="file"
+                                id="myfile"
+                                name="myfile"
+                                style={{ display: 'none' }}
+                            />
+                        </Grid>
+
+                    </Grid>
                 </form>
-            </Grid>
+            </Box>
 
 
 
 
-                <Table aria-label="simple table" sx={{ marginTop: "50px", width: "72%", marginLeft: "20%" }} component={Paper}>
-                    <TableHead   >
+
+            <div style={{ overflowX: "auto", marginTop: "30px" }}>
+                <Table
+                    style={{
+                        marginLeft: "15%",
+                        maxWidth: "1300px",
+                        margin: "0 auto",
+                        textAlign: "center",
+                        borderCollapse: "collapse",
+                    }}
+                >
+
+                    <TableHead>
                         <TableRow >
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px", fontStyle: " STL Calisto MT" }}>Sl No</TableCell>
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Name</TableCell>
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Class</TableCell>
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Subject</TableCell>
-                            <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Image</TableCell>            
+                            <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Image</TableCell>
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }} align="right">Action</TableCell>
                         </TableRow>
                     </TableHead>
@@ -132,7 +174,7 @@ const Classm = () => {
                             <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">Smita</TableCell>
                             <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">9th</TableCell>
                             <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">Maths</TableCell>
-                            <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right"> </TableCell>                          
+                            <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right"> </TableCell>
                             <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">
                                 <ModeEditOutlineIcon style={{ fontSize: "18px", color: "#000066", cursor: "pointer" }} />
                                 <DeleteIcon onClick={setOpenDelete1} style={{ fontSize: "18px", color: "red", cursor: "pointer" }} />
@@ -140,20 +182,22 @@ const Classm = () => {
                         </TableRow>
                     </TableBody>
                 </Table>
-        
 
 
-            <Modal open={openDelete} onClose={handleCloseDelete}>
-                <Box sx={style}>
-                    <Typography variant="h6" component="h2">
-                        Are you sure you want to delete this entry?
-                    </Typography>
-                    <center style={{ marginTop: "30px" }}>
-                        <Button style={{ backgroundColor: '#000066' }} onClick={handleCloseDelete}>Yes</Button>
-                        <Button style={{ backgroundColor: 'red', marginLeft: "30px" }} onClick={handleCloseDelete}>No</Button>
-                    </center>
-                </Box>
-            </Modal>
+
+
+                <Modal open={openDelete} onClose={handleCloseDelete}>
+                    <Box sx={style}>
+                        <Typography variant="h6" component="h2">
+                            Are you sure you want to delete this entry?
+                        </Typography>
+                        <center style={{ marginTop: "30px" }}>
+                            <Button style={{ backgroundColor: '#000066' }} onClick={handleCloseDelete}>Yes</Button>
+                            <Button style={{ backgroundColor: 'red', marginLeft: "30px" }} onClick={handleCloseDelete}>No</Button>
+                        </center>
+                    </Box>
+                </Modal>
+            </div>
 
         </>
 

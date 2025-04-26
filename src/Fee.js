@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
-import { Grid, Button, Typography } from '@mui/material';
+import {
+    Grid, Button, Typography, TextField, InputLabel,
+    MenuItem,
+    FormControl, Select,
+} from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -124,7 +128,7 @@ const Fee = () => {
         setPaymentMode('');
         setPaymentDate('');
         setReceiptNo('');
-        };
+    };
 
     // Handle edit button click
     const handleEditClick = (fee) => {
@@ -191,144 +195,137 @@ const Fee = () => {
     return (
         <>
             <Sidebar />
-            <Grid className="contact-form" style={{ backgroundColor: "#f8f8f8", padding: "20px", borderRadius: "8px", width: "70%", marginLeft: "20%" }}>
-                <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", marginLeft: "65px" }}>Student's Fee Details and Fee Reports:</Typography>
-                <form onSubmit={handleSubmit} style={{ paddingTop: "20px", paddingBottom: "20px" }}>
-                    {/* Student's Fee Details Section */}
-                    <Grid style={{ display: "flex", justifyContent: "space-evenly" ,}}>
-                        <Grid className="form-group" style={{ marginBottom: "15px",marginLeft: "25px"  }}>
-                            <input
-                                type="text"
-                                placeholder="Enter Student ID"
+
+            <Box
+                sx={{
+                    backgroundColor: "#f8f8f8",
+                    p: 3,
+                    borderRadius: 2,
+                    maxWidth: "1300px",
+                    mx: "auto",
+                    mt: 13,
+                }}
+            >
+                <Typography
+                    sx={{ color: "#000066", fontWeight: 600, fontSize: 18, mb: 2,mt:1 }}
+                >
+                    Student's Fee Details and Fee Reports:
+                </Typography>
+
+                <form onSubmit={handleSubmit}>
+                    <Grid container spacing={2}>
+                        {/* Student ID and Name */}
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                fullWidth
+                                label="Enter Student ID"
                                 value={studentId}
                                 onChange={(e) => setStudentId(e.target.value)}
                                 onBlur={fetchStudentDetails}
                                 required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
                             />
                         </Grid>
-                        <Grid className="form-group" style={{ marginBottom: "15px" }}>
-                            <input
-                                type="text"
-                                placeholder="Student's Name"
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                fullWidth
+                                label="Student's Name"
                                 value={studentName}
-                                readOnly
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066", backgroundColor: "#f0f0f0" }}
+                                InputProps={{ readOnly: true }}
+                                sx={{ backgroundColor: "#f0f0f0" }}
                             />
                         </Grid>
-                    </Grid>
-                   <Grid style={{ display: "flex",marginLeft:"100px" }}>
-                        <Grid className="form-group" style={{ marginBottom: "15px" ,}}>
-                            <input
-                                type="text"
-                                placeholder="Class"
+
+                        {/* Class */}
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                fullWidth
+                                label="Class"
                                 value={studentClass}
-                                readOnly
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066", backgroundColor: "#f0f0f0" }}
+                                InputProps={{ readOnly: true }}
+                                sx={{ backgroundColor: "#f0f0f0" }}
                             />
                         </Grid>
-                        {/* <Grid className="form-group" style={{ marginBottom: "15px" }}>
-                            <input
-                                type="text"
-                                placeholder="Roll No"
-                                value={rollNo}
-                                readOnly
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066", backgroundColor: "#f0f0f0" }}
-                            />
-                        </Grid> */}
-                    </Grid>
-                    <Grid style={{ display: "flex", justifyContent: "space-evenly" }}>
-                        <Grid className="form-group" style={{ marginBottom: "15px" ,marginLeft: "25px"}}>
-                            <input
+
+                        {/* Amount and Payment Mode */}
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                fullWidth
                                 type="number"
-                                placeholder="Amount"
+                                label="Amount"
                                 value={amount}
                                 onChange={(e) => setAmount(e.target.value)}
                                 required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
                             />
                         </Grid>
-                        <Grid className="form-group" style={{ marginBottom: "15px" }}>
-                            <select
-                                value={paymentMode}
-                                onChange={(e) => setPaymentMode(e.target.value)}
-                                required
-                                style={{ width: "520px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
-                            >
-                                <option value="">Payment Mode</option>
-                                <option value="Cash">Cash</option>
-                                <option value="Online">Online</option>
-                                <option value="Bank">Bank</option>
-                            </select>
+                        <Grid item xs={12} md={6}>
+                            <FormControl fullWidth required>
+                                <InputLabel>Payment Mode</InputLabel>
+                                <Select
+                                    value={paymentMode}
+                                    onChange={(e) => setPaymentMode(e.target.value)}
+                                    label="Payment Mode"
+                                >
+                                    <MenuItem value="Cash">Cash</MenuItem>
+                                    <MenuItem value="Online">Online</MenuItem>
+                                    <MenuItem value="Bank">Bank</MenuItem>
+                                </Select>
+                            </FormControl>
                         </Grid>
-                    </Grid>
-                    <Grid style={{ display: "flex", justifyContent: "space-evenly" }}>
-                        <Grid className="form-group" style={{ marginBottom: "15px",marginLeft: "25px" }}>
-                            <input
+
+                        {/* Payment Date and Receipt No */}
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                fullWidth
                                 type="date"
-                                placeholder="Payment Date"
+                                label="Payment Date"
+                                InputLabelProps={{ shrink: true }}
                                 value={paymentDate}
                                 onChange={(e) => setPaymentDate(e.target.value)}
                                 required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
                             />
                         </Grid>
-                        <Grid className="form-group" style={{ marginBottom: "15px" }}>
-                            <input
-                                type="text"
-                                placeholder="Receipt No"
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                fullWidth
+                                label="Receipt No"
                                 value={receiptNo}
                                 onChange={(e) => setReceiptNo(e.target.value)}
                                 required
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
                             />
                         </Grid>
                     </Grid>
 
-                    {/* Fee Reports Section */}
-                    <Grid style={{ display: "flex", justifyContent: "space-evenly", marginTop: "20px" }}>
-                        {/* <Grid className="form-group" style={{ marginBottom: "15px" }}>
-                            <select
-                                value={filterClass}
-                                onChange={(e) => setFilterClass(e.target.value)}
-                                style={{ width: "500px", height: "40px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
-                            >
-                                <option value="">Select Class</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
-                                <option value="7">7</option>
-                                <option value="8">8</option>
-                                <option value="9">9</option>
-                                <option value="10">10</option>
-                            </select>
-                        </Grid> */}
-                        {/* <Grid className="form-group" style={{ marginBottom: "15px" }}>
-                            <input
-                                type="date"
-                                value={filterDate}
-                                onChange={(e) => setFilterDate(e.target.value)}
-                                style={{ width: "500px", padding: "10px", borderRadius: "5px", borderColor: "1px solid #000066" }}
-                            />
-                        </Grid> */}
-                    </Grid>
-
-                    {/* Single Submit Button */}
-                    <center>
+                    {/* Submit Button */}
+                    <Box textAlign="center" mt={4}>
                         <Button
                             type="submit"
-                            style={{ width: "130px", marginTop: "35px", fontWeight: 600, fontSize: "16px", backgroundColor: "#000066", color: "white" }}
+                            variant="contained"
+                            sx={{
+                                width: 130,
+                                fontWeight: 600,
+                                fontSize: 16,
+                                backgroundColor: "#000066",
+                                color: "white",
+                            }}
                         >
                             Submit
                         </Button>
-                    </center>
+                    </Box>
                 </form>
-            </Grid>
-            
-                <Table aria-label="simple table" sx={{ marginTop: "50px", width: "72%", marginLeft: "20%" }} component={Paper}>
+            </Box>
+
+
+            <div style={{ overflowX: "auto", marginTop: "30px" }}>
+                <Table
+                    style={{
+                        marginLeft: "15%",
+                        maxWidth: "600px",
+                        margin: "0 auto",
+                        textAlign: "center",
+                        borderCollapse: "collapse",
+                    }}
+                >
+
                     <TableHead>
                         <TableRow>
                             <TableCell style={{ color: "#000066", fontWeight: 600, fontSize: "15px" }}>Sl No</TableCell>
@@ -367,73 +364,125 @@ const Fee = () => {
                         ))}
                     </TableBody>
                 </Table>
-        
 
-            {/* Edit Modal */}
-            <Modal open={openEdit} onClose={() => setOpenEdit(false)}>
-                <Box sx={style}>
-                    <Typography variant="h6" component="h2">
-                        Edit Fee
-                    </Typography>
-                    <form onSubmit={updateFee}>
-                        <input
-                            type="number"
-                            placeholder="Amount"
-                            value={amount}
-                            onChange={(e) => setAmount(e.target.value)}
-                            required
-                            style={{ width: "100%", padding: "10px", margin: "10px 0", borderRadius: "5px" }}
-                        />
-                        <select
-                            value={paymentMode}
-                            onChange={(e) => setPaymentMode(e.target.value)}
-                            required
-                            style={{ width: "100%", padding: "10px", margin: "10px 0", borderRadius: "5px" }}
-                        >
-                            <option value="">Payment Mode</option>
-                            <option value="Cash">Cash</option>
-                            <option value="Online">Online</option>
-                            <option value="Bank">Bank</option>
-                        </select>
-                        <input
-                            type="date"
-                            placeholder="Payment Date"
-                            value={paymentDate}
-                            onChange={(e) => setPaymentDate(e.target.value)}
-                            required
-                            style={{ width: "100%", padding: "10px", margin: "10px 0", borderRadius: "5px" }}
-                        />
-                        <input
-                            type="text"
-                            placeholder="Receipt No"
-                            value={receiptNo}
-                            onChange={(e) => setReceiptNo(e.target.value)}
-                            required
-                            style={{ width: "100%", padding: "10px", margin: "10px 0", borderRadius: "5px" }}
-                        />
-                        <Button type="submit" style={{ backgroundColor: "#000066", color: "white", marginTop: "10px" }}>
-                            Update
-                        </Button>
-                    </form>
-                </Box>
-            </Modal>
 
-            {/* Delete Modal */}
-            <Modal open={openDelete} onClose={() => setOpenDelete(false)}>
-                <Box sx={style}>
-                    <Typography variant="h6" component="h2">
-                        Are you sure you want to delete this fee record?
-                    </Typography>
-                    <center style={{ marginTop: "30px" }}>
-                        <Button style={{ backgroundColor: '#000066', color: 'white' }} onClick={confirmDelete}>
-                            Yes
-                        </Button>
-                        <Button style={{ backgroundColor: 'red', color: 'white', marginLeft: "30px" }} onClick={() => setOpenDelete(false)}>
-                            No
-                        </Button>
-                    </center>
-                </Box>
-            </Modal>
+                {/* Edit Modal */}
+               
+                <Modal open={openEdit} onClose={() => setOpenEdit(false)}>
+                    <Box
+                        sx={{
+                            position: "absolute",
+                            top: "50%",
+                            left: "50%",
+                            transform: "translate(-50%, -50%)",
+                            width: { xs: "90%", sm: 400, md: 500 },
+                            bgcolor: "background.paper",
+                            borderRadius: 2,
+                            boxShadow: 24,
+                            p: 4,
+                        }}
+                    >
+                        <Typography variant="h6" component="h2" sx={{ mb: 2 }}>
+                            Edit Fee
+                        </Typography>
+                        <form onSubmit={updateFee}>
+                            <TextField
+                                fullWidth
+                                type="number"
+                                label="Amount"
+                                value={amount}
+                                onChange={(e) => setAmount(e.target.value)}
+                                required
+                                sx={{ mb: 2 }}
+                            />
+                            <FormControl fullWidth required sx={{ mb: 2 }}>
+                                <InputLabel>Payment Mode</InputLabel>
+                                <Select
+                                    value={paymentMode}
+                                    label="Payment Mode"
+                                    onChange={(e) => setPaymentMode(e.target.value)}
+                                >
+                                    <MenuItem value="Cash">Cash</MenuItem>
+                                    <MenuItem value="Online">Online</MenuItem>
+                                    <MenuItem value="Bank">Bank</MenuItem>
+                                </Select>
+                            </FormControl>
+                            <TextField
+                                fullWidth
+                                type="date"
+                                label="Payment Date"
+                                InputLabelProps={{ shrink: true }}
+                                value={paymentDate}
+                                onChange={(e) => setPaymentDate(e.target.value)}
+                                required
+                                sx={{ mb: 2 }}
+                            />
+                            <TextField
+                                fullWidth
+                                label="Receipt No"
+                                value={receiptNo}
+                                onChange={(e) => setReceiptNo(e.target.value)}
+                                required
+                                sx={{ mb: 2 }}
+                            />
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                sx={{ backgroundColor: "#000066", color: "white", width: "100%" }}
+                            >
+                                Update
+                            </Button>
+                        </form>
+                    </Box>
+                </Modal>
+
+
+                {/* Delete Modal */}
+                <Modal open={openDelete} onClose={() => setOpenDelete(false)}>
+                    <Box
+                        sx={{
+                            position: "absolute",
+                            top: "50%",
+                            left: "50%",
+                            transform: "translate(-50%, -50%)",
+                            width: { xs: "80%", sm: "60%", md: "40%", lg: "30%" }, // responsive width
+                            bgcolor: "background.paper",
+                            boxShadow: 24,
+                            p: 4,
+                            borderRadius: 2,
+                            textAlign: "center",
+                        }}
+                    >
+                        <Typography variant="h6" component="h2" sx={{ mb: 3 }}>
+                            Are you sure you want to delete this entry?
+                        </Typography>
+
+                        <Box sx={{ display: "flex", justifyContent: "center", gap: 3 }}>
+                            <Button
+                                onClick={confirmDelete}
+                                sx={{
+                                    backgroundColor: "#000066",
+                                    color: "white",
+                                    "&:hover": { backgroundColor: "#000044" },
+                                }}
+                            >
+                                Yes
+                            </Button>
+                            <Button
+                                onClick={() => setOpenDelete(false)}
+                                sx={{
+                                    backgroundColor: "red",
+                                    color: "white",
+                                    "&:hover": { backgroundColor: "#cc0000" },
+                                }}
+                            >
+                                No
+                            </Button>
+                        </Box>
+                    </Box>
+                </Modal>
+
+            </div>
         </>
     );
 };

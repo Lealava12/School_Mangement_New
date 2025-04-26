@@ -20,6 +20,7 @@ import Teachersidebar from './Teachersidebar';
 import Studentsidebar from "./Studentsidebar";
 import TeacherDashboard from './TeacherDashboard';
 import StudentDashboard from './StudentDashboard';
+import Studentsmarksentry from './Studentsmarksentry';
 
 const App = () => {
   return (
@@ -44,6 +45,8 @@ const App = () => {
         <Route path="/Teachersidebar" element={<Teachersidebar />} />
         <Route path="/Studentsidebar" element={<Studentsidebar />} />
         <Route path="/StudentDashboard" element={<StudentDashboard />} />
+        <Route path="/Studentsmarksentry" element={<Studentsmarksentry />} />
+
 
 
       </Routes>
@@ -52,3 +55,27 @@ const App = () => {
   );
 };
 export default App;
+
+
+// import { Navigate } from 'react-router-dom';
+
+// function App() {
+//   const isLoggedIn = true; // You can set this based on your authentication state
+
+//   if (isLoggedIn) {
+//     return <Navigate to="/Teacherm" />;
+//   }
+
+//   return (
+//     <Router>
+//       <Routes>
+//         <Route path="/" element={<Login />} />
+//         <Route path="/Teacherm" element={<TeacherManagement />} />
+//         <Route path="/Studentm" element={<StudentManagement />} />
+//         <Route path="/Fee" element={<FeeManagement />} />
+//         <Route path="/TimeTable" element={<TimeTable />} />
+//         <Route path="/Notice" element={<Notice />} />
+//       </Routes>
+//     </Router>
+//   );
+// }
