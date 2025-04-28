@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Grid, Typography, TextField, Button,Box } from '@mui/material';
+import { Grid, Typography, TextField, Button, Box } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import Studentsidebar from "./Studentsidebar";
@@ -11,8 +11,31 @@ const ProfileDetails = () => {
     const [error, setError] = useState('');
     const [searchId, setSearchId] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [loggedInStudentId, setLoggedInStudentId] = useState(null);
     const navigate = useNavigate();
     const apiBaseUrl = 'http://localhost:5000/api';
+
+    // Fetch the logged-in user's student_id on component mount
+    useEffect(() => {
+        const fetchLoginStatus = async () => {
+            try {
+                const statusRes = await axios.get(`${apiBaseUrl}/login/status`, {
+                    withCredentials: true,
+                });
+
+                if (statusRes.data.isLoggedIn) {
+                    setLoggedInStudentId(statusRes.data.user_id); // Set the logged-in user's student_id
+                } else {
+                    navigate('/signin'); // Redirect to signin if not logged in
+                }
+            } catch (err) {
+                console.error("Error fetching login status:", err);
+                navigate('/signin'); // Redirect to signin on error
+            }
+        };
+
+        fetchLoginStatus();
+    }, [navigate]);
 
     const handleSearch = async () => {
         if (!searchId.trim()) {
@@ -20,15 +43,20 @@ const ProfileDetails = () => {
             return;
         }
 
+        if (searchId !== loggedInStudentId) {
+            setError('You can only view your own profile details.');
+            setUserDetails(null);
+            return;
+        }
+
         setIsLoading(true);
         try {
-            // Try to get details directly
             const detailsRes = await axios.get(`${apiBaseUrl}/details`, {
                 params: { student_id: searchId },
                 withCredentials: true,
                 headers: {
-                    'Content-Type': 'application/json'
-                }
+                    'Content-Type': 'application/json',
+                },
             });
 
             if (detailsRes.data.user_details) {
@@ -38,7 +66,7 @@ const ProfileDetails = () => {
                 setError('Student not found');
             }
         } catch (err) {
-            console.error("Error:", err);
+            console.error("Error fetching profile details:", err);
             setUserDetails(null);
             if (err.response?.status === 401) {
                 navigate('/signin');

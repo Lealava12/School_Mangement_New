@@ -13,7 +13,7 @@ import Studentm from './Studentm';
 import Classm from './Classm'; // Add other components as needed
 import ExamResults from './ExamResults';
 import TimeTable from './TimeTable';
-import MarksEntry from './MarksEntry';
+import MarksEntry from './Marksentry';
 import Assignview from './Assignview';
 import Resultview from './Resultview';
 import Teachersidebar from './Teachersidebar';

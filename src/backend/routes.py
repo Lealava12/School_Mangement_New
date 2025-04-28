@@ -51,11 +51,14 @@ def manage_teachers():
         connection = get_connection()
         cursor = connection.cursor(dictionary=True)
         try:
-            cursor.execute("SELECT teacher_id, name, email, mobile, joining_date, subject, class, gender FROM Teachers")
-            Teachers = cursor.fetchall()
-            return jsonify(Teachers), 200
+            cursor.execute("""
+                SELECT teacher_id, name, email, mobile, joining_date, subject, `class`, gender 
+                FROM Teachers
+            """)
+            teachers = cursor.fetchall()
+            return jsonify(teachers), 200
         except Exception as e:
-            return jsonify({"error": f"Failed to fetch Teachers: {str(e)}"}), 500
+            return jsonify({"error": f"Failed to fetch teachers: {str(e)}"}), 500
         finally:
             cursor.close()
             connection.close()
@@ -63,14 +66,15 @@ def manage_teachers():
     elif request.method == 'POST':
         data = request.json
         required_fields = ['name', 'email', 'mobile', 'joining_date', 'subject', 'class', 'gender']
-        if not all(data.get(field) for field in required_fields):
+
+        if not data or not all(data.get(field) for field in required_fields):
             return jsonify({"error": "All fields are required!"}), 400
 
         connection = get_connection()
         cursor = connection.cursor()
         try:
             insert_query = """
-                INSERT INTO Teachers (name, email, mobile, joining_date, subject, class, gender)
+                INSERT INTO Teachers (name, email, mobile, joining_date, subject, `class`, gender)
                 VALUES (%s, %s, %s, %s, %s, %s, %s)
             """
             cursor.execute(insert_query, (
@@ -79,61 +83,78 @@ def manage_teachers():
                 data['class'], data['gender']
             ))
             connection.commit()
-            
-            # Retrieve the auto-generated teacher_id
-            teacher_id_query = "SELECT teacher_id FROM Teachers WHERE auto_id = LAST_INSERT_ID()"
-            cursor.execute(teacher_id_query)
-            teacher_id = cursor.fetchone()[0]
-            
+
+            auto_id = cursor.lastrowid  # Get auto-incremented ID
+            teacher_id = f"TEACH{auto_id}"  # Generate teacher_id like 'TEACH5'
+
+            # Update the newly inserted record to set teacher_id
+            update_query = "UPDATE Teachers SET teacher_id = %s WHERE auto_id = %s"
+            cursor.execute(update_query, (teacher_id, auto_id))
+            connection.commit()
+
             return jsonify({"message": "Teacher added successfully!", "teacher_id": teacher_id}), 201
         except Exception as e:
+            connection.rollback()
             return jsonify({"error": f"Failed to add teacher: {str(e)}"}), 500
         finally:
             cursor.close()
             connection.close()
 
-@user_routes.route('/Teachers/<int:auto_id>', methods=['PUT'])
-def update_teacher(auto_id):
+@user_routes.route('/Teachers/<string:teacher_id>', methods=['PUT'])
+def update_teacher(teacher_id):
     data = request.json
     required_fields = ['name', 'email', 'mobile', 'joining_date', 'subject', 'class', 'gender']
-    if not all(data.get(field) for field in required_fields):
+
+    if not data or not all(data.get(field) for field in required_fields):
         return jsonify({"error": "All fields are required!"}), 400
 
     connection = get_connection()
     cursor = connection.cursor()
     try:
-        query = """
+        update_query = """
             UPDATE Teachers
-            SET name = %s, email = %s, mobile = %s, joining_date = %s, subject = %s, class = %s, gender = %s
-            WHERE auto_id = %s
+            SET name = %s, email = %s, mobile = %s, joining_date = %s, subject = %s, `class` = %s, gender = %s
+            WHERE teacher_id = %s
         """
-        cursor.execute(query, (
+        cursor.execute(update_query, (
             data['name'], data['email'], data['mobile'],
             data['joining_date'], data['subject'],
-            data['class'], data['gender'], auto_id
+            data['class'], data['gender'], teacher_id
         ))
         connection.commit()
+
         if cursor.rowcount == 0:
             return jsonify({"error": "Teacher not found!"}), 404
+
         return jsonify({"message": "Teacher updated successfully!"}), 200
     except Exception as e:
+        connection.rollback()
         return jsonify({"error": f"Failed to update teacher: {str(e)}"}), 500
     finally:
         cursor.close()
         connection.close()
 
-@user_routes.route('/Teachers/<int:auto_id>', methods=['DELETE'])
-def delete_teacher(auto_id):
+@user_routes.route('/Teachers/<string:teacher_id>', methods=['DELETE'])
+def delete_teacher(teacher_id):
     connection = get_connection()
-    cursor = connection.cursor()
+    cursor = connection.cursor(dictionary=True)  # optional: dictionary cursor for better handling
     try:
-        query = "DELETE FROM Teachers WHERE auto_id = %s"
-        cursor.execute(query, (auto_id,))
-        connection.commit()
-        if cursor.rowcount == 0:
+        # First check if the teacher exists
+        select_query = "SELECT * FROM Teachers WHERE teacher_id = %s"
+        cursor.execute(select_query, (teacher_id,))
+        teacher = cursor.fetchone()
+
+        if not teacher:
             return jsonify({"error": "Teacher not found!"}), 404
+
+        # Delete the teacher
+        delete_query = "DELETE FROM Teachers WHERE teacher_id = %s"
+        cursor.execute(delete_query, (teacher_id,))
+        connection.commit()
+
         return jsonify({"message": "Teacher deleted successfully!"}), 200
     except Exception as e:
+        connection.rollback()
         return jsonify({"error": f"Failed to delete teacher: {str(e)}"}), 500
     finally:
         cursor.close()
@@ -250,13 +271,14 @@ def manage_students():
             if not student_id:
                 return jsonify({"error": "Student ID is required"}), 400
 
-            # Check for existing student by auto_id
-            cursor.execute("SELECT auto_id FROM Students WHERE auto_id = %s", (student_id,))
-            
+            # Check for existing student by student_id
+            cursor.execute("SELECT auto_id FROM Students WHERE student_id = %s", (student_id,))
+    
             if not cursor.fetchone():
                 return jsonify({"error": "Student not found!"}), 404
 
-            cursor.execute("DELETE FROM Students WHERE auto_id = %s", (student_id,))
+            # Delete student by student_id
+            cursor.execute("DELETE FROM Students WHERE student_id = %s", (student_id,))
             connection.commit()
 
             return jsonify({"message": "Student deleted successfully!"}), 200
@@ -472,7 +494,7 @@ def manage_assignments():
     try:
         # GET: Fetch assignments
         if request.method == 'GET':
-            cursor.execute("SELECT * FROM assignments")
+            cursor.execute("SELECT * FROM assignments ORDER BY date DESC")
             assignments = cursor.fetchall()
             return jsonify(assignments), 200
 
@@ -579,6 +601,56 @@ def add_security_headers(response):
     response.headers['Expires'] = '0'
     return response
 
+@user_routes.route('/assignments', methods=['GET'])
+def get_student_assignments():
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    try:
+        # Step 1: Check if user is logged in
+        if 'user_id' not in session:
+            return jsonify({
+                "isLoggedIn": False
+            }), 401
+
+        try:
+            # Step 2: Get student class using student_id
+            student_id = session['user_id']
+
+            cursor.execute("""
+                SELECT class 
+                FROM Students 
+                WHERE student_id = %s
+            """, (student_id,))
+            student = cursor.fetchone()
+
+            if not student:
+                return jsonify({"error": "Student not found"}), 404
+
+            student_class = student['class']
+
+            # Step 3: Fetch assignments for the student's class
+            cursor.execute("""
+                SELECT id, title, date, description, file_path 
+                FROM assignments 
+                WHERE class = %s
+                ORDER BY date DESC
+            """, (student_class,))
+            assignments = cursor.fetchall()
+
+            return jsonify({
+                "assignments": assignments
+            }), 200
+
+        finally:
+            cursor.close()
+            conn.close()
+
+    except Exception as e:
+        print(f"Error fetching student assignments: {str(e)}")
+        return jsonify({
+            "error": "Failed to fetch assignments"
+        }), 500
+
 @user_routes.route('/admin/signup', methods=['POST'])
 def signup_user():
     try:
@@ -679,8 +751,8 @@ def login_user():
                 "isLoggedIn": True,
                 "user_id": user['user_id'],
                 "user_type": user['user_type'],
-                "redirect": "/StudentDashboard" if user['user_type'] == '3' 
-                          else "/TeacherDashboard" if user['user_type'] == '2' 
+                "redirect": "/ProfileDetails" if user['user_type'] == '3' 
+                          else "/Attendancem" if user['user_type'] == '2' 
                           else "/Teacherm"
             })
 
@@ -727,7 +799,7 @@ def logout_admin():
             "isLoggedIn": False,
             "redirect": "/signin"
         }), 500
-
+    
 @user_routes.route('/login/status', methods=['GET'])
 def check_login_status():
     try:
@@ -743,14 +815,24 @@ def check_login_status():
                 user = cursor.fetchone()
 
                 if user:
-                    return jsonify({
+                    response = jsonify({
                         "isLoggedIn": True,
                         "user_id": user['user_id'],
                         "user_type": user['user_type'],
-                        "redirect": "/StudentDashboard" if user['user_type'] == '3' 
-                                  else "/TeacherDashboard" if user['user_type'] == '2' 
+                        "redirect": "/ProfileDetails" if user['user_type'] == '3' 
+                                  else "/Attendancem" if user['user_type'] == '2' 
                                   else "/Teacherm"
-                    }), 200
+                    })
+                    # Refresh session cookie (optional)
+                    response.set_cookie(
+                        'session',
+                        session['user_id'],
+                        httponly=True,
+                        samesite='Lax',
+                        secure=False,  # Set True in production
+                        max_age=86400
+                    )
+                    return response, 200
             finally:
                 cursor.close()
                 connection.close()
@@ -1048,6 +1130,41 @@ def manage_attendance():
     finally:
         cursor.close()
         conn.close()
+
+@user_routes.route('/attend', methods=['GET'])
+def attendance():
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    try:
+        # ----------------- GET -----------------
+        if request.method == 'GET':
+            # Check if user is logged in
+            if 'user_id' not in session:
+                return jsonify({"error": "Unauthorized access"}), 401
+
+            student_id = session['user_id']
+
+            # Fetch attendance only for the logged-in student
+            cursor.execute("""
+                SELECT * FROM attendance 
+                WHERE student_id = %s
+                ORDER BY attendance_date DESC
+            """, (student_id,))
+            data = cursor.fetchall()
+
+            return jsonify(data), 200
+
+        # (POST, DELETE, PUT code here if needed...)
+
+    except Exception as e:
+        print(f"Error in manage_attendance: {str(e)}")
+        return jsonify({"error": "Something went wrong"}), 500
+
+    finally:
+        cursor.close()
+        conn.close()
+
 @user_routes.route('/admin/marks', methods=['GET'])
 def get_marks():
     try:

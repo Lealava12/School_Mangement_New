@@ -1,40 +1,55 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Added useNavigate for navigation
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Signin.css';
 
 const Login = () => {
   const [rollNo, setRollNo] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(''); // Added error state for better error handling
-  const navigate = useNavigate(); // Initialize useNavigate for navigation
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
   const apiBaseUrl = 'http://localhost:5000/api';
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    axios
-      .post(`${apiBaseUrl}/login`, { roll_no: rollNo, password })
-      .then((response) => {
-        alert(response.data.message);
+    try {
+      // Perform login
+      const loginResponse = await axios.post(
+        `${apiBaseUrl}/login`,
+        { roll_no: rollNo, password },
+        { withCredentials: true } // Ensure cookies are sent with the request
+      );
+
+      alert(loginResponse.data.message);
+
+      // Check login status
+      const statusResponse = await axios.get(`${apiBaseUrl}/login/status`, {
+        withCredentials: true, // Ensure cookies are sent with the request
+      });
+
+      if (statusResponse.data.isLoggedIn) {
+        const { user_id, user_type, redirect } = statusResponse.data;
 
         // Store user info in local storage
-        const { user_type, pages, redirect } = response.data;
+        localStorage.setItem('user_id', user_id);
         localStorage.setItem('user_type', user_type);
-        localStorage.setItem('user_pages', JSON.stringify(pages));
 
         // Redirect user to the appropriate dashboard
         if (redirect) {
-          navigate(redirect); // Use navigate for redirection
+          navigate(redirect);
         }
-      })
-      .catch((error) => {
-        if (error.response && error.response.data && error.response.data.error) {
-          setError(error.response.data.error); // Display error message
-        } else {
-          console.error('Error during login:', error);
-        }
-      });
+      } else {
+        setError('Login failed. Please try again.');
+      }
+    } catch (err) {
+      if (err.response && err.response.data && err.response.data.error) {
+        setError(err.response.data.error);
+      } else {
+        console.error('Error during login:', err);
+        setError('An unexpected error occurred. Please try again.');
+      }
+    }
   };
 
   return (
@@ -52,7 +67,6 @@ const Login = () => {
       }}
     >
       <div className="containers">
-        {/* <h1 className="title">SCHOOL MANAGEMENT</h1> */}
         <div className="login-box">
           <div className="avatar">
             <img
@@ -64,21 +78,12 @@ const Login = () => {
           <form onSubmit={handleLogin}>
             {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
 
-            <style>
-              {`
-                .white-placeholder::placeholder {
-                  color: white;
-                }
-              `}
-            </style>
-
-            
             <div className="user-box">
               <input
                 type="text"
                 value={rollNo}
                 onChange={(e) => setRollNo(e.target.value)}
-                placeholder='User ID'
+                placeholder="User ID"
                 required
                 className="white-placeholder"
               />
@@ -88,7 +93,7 @@ const Login = () => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder='Password'
+                placeholder="Password"
                 required
                 className="white-placeholder"
               />

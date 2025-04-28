@@ -116,15 +116,27 @@ const Studentm = () => {
     };
 
     // Delete a student
-    const deleteStudent = (id) => {
+    const deleteStudent = (studentId) => {
+        if (!studentId) {
+            alert('Error: Student ID is required!');
+            return;
+        }
+
+        console.log('Attempting to delete student with ID:', studentId); // Debugging log
+
         axios
-            .delete(`${apiBaseUrl}/admin/Students?id=${id}`)
+            .delete(`${apiBaseUrl}/admin/Students`, {
+                params: { id: studentId }, // Pass student_id as a query parameter
+            })
             .then((response) => {
-                alert(response.data.message);
+                alert(response.data.message); // Show success message
                 fetchStudents(); // Refresh the list of students
             })
             .catch((error) => {
-                alert(error.response?.data?.error || 'Error deleting student!');
+                console.error('Delete student error:', error);
+
+                // Display a detailed error message
+                alert(error.response?.data?.error || 'Error deleting student! Please check the console for details.');
             });
     };
 
@@ -160,9 +172,14 @@ const Studentm = () => {
     };
 
     // Handle delete button click
-    const handleDeleteClick = (id) => {
-        setStudentId(id);
-        setOpenDelete(true);
+    const handleDeleteClick = (studentId) => {
+        if (!studentId) {
+            console.error('Error: studentId is undefined or null!');
+            return;
+        }
+        console.log('Setting studentId for deletion:', studentId); // Debugging log
+        setStudentId(studentId); // Set the studentId state
+        setOpenDelete(true); // Open the delete confirmation modal
     };
 
     // Confirm delete
@@ -408,7 +425,7 @@ const Studentm = () => {
                                         style={{ fontSize: "18px", color: "#000066", cursor: "pointer" }}
                                     />
                                     <DeleteIcon
-                                        onClick={() => handleDeleteClick(student.student_id)}
+                                        onClick={() => handleDeleteClick(student.student_id)} // Pass student.student_id here
                                         style={{ fontSize: "18px", color: "red", cursor: "pointer" }}
                                     />
                                 </TableCell>

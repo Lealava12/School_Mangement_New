@@ -29,7 +29,9 @@ import Studentsnoticeview  from './Studentsnoticeview';
 import TeacherDashboard from './TeacherDashboard';
 import Sidebar  from "./Sidebar";
 import Dashboard from "./Dashboard";
-import  TimeTable from  "./TimeTable"
+import  TimeTable from  "./TimeTable";
+import Attendanceview from './Attendanceview';
+import Assignmentview from './Assignmentview';
 
 
 
@@ -71,6 +73,8 @@ root.render(
          <Route path="/Sidebar" element={<Sidebar />} />
          <Route path="/Dashboard" element={<Dashboard />} />
          <Route path="/TimeTable" element={<TimeTable />} />
+          <Route path="/Attendanceview" element={<Attendanceview />} />
+          <Route path="/Assignmentview" element={<Assignmentview />} />
 
 
 

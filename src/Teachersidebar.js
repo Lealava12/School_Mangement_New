@@ -1,114 +1,53 @@
-// import React, { useState } from "react";
-// import "./Sidebar.css";
-// import { Grid } from "@mui/material";
-// import { Link } from "react-router-dom";
-// import axios from "axios";
-// import { FaPen, FaBullhorn, FaCalendarAlt, FaSignOutAlt } from "react-icons/fa";
-// import { FaTachometerAlt, FaChalkboardTeacher, FaClipboardList, FaBook } from "react-icons/fa";
-
-// const Teachersidebar = () => {
-//   const [activeLink, setActiveLink] = useState("home");
-//   const apiBaseUrl = 'http://localhost:5000/api';
-//   const handleLogout = () => {
-//     axios
-//       .post(`${apiBaseUrl}/admin/logout`)
-//       .then((response) => {
-//         alert(response.data.message); // Display the success message
-//         if (response.data.redirect) {
-//           window.location.href = response.data.redirect; // Redirect to Signin.js
-//         } else {
-//           window.location.href = "/"; // Default redirect to the home page
-//         }
-//       })
-//       .catch((error) => {
-//         const errorMessage = error.response?.data?.error || "Error during logout!";
-//         alert(errorMessage); // Show the error message
-//         if (error.response?.data?.redirect) {
-//           window.location.href = error.response.data.redirect; // Redirect on error if provided
-//         }
-//       });
-//   };
-
-//   const handleLinkClick = (link) => {
-//     setActiveLink(link);
-//   };
-
-//   return (
-//     <Grid>
-//       <Grid className="sidebar">
-
-
-//         <Link
-//           to="/Classm"
-//           className={activeLink === "Classm" ? "active" : ""}
-//           onClick={() => handleLinkClick("Classm")}
-//         >
-//            <FaChalkboardTeacher style={{ marginRight: "8px" }} />
-//           Class Management
-//         </Link>
-//         <Link
-//           to="/Attendancem"
-//           className={activeLink === "Attendancem" ? "active" : ""}
-//           onClick={() => handleLinkClick("Attendancem")}
-//         >
-//            <FaClipboardList style={{ marginRight: "8px" }} /> 
-//           Attendance Management
-//         </Link>
-//         <Link
-//           to="/Assignmentm"
-//           className={activeLink === "contact" ? "active" : ""}
-//           onClick={() => handleLinkClick("contact")}
-//         >
-//           <FaBook style={{ marginRight: "8px" }} />
-//           Assignment Management
-//         </Link>
-//         <Link
-//           to="/Marksentry"
-//           className={activeLink === "Marksentry" ? "active" : ""}
-//           onClick={() => handleLinkClick("Marksentry")}
-//         >
-//                <FaPen style={{ marginRight: "8px" }} />
-//           Marks Entry
-//         </Link>
-//         <Link
-//           to="/NoticeView"
-//           className={activeLink === "NoticeView" ? "active" : ""}
-//           onClick={() => handleLinkClick("NoticeView")}
-//         >
-//           <FaBullhorn style={{ marginRight: "8px" }} />
-//           Notice
-//         </Link>
-
-//         <Link
-//           to="/Teachertimetable"
-//           className={activeLink === "Teachertimetable" ? "active" : ""}
-//           onClick={() => handleLinkClick("Teachertimetable")}
-//         >
-//             <FaCalendarAlt style={{ marginRight: "8px" }} />
-//           TimeTable
-//         </Link>
-//         <Link
-//           style={{ color: "red", background: "none", border: "none", cursor: "pointer" }}
-//           onClick={handleLogout}
-//         >
-//                    <FaSignOutAlt style={{ marginRight: "8px" }} />
-//           Logout
-//         </Link>
-//       </Grid>
-//     </Grid>
-//   );
-// };
-
-// export default Teachersidebar;
-
-
-
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Sidebar.css"; // Make sure the CSS file is linked
+import axios from "axios";
+import { FaSignOutAlt } from "react-icons/fa"; // Import the logout icon
 
 const Teachersidebar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeLink, setActiveLink] = useState("home");
+  const apiBaseUrl = 'http://localhost:5000/api';
+
+  const handleLogout = () => {
+    axios
+      .post(`${apiBaseUrl}/admin/logout`, {}, { withCredentials: true }) // Ensure cookies are sent
+      .then((response) => {
+        alert(response.data.message); // Display the success message
+
+        // Redirect based on the backend's response
+        if (response.data.redirect) {
+          window.location.replace(response.data.redirect); // Redirect to the specified page
+        } else {
+          window.location.replace("/signin"); // Default redirect to the signin page
+        }
+      })
+      .catch((error) => {
+        console.error("Logout error:", error);
+
+        // Handle errors and redirect if specified
+        const errorMessage = error.response?.data?.error || "Error during logout!";
+        alert(errorMessage); // Show the error message
+
+        // Redirect to signin page on error
+        if (error.response?.data?.redirect) {
+          window.location.replace(error.response.data.redirect);
+        } else {
+          window.location.replace("/signin"); // Default redirect to the signin page
+        }
+      });
+
+    // Prevent browser from caching the previous page
+    // window.history.pushState(null, null, window.location.href);
+    // window.onpopstate = () => {
+    //   // Redirect to signin page if the user tries to go back
+    //   window.location.replace("/signin");
+    // };
+  };
+
+  const handleLinkClick = (link) => {
+    setActiveLink(link);
+  };
 
   return (
     <nav className="navbar">
@@ -120,34 +59,46 @@ const Teachersidebar = () => {
         </button>
 
         <ul className={`nav-links ${menuOpen ? "active" : ""}`}>
-
-
-          <li className="nav-item">
-            <Link to="/Classm">Class Management</Link>
-          </li>
-
+          {/* <li className="nav-item">
+            <Link to="/Classm" onClick={() => handleLinkClick('class')}>Class Management</Link>
+          </li> */}
 
           <li className="nav-item">
-            <Link to="/Attendancem">Attendance Management</Link>
+            <Link to="/Attendancem" onClick={() => handleLinkClick('attendance')}>Attendance Management</Link>
           </li>
 
           <li className="nav-item">
-            <Link to="/Assignmentm">Assignment Management</Link>
+            <Link to="/Assignmentm" onClick={() => handleLinkClick('assignment')}>Assignment Management</Link>
           </li>
 
           <li className="nav-item">
-            <Link to="/Marksentry">Marks Entry</Link>
+            <Link to="/Marksentry" onClick={() => handleLinkClick('marks')}>Marks Entry</Link>
           </li>
 
           <li className="nav-item">
-            <Link to="/NoticeView">Notice View</Link>
+            <Link to="/NoticeView" onClick={() => handleLinkClick('noticeView')}>Notice View</Link>
           </li>
 
           <li className="nav-item">
-            <Link to="/Teachertimetable">Time Table</Link>
+            <Link to="/Teachertimetable" onClick={() => handleLinkClick('timeTable')}>Time Table</Link>
           </li>
-          <li style={{ color: "red", fontSize: "1.1rem", fontWeight: "bold" }}>
-            <Link to="">Logout</Link>
+
+          <li className="nav-item">
+            <button
+              onClick={handleLogout}
+              style={{
+                color: "red",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                fontSize: "1rem"
+              }}
+            >
+              <FaSignOutAlt style={{ marginRight: "8px" }} />
+              Logout
+            </button>
           </li>
         </ul>
       </div>

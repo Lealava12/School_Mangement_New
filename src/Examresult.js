@@ -7,26 +7,55 @@ import { Grid, Typography, TextField, Button, Box } from '@mui/material';
 
 function ExamResults() {
   const [studentData, setStudentData] = useState(null);
-  const [studentId, setStudentId] = useState('');
+  const [searchId, setSearchId] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const apiBaseUrl = 'http://localhost:5000/api';  // Make sure this matches your Flask route prefix
+  const [loggedInStudentId, setLoggedInStudentId] = useState(null);
+  const apiBaseUrl = 'http://localhost:5000/api'; // Ensure this matches your Flask route prefix
   const navigate = useNavigate();
 
-  const formatPercentage = (value) => {
-    const numValue = parseFloat(value);
-    return isNaN(numValue) ? '0.00' : numValue.toFixed(2);
-  };
+  // Fetch the logged-in user's student_id on component mount
+  useEffect(() => {
+    const fetchLoginStatus = async () => {
+      try {
+        const statusRes = await axios.get(`${apiBaseUrl}/login/status`, {
+          withCredentials: true,
+        });
+
+        if (statusRes.data.isLoggedIn) {
+          setLoggedInStudentId(statusRes.data.user_id); // Set the logged-in user's student_id
+        } else {
+          navigate('/signin'); // Redirect to signin if not logged in
+        }
+      } catch (err) {
+        console.error("Error fetching login status:", err);
+        navigate('/signin'); // Redirect to signin on error
+      }
+    };
+
+    fetchLoginStatus();
+  }, [navigate]);
 
   const fetchMarks = async () => {
+    if (!searchId.trim()) {
+      setError('Please enter a Student ID');
+      return;
+    }
+
+    if (searchId !== loggedInStudentId) {
+      setError('You can only view your own exam results.');
+      setStudentData(null);
+      return;
+    }
+
     setIsLoading(true);
     setError('');
     try {
-      const response = await axios.get(`${apiBaseUrl}/student/marks/${studentId}`, {
+      const response = await axios.get(`${apiBaseUrl}/student/marks/${searchId}`, {
         withCredentials: true,
         headers: {
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+        },
       });
 
       if (response.data.student_marks && response.data.student_marks.length > 0) {
@@ -51,11 +80,7 @@ function ExamResults() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    if (studentId) {
-      fetchMarks();
-    } else {
-      setError('Please enter a student ID');
-    }
+    fetchMarks();
   };
 
   return (
@@ -64,7 +89,7 @@ function ExamResults() {
 
       <Box
         sx={{
-        
+          backgroundColor: "#f8f8f8",
           p: 3,
           borderRadius: 2,
           maxWidth: "1300px",
@@ -78,15 +103,15 @@ function ExamResults() {
         <form onSubmit={handleSearch} className="search-form">
           <input
             type="text"
-            value={studentId}
-            onChange={(e) => setStudentId(e.target.value)}
+            value={searchId}
+            onChange={(e) => setSearchId(e.target.value)}
             placeholder="Enter Student ID"
             style={{
               padding: "8px",
               marginRight: "10px",
               borderRadius: "4px",
               border: "1px solid #ccc",
-              width:"100%",
+              width: "100%",
             }}
           />
           <button
@@ -99,7 +124,7 @@ function ExamResults() {
               borderRadius: "4px",
               cursor: "pointer",
               left: 20,
-              marginTop:"13px",
+              marginTop: "13px",
             }}
           >
             Search
@@ -174,16 +199,14 @@ function ExamResults() {
                 </tr>
                 <tr className="percentage-row">
                   <td>Percentage</td>
-                  <td colSpan="2">{formatPercentage(studentData.percentage)}%</td>
+                  <td colSpan="2">{studentData.percentage || 0}%</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </>
       )}
-
     </>
-
   );
 }
 

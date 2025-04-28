@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
 import PythonBackend from './Python_backend';
-
 import {
   Grid,
   Typography,
@@ -26,11 +24,7 @@ import Sidebar from './Sidebar';
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Modal from '@mui/material/Modal';
-
 import axios from 'axios';
-
-
-
 const cellStyle = {
   color: "gray",
   fontWeight: 600,
@@ -62,7 +56,7 @@ const Teacherm = () => {
         setTeachers(response.data);
       })
       .catch((error) => {
-        console.error("Failed to fetch teachers:", error);
+        console.error('Failed to fetch teachers:', error);
       });
   };
 
@@ -80,7 +74,7 @@ const Teacherm = () => {
       })
       .then((response) => {
         alert(response.data.message);
-        fetchTeachers(); // Refresh the list of teachers
+        fetchTeachers(); // Refresh the list
         clearForm();
       })
       .catch((error) => {
@@ -90,6 +84,13 @@ const Teacherm = () => {
 
   // Update a teacher
   const updateTeacher = () => {
+    if (!editTeacherId) {
+      alert('Error: No teacher selected for update!');
+      return;
+    }
+
+    console.log('Updating teacher with ID:', editTeacherId); // Debugging log
+
     axios
       .put(`${apiBaseUrl}/Teachers/${editTeacherId}`, {
         name,
@@ -101,26 +102,31 @@ const Teacherm = () => {
         gender,
       })
       .then((response) => {
-        alert(response.data.message);
+        alert(response.data.message); // Show success message
         fetchTeachers(); // Refresh the list of teachers
-        clearForm();
-        setOpenEdit(false);
+        clearForm(); // Clear the form fields
+        setOpenEdit(false); // Close the edit modal
       })
       .catch((error) => {
-        alert(error.response?.data?.error || 'Error updating teacher!');
+        console.error('Update teacher error:', error);
+
+        // Display a detailed error message
+        alert(error.response?.data?.error || 'Error updating teacher! Please check the console for details.');
       });
   };
 
   // Delete a teacher
-  const deleteTeacher = (id) => {
+  const deleteTeacher = (teacherId) => {
+    console.log('Attempting to delete teacher with teacher_id:', teacherId); // Debugging log
     axios
-      .delete(`${apiBaseUrl}/Teachers/${id}`)
+      .delete(`${apiBaseUrl}/Teachers/${teacherId}`) // Use teacher_id in the endpoint
       .then((response) => {
-        alert(response.data.message);
+        alert(response.data.message); // Show success message
         fetchTeachers(); // Refresh the list of teachers
       })
       .catch((error) => {
-        alert(error.response?.data?.error || 'Error deleting teacher!');
+        console.error('Delete teacher error:', error);
+        alert(error.response?.data?.error || 'Error deleting teacher!'); // Show error message
       });
   };
 
@@ -134,11 +140,12 @@ const Teacherm = () => {
     setTeacherClass('');
     setGender('');
     setTeacherId('');
+    setEditTeacherId(null);
   };
 
   // Handle edit button click
   const handleEditClick = (teacher) => {
-    setEditTeacherId(teacher.id);
+    setEditTeacherId(teacher.teacher_id); // Set the teacher_id for editing
     setName(teacher.name);
     setEmail(teacher.email);
     setMobile(teacher.mobile);
@@ -146,37 +153,35 @@ const Teacherm = () => {
     setSubject(teacher.subject);
     setTeacherClass(teacher.class);
     setGender(teacher.gender);
-    setOpenEdit(true);
+    setOpenEdit(true); // Open the edit modal
   };
 
   // Handle delete button click
-  const handleDeleteClick = (id) => {
-    setTeacherId(id);
-    setOpenDelete(true);
+  const handleDeleteClick = (teacherId) => {
+    if (!teacherId) {
+      console.error('Error: teacherId is undefined or null!');
+      return;
+    }
+    console.log('Setting teacherId for deletion:', teacherId); // Debugging log
+    setTeacherId(teacherId); // Set the teacherId state
+    setOpenDelete(true); // Open the delete confirmation modal
   };
 
   // Confirm delete
   const confirmDelete = () => {
-    deleteTeacher(teacherId);
-    setOpenDelete(false);
+    if (!teacherId) {
+      alert('Error: No teacher selected for deletion!');
+      return;
+    }
+    console.log('Deleting teacher with ID:', teacherId); // Debugging log
+    deleteTeacher(teacherId); // Call deleteTeacher with the correct teacherId
+    setOpenDelete(false); // Close the delete confirmation modal
   };
 
   // Fetch teachers on component mount
   useEffect(() => {
     fetchTeachers();
   }, []);
-
-
-
-
-
-
-
-
-
-
-
-
   return (
     <>
       <Sidebar />
@@ -321,11 +326,6 @@ const Teacherm = () => {
           </Grid>
         </form>
       </Box>
-
-
-
-
-
       <div style={{ overflowX: "auto", marginTop: "30px" }}>
         <Table
           style={{
@@ -380,7 +380,7 @@ const Teacherm = () => {
                     sx={{ fontSize: 18, color: "#000066", cursor: "pointer", mr: 1 }}
                   />
                   <DeleteIcon
-                    onClick={() => handleDeleteClick(teacher.teacher_id)}
+                    onClick={() => handleDeleteClick(teacher.teacher_id)} // Pass teacher.teacher_id here
                     sx={{ fontSize: 18, color: "red", cursor: "pointer" }}
                   />
                 </TableCell>
@@ -388,17 +388,7 @@ const Teacherm = () => {
             ))}
           </TableBody>
         </Table>
-
-
-
-
-
-
-
-
         {/* Edit Modal */}
-
-
         <Modal open={openEdit} onClose={() => setOpenEdit(false)}>
           <Box
             sx={{
@@ -504,22 +494,16 @@ const Teacherm = () => {
               </Box>
 
               <Button
-                type="submit"
-                fullWidth
-                sx={{ backgroundColor: "#000066", color: "white", mt: 2, py: 1 }}
+                onClick={updateTeacher}
+                variant="contained"
+                sx={{ backgroundColor: "#000066", color: "white", mt: 2 }}
               >
                 Update
               </Button>
             </form>
           </Box>
         </Modal>
-
-
-
-
         {/* Delete Modal */}
-
-
         <Modal open={openDelete} onClose={() => setOpenDelete(false)}>
           <Box
             sx={{
@@ -563,32 +547,9 @@ const Teacherm = () => {
             </Box>
           </Box>
         </Modal>
-
-
         <PythonBackend />
-
-
-
-
       </div>
-
-
-
-
-
-
-
-
     </>
   );
 };
-
-
-
-
-
-
-
-
-
 export default Teacherm;

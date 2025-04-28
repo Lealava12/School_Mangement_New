@@ -8,10 +8,10 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import AddSharpIcon from '@mui/icons-material/AddSharp';
-import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline'; // Import ModeEditOutlineIcon
-import DeleteIcon from '@mui/icons-material/Delete'; // Import DeleteIcon
+import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
+import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
-import Teachersidebar from "./Teachersidebar"
+import Teachersidebar from "./Teachersidebar";
 
 const style = {
     position: 'absolute',
@@ -58,10 +58,9 @@ const Assignmentm = () => {
         }
 
         try {
-            // Upload file and assignment data
             const formData = new FormData();
             formData.append('file', selectedFile);
-            formData.append('title', title); // Ensure the field name matches the backend
+            formData.append('title', title);
             formData.append('date', date);
             formData.append('description', description);
             formData.append('class', assignmentClass);
@@ -73,7 +72,7 @@ const Assignmentm = () => {
             });
 
             alert(response.data.message);
-            fetchAssignments(); // Refresh the list of assignments
+            fetchAssignments();
             clearForm();
         } catch (error) {
             console.error("Error adding assignment:", error);
@@ -113,7 +112,7 @@ const Assignmentm = () => {
             .delete(`${apiBaseUrl}/admin/assignments?assignment_id=${deleteAssignmentId}`)
             .then((response) => {
                 alert(response.data.message);
-                fetchAssignments(); // Refresh the list of assignments
+                fetchAssignments();
                 setOpenDelete(false);
             })
             .catch((error) => {
@@ -148,7 +147,7 @@ const Assignmentm = () => {
             })
             .then((response) => {
                 alert(response.data.message);
-                fetchAssignments(); // Refresh the list of assignments
+                fetchAssignments();
                 setOpenEdit(false);
                 clearForm();
             })
@@ -186,7 +185,6 @@ const Assignmentm = () => {
                                 onChange={(e) => setTitle(e.target.value)}
                                 fullWidth
                                 required
-
                             />
                         </Grid>
                         <Grid item xs={12} md={5}>
@@ -196,13 +194,9 @@ const Assignmentm = () => {
                                 onChange={(e) => setDate(e.target.value)}
                                 fullWidth
                                 required
-
                             />
                         </Grid>
-
                         <Grid item xs={10}>
-                            {/*  */}
-
                             <select
                                 value={assignmentClass}
                                 onChange={(e) => setAssignmentClass(e.target.value)}
@@ -215,7 +209,6 @@ const Assignmentm = () => {
                                     <option key={num} value={num}>{num}</option>
                                 ))}
                             </select>
-
                         </Grid>
                         <Grid item xs={10}>
                             <textarea
@@ -227,12 +220,10 @@ const Assignmentm = () => {
                                 style={{ width: "100%", padding: "10px", borderRadius: "5px", height: "100px" }}
                             ></textarea>
                         </Grid>
-
                         <Grid item xs={12}>
                             <Typography sx={{ color: "#000066", fontWeight: 500, fontSize: "16px", ml: "8%", mt: 2 }}>
                                 Assignment Upload:
                             </Typography>
-
                             <Box
                                 sx={{
                                     width: { xs: "100%", sm: 300 },
@@ -244,7 +235,7 @@ const Assignmentm = () => {
                                     alignItems: 'center',
                                     cursor: 'pointer',
                                     ml: "8%",
-                                    mt:2,
+                                    mt: 2,
                                     '&:hover': {
                                         bgcolor: 'primary.dark',
                                     },
@@ -261,7 +252,6 @@ const Assignmentm = () => {
                                 />
                             </Box>
                         </Grid>
-
                         <Grid item xs={12}>
                             <Box textAlign="center">
                                 <Button
@@ -281,7 +271,7 @@ const Assignmentm = () => {
                         </Grid>
                     </Grid>
                 </form>
-            </Box >
+            </Box>
 
             <div style={{ overflowX: "auto", marginTop: "30px" }}>
                 <Table
@@ -310,7 +300,17 @@ const Assignmentm = () => {
                                 <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }}>{index + 1}</TableCell>
                                 <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">{assignment.title}</TableCell>
                                 <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">{assignment.date}</TableCell>
-                                <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">{}</TableCell>
+                                <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">
+                                    {assignment.image_url ? (
+                                        <img
+                                            src={assignment.image_url}
+                                            alt="Assignment"
+                                            style={{ width: "50px", height: "50px", objectFit: "cover", borderRadius: "5px" }}
+                                        />
+                                    ) : (
+                                        "No Image"
+                                    )}
+                                </TableCell>
                                 <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">{assignment.description}</TableCell>
                                 <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">{assignment.class}</TableCell>
                                 <TableCell style={{ color: "gray", fontWeight: 600, fontSize: "15px" }} align="right">
@@ -319,7 +319,7 @@ const Assignmentm = () => {
                                         style={{ fontSize: "18px", color: "#000066", cursor: "pointer" }}
                                     />
                                     <DeleteIcon
-                                        onClick={() => handleDeleteClick(assignment.assignment_id)}
+                                        onClick={() => handleDeleteClick(assignment.id)}
                                         style={{ fontSize: "18px", color: "red", cursor: "pointer" }}
                                     />
                                 </TableCell>
