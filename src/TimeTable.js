@@ -25,7 +25,8 @@ const TimeTable = () => {
       const response = await axios.get(`${apiBaseUrl}/admin/timetable`);
       setTimeTables(response.data);
       if (response.data.length > 0) {
-        setPdfUrl(response.data[0].file_path);
+        // Use file_url, not file_path
+        setPdfUrl(response.data[0].file_url);
       }
     } catch (error) {
       console.error("Failed to fetch timetables:", error);
@@ -99,7 +100,7 @@ const TimeTable = () => {
             <Typography sx={{ color: "#000066", fontWeight: 500, fontSize: { xs: 14, sm: 16 }, mb: 1 }}>
               Uploaded Timetable:
             </Typography>
-            <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.6.347/build/pdf.worker.min.js">
+            <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
               <Box sx={{
                 height: { xs: 300, sm: 400, md: 500 },
                 border: '1px solid #ccc',

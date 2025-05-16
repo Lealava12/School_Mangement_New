@@ -8,7 +8,7 @@ const StudentAssignments = () => {
   const [assignments, setAssignments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
-  const [selectedImage, setSelectedImage] = useState('');
+  const [selectedFileUrl, setSelectedFileUrl] = useState('');
 
   const apiBaseUrl = 'http://localhost:5000/api'; // Adjust the base URL as needed
 
@@ -27,15 +27,18 @@ const StudentAssignments = () => {
     }
   };
 
-  const handleView = (filePath) => {
-    setSelectedImage(filePath);
+  const handleView = (fileUrl) => {
+    setSelectedFileUrl(fileUrl);
     setOpenModal(true);
   };
 
   const handleClose = () => {
     setOpenModal(false);
-    setSelectedImage('');
+    setSelectedFileUrl('');
   };
+
+  // Helper to check if file is an image
+  const isImage = (url) => /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(url);
 
   return (
     <>
@@ -86,26 +89,34 @@ const StudentAssignments = () => {
                       <TableCell align="right">{assignment.date}</TableCell>
                       <TableCell align="right">{assignment.description}</TableCell>
                       <TableCell align="right">
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          href={assignment.file_path}
-                          target="_blank"
-                          download
-                          size="small"
-                        >
-                          Download
-                        </Button>
+                        {assignment.file_url ? (
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            href={assignment.file_url}
+                            target="_blank"
+                            download
+                            size="small"
+                          >
+                            Download
+                          </Button>
+                        ) : (
+                          <Typography sx={{ color: "#f00", fontSize: "13px" }}>No file</Typography>
+                        )}
                       </TableCell>
                       <TableCell align="right">
-                        <Button
-                          variant="outlined"
-                          color="secondary"
-                          onClick={() => handleView(assignment.file_path)}
-                          size="small"
-                        >
-                          View
-                        </Button>
+                        {assignment.file_url ? (
+                          <Button
+                            variant="outlined"
+                            color="secondary"
+                            onClick={() => handleView(assignment.file_url)}
+                            size="small"
+                          >
+                            View
+                          </Button>
+                        ) : (
+                          <Typography sx={{ color: "#f00", fontSize: "13px" }}>No file</Typography>
+                        )}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -114,7 +125,7 @@ const StudentAssignments = () => {
             </Box>
           )}
 
-          {/* Modal for Viewing Image */}
+          {/* Modal for Viewing File */}
           <Dialog open={openModal} onClose={handleClose} maxWidth="md" fullWidth>
             <DialogTitle>
               Assignment Preview
@@ -132,13 +143,21 @@ const StudentAssignments = () => {
               </IconButton>
             </DialogTitle>
             <DialogContent dividers>
-              {selectedImage && (
+              {selectedFileUrl && isImage(selectedFileUrl) ? (
                 <img
-                  src={selectedImage}
+                  src={selectedFileUrl}
                   alt="Assignment"
                   style={{ width: '100%', height: 'auto', objectFit: 'contain' }}
                 />
-              )}
+              ) : selectedFileUrl ? (
+                <iframe
+                  src={selectedFileUrl}
+                  title="Assignment File"
+                  width="100%"
+                  height="600px"
+                  style={{ border: "none" }}
+                />
+              ) : null}
             </DialogContent>
           </Dialog>
         </Paper>

@@ -11,22 +11,22 @@ const Navbar = () => {
 
   const handleLogout = () => {
     axios
-      .post(`${apiBaseUrl}/admin/logout`, {}, { withCredentials: true }) // Ensure cookies are sent
+      .post(`${apiBaseUrl}/admin/logout`, {}, { withCredentials: true })
       .then((response) => {
         alert(response.data.message);
 
-        // Clear browser history to prevent going back to the previous page
-        window.location.replace(response.data.redirect || "/signin");
+        // Replace history and redirect to signin
+        window.location.replace(response.data.redirect || "/Signin");
+        window.history.pushState(null, "", "/Signin");
       })
       .catch((error) => {
         console.error("Logout error:", error);
-
-        // Handle errors and redirect if specified
         const errorMessage = error.response?.data?.error || "Error during logout!";
         alert(errorMessage);
 
-        // Clear browser history to prevent going back to the previous page
-        window.location.replace(error.response?.data?.redirect || "/signin");
+        // Replace history and redirect to signin
+        window.location.replace(error.response?.data?.redirect || "/Signin");
+        window.history.pushState(null, "", "/Signin");
       });
   };
 

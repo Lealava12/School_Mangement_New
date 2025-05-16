@@ -4,6 +4,7 @@ from config import get_connection
 from flask_cors import CORS, cross_origin  # Add cross_origin import
 import os
 from werkzeug.utils import secure_filename
+from flask import current_app, url_for
 
 user_routes = Blueprint('user_routes', __name__)
 
@@ -17,7 +18,34 @@ CORS(user_routes, supports_credentials=True, resources={
     }
 })
 
-UPLOAD_FOLDER = 'uploads'  # Define the folder to store uploaded files
+# UPLOAD_FOLDER = 'uploads'  # Define the folder to store uploaded files
+# ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg', 'docx'}  # Allowed file extensions
+
+# # Ensure the upload folder exists
+# if not os.path.exists(UPLOAD_FOLDER):
+#     os.makedirs(UPLOAD_FOLDER)
+
+# def allowed_file(filename):
+#     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# @user_routes.route('/upload', methods=['POST'])
+# def upload_file():
+#     if 'file' not in request.files:
+#         return jsonify({"error": "No file part in the request"}), 400
+
+#     file = request.files['file']
+#     if file.filename == '':
+#         return jsonify({"error": "No file selected for uploading"}), 400
+
+#     if file and allowed_file(file.filename):
+#         filename = secure_filename(file.filename)
+#         file_path = os.path.join(UPLOAD_FOLDER, filename)
+#         file.save(file_path)
+#         return jsonify({"message": "File uploaded successfully", "file_path": file_path}), 200
+#     else:
+#         return jsonify({"error": "File type not allowed"}), 400
+
+UPLOAD_FOLDER = 'src/backend/static/uploads'  # Define the folder to store uploaded files
 ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg', 'docx'}  # Allowed file extensions
 
 # Ensure the upload folder exists
@@ -43,7 +71,7 @@ def upload_file():
         return jsonify({"message": "File uploaded successfully", "file_path": file_path}), 200
     else:
         return jsonify({"error": "File type not allowed"}), 400
-
+    
 
 @user_routes.route('/admin/Teachers', methods=['GET', 'POST'])
 def manage_teachers():
@@ -380,15 +408,66 @@ def manage_fee():
         connection.close()
 
 
+# @user_routes.route('/admin/notices', methods=['GET', 'POST'])
+# def manage_notices():
+#     if request.method == 'GET':
+#         connection = get_connection()
+#         cursor = connection.cursor(dictionary=True)
+#         try:
+#             # Fetching all notices from the "Notices" table
+#             cursor.execute("SELECT id, title, file_path, uploaded_at FROM Notices")
+#             notices = cursor.fetchall()
+#             return jsonify(notices), 200
+#         except Exception as e:
+#             return jsonify({"error": f"Failed to fetch notices: {str(e)}"}), 500
+#         finally:
+#             cursor.close()
+#             connection.close()
+
+    # elif request.method == 'POST':
+    #     data = request.json
+    #     required_fields = ['title', 'file_path']
+    #     if not all(data.get(field) for field in required_fields):
+    #         return jsonify({"error": "Both title and file path are required!"}), 400
+
+    #     connection = get_connection()
+    #     cursor = connection.cursor()
+    #     try:
+    #         # Inserting a new notice into the "Notices" table
+    #         insert_query = """
+    #             INSERT INTO Notices (title, file_path)
+    #             VALUES (%s, %s)
+    #         """
+    #         cursor.execute(insert_query, (
+    #             data['title'], data['file_path']
+    #         ))
+    #         connection.commit()
+            
+    #         # Retrieve the auto-generated notice id
+    #         notice_id_query = "SELECT id FROM Notices WHERE id = LAST_INSERT_ID()"
+    #         cursor.execute(notice_id_query)
+    #         notice_id = cursor.fetchone()[0]
+            
+    #         return jsonify({"message": "Notice added successfully!", "notice_id": notice_id}), 201
+    #     except Exception as e:
+    #         return jsonify({"error": f"Failed to add notice: {str(e)}"}), 500
+    #     finally:
+    #         cursor.close()
+    #         connection.close()
 @user_routes.route('/admin/notices', methods=['GET', 'POST'])
 def manage_notices():
     if request.method == 'GET':
         connection = get_connection()
         cursor = connection.cursor(dictionary=True)
         try:
-            # Fetching all notices from the "Notices" table
             cursor.execute("SELECT id, title, file_path, uploaded_at FROM Notices")
             notices = cursor.fetchall()
+
+            for notice in notices:
+                if notice['file_path']:
+                    # Construct a full URL using the static route
+                    notice['file_url'] = url_for('static', filename=f"{notice['file_path']}", _external=True)
+
             return jsonify(notices), 200
         except Exception as e:
             return jsonify({"error": f"Failed to fetch notices: {str(e)}"}), 500
@@ -397,44 +476,63 @@ def manage_notices():
             connection.close()
 
     elif request.method == 'POST':
-        data = request.json
-        required_fields = ['title', 'file_path']
-        if not all(data.get(field) for field in required_fields):
-            return jsonify({"error": "Both title and file path are required!"}), 400
+        # Accept both title and file as form-data (not JSON)
+        if 'title' not in request.form or 'file' not in request.files:
+            return jsonify({"error": "Title and file are required"}), 400
 
-        connection = get_connection()
-        cursor = connection.cursor()
-        try:
-            # Inserting a new notice into the "Notices" table
-            insert_query = """
-                INSERT INTO Notices (title, file_path)
-                VALUES (%s, %s)
-            """
-            cursor.execute(insert_query, (
-                data['title'], data['file_path']
-            ))
-            connection.commit()
-            
-            # Retrieve the auto-generated notice id
-            notice_id_query = "SELECT id FROM Notices WHERE id = LAST_INSERT_ID()"
-            cursor.execute(notice_id_query)
-            notice_id = cursor.fetchone()[0]
-            
-            return jsonify({"message": "Notice added successfully!", "notice_id": notice_id}), 201
-        except Exception as e:
-            return jsonify({"error": f"Failed to add notice: {str(e)}"}), 500
-        finally:
-            cursor.close()
-            connection.close()
+        title = request.form['title']
+        file = request.files['file']
+
+        if file.filename == '':
+            return jsonify({"error": "No file selected"}), 400
+
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file_path = os.path.join(UPLOAD_FOLDER, filename)
+            file.save(file_path)
+
+            relative_file_path = f"uploads/{filename}"  # relative path for database
+
+            connection = get_connection()
+            cursor = connection.cursor()
+            try:
+                insert_query = """
+                    INSERT INTO Notices (title, file_path)
+                    VALUES (%s, %s)
+                """
+                cursor.execute(insert_query, (title, relative_file_path))
+                connection.commit()
+
+                # Get the last inserted ID
+                cursor.execute("SELECT id FROM Notices WHERE id = LAST_INSERT_ID()")
+                notice_id = cursor.fetchone()[0]
+
+                return jsonify({
+                    "message": "Notice added successfully!",
+                    "notice_id": notice_id,
+                    "file_url": url_for('static', filename=relative_file_path, _external=True)
+                }), 201
+            except Exception as e:
+                return jsonify({"error": f"Failed to add notice: {str(e)}"}), 500
+            finally:
+                cursor.close()
+                connection.close()
+        else:
+            return jsonify({"error": "File type not allowed"}), 400
+
 @user_routes.route('/admin/timetable', methods=['GET', 'POST'])
 def manage_timetable():
     if request.method == 'GET':
         connection = get_connection()
-        cursor = connection.cursor(dictionary=True)  # Ensure results are returned as dictionaries
+        cursor = connection.cursor(dictionary=True)
         try:
-            # Fetching all timetables from the "TimeTable" table
             cursor.execute("SELECT id, title, file_path, uploaded_at FROM TimeTable")
             timetables = cursor.fetchall()
+
+            for timetable in timetables:
+                if timetable['file_path']:
+                    timetable['file_url'] = url_for('static', filename=f"{timetable['file_path']}", _external=True)
+
             return jsonify(timetables), 200
         except Exception as e:
             return jsonify({"error": f"Failed to fetch timetables: {str(e)}"}), 500
@@ -443,49 +541,222 @@ def manage_timetable():
             connection.close()
 
     elif request.method == 'POST':
-        if 'file' not in request.files:
-            return jsonify({"error": "File is required!"}), 400
+        if 'title' not in request.form or 'file' not in request.files:
+            return jsonify({"error": "Title and file are required"}), 400
 
-        title = request.form.get('title')
-        if not title:
-            return jsonify({"error": "Title is required!"}), 400
-
+        title = request.form['title']
         uploaded_file = request.files['file']
 
-        # Ensure the directory exists
-        timetable_folder = os.path.join(UPLOAD_FOLDER, 'timetables')
-        if not os.path.exists(timetable_folder):
-            os.makedirs(timetable_folder)
+        if uploaded_file.filename == '':
+            return jsonify({"error": "No file selected"}), 400
 
-        # Save the file to the server
-        file_path = os.path.join(timetable_folder, uploaded_file.filename)
-        try:
-            uploaded_file.save(file_path)  # Save file to the desired location
-        except Exception as e:
-            return jsonify({"error": f"Failed to save file: {str(e)}"}), 500
+        if uploaded_file and allowed_file(uploaded_file.filename):
+            filename = secure_filename(uploaded_file.filename)
+            timetable_folder = os.path.join(UPLOAD_FOLDER, 'timetables')
 
-        connection = get_connection()
-        cursor = connection.cursor(dictionary=True)  # Ensure results are returned as dictionaries
-        try:
-            # Inserting a new timetable into the "TimeTable" table
-            insert_query = """
-                INSERT INTO TimeTable (title, file_path)
-                VALUES (%s, %s)
-            """
-            cursor.execute(insert_query, (title, file_path))
-            connection.commit()
+            if not os.path.exists(timetable_folder):
+                os.makedirs(timetable_folder)
 
-            # Retrieve the auto-generated timetable id
-            cursor.execute("SELECT LAST_INSERT_ID() AS id")
-            timetable_id = cursor.fetchone()['id']  # Access the dictionary key instead of tuple index
+            file_path = os.path.join(timetable_folder, filename)
+            uploaded_file.save(file_path)
 
-            return jsonify({"message": "Timetable uploaded successfully!", "timetable_id": timetable_id}), 201
-        except Exception as e:
-            return jsonify({"error": f"Failed to upload timetable: {str(e)}"}), 500
-        finally:
-            cursor.close()
-            connection.close()
+            relative_file_path = f"uploads/timetables/{filename}"  # Relative path for DB and static serving
 
+            connection = get_connection()
+            cursor = connection.cursor()
+            try:
+                insert_query = """
+                    INSERT INTO TimeTable (title, file_path)
+                    VALUES (%s, %s)
+                """
+                cursor.execute(insert_query, (title, relative_file_path))
+                connection.commit()
+
+                cursor.execute("SELECT id FROM TimeTable WHERE id = LAST_INSERT_ID()")
+                timetable_id = cursor.fetchone()[0]
+
+                return jsonify({
+                    "message": "Timetable uploaded successfully!",
+                    "timetable_id": timetable_id,
+                    "file_url": url_for('static', filename=relative_file_path, _external=True)
+                }), 201
+            except Exception as e:
+                return jsonify({"error": f"Failed to upload timetable: {str(e)}"}), 500
+            finally:
+                cursor.close()
+                connection.close()
+        else:
+            return jsonify({"error": "File type not allowed"}), 400
+
+        
+# @user_routes.route('/admin/timetable', methods=['GET', 'POST'])
+# def manage_timetable():
+#     if request.method == 'GET':
+#         connection = get_connection()
+#         cursor = connection.cursor(dictionary=True)  # Ensure results are returned as dictionaries
+#         try:
+#             # Fetching all timetables from the "TimeTable" table
+#             cursor.execute("SELECT id, title, file_path, uploaded_at FROM TimeTable")
+#             timetables = cursor.fetchall()
+#             return jsonify(timetables), 200
+#         except Exception as e:
+#             return jsonify({"error": f"Failed to fetch timetables: {str(e)}"}), 500
+#         finally:
+#             cursor.close()
+#             connection.close()
+
+#     elif request.method == 'POST':
+#         if 'file' not in request.files:
+#             return jsonify({"error": "File is required!"}), 400
+
+#         title = request.form.get('title')
+#         if not title:
+#             return jsonify({"error": "Title is required!"}), 400
+
+#         uploaded_file = request.files['file']
+
+#         # Ensure the directory exists
+#         timetable_folder = os.path.join(UPLOAD_FOLDER, 'timetables')
+#         if not os.path.exists(timetable_folder):
+#             os.makedirs(timetable_folder)
+
+#         # Save the file to the server
+#         file_path = os.path.join(timetable_folder, uploaded_file.filename)
+#         try:
+#             uploaded_file.save(file_path)  # Save file to the desired location
+#         except Exception as e:
+#             return jsonify({"error": f"Failed to save file: {str(e)}"}), 500
+
+#         connection = get_connection()
+#         cursor = connection.cursor(dictionary=True)  # Ensure results are returned as dictionaries
+#         try:
+#             # Inserting a new timetable into the "TimeTable" table
+#             insert_query = """
+#                 INSERT INTO TimeTable (title, file_path)
+#                 VALUES (%s, %s)
+#             """
+#             cursor.execute(insert_query, (title, file_path))
+#             connection.commit()
+
+#             # Retrieve the auto-generated timetable id
+#             cursor.execute("SELECT LAST_INSERT_ID() AS id")
+#             timetable_id = cursor.fetchone()['id']  # Access the dictionary key instead of tuple index
+
+#             return jsonify({"message": "Timetable uploaded successfully!", "timetable_id": timetable_id}), 201
+#         except Exception as e:
+#             return jsonify({"error": f"Failed to upload timetable: {str(e)}"}), 500
+#         finally:
+#             cursor.close()
+#             connection.close()
+
+# @user_routes.route('/admin/assignments', methods=['GET', 'POST', 'PUT', 'DELETE'])
+# def manage_assignments():
+#     connection = get_connection()
+#     cursor = connection.cursor(dictionary=True)
+
+#     try:
+#         # GET: Fetch assignments
+#         if request.method == 'GET':
+#             cursor.execute("SELECT * FROM assignments ORDER BY date DESC")
+#             assignments = cursor.fetchall()
+#             return jsonify(assignments), 200
+
+#         # POST: Add new assignment
+#         elif request.method == 'POST':
+#             if 'file' not in request.files:
+#                 return jsonify({"error": "No file uploaded"}), 400
+
+#             file = request.files['file']
+#             title = request.form.get('title')
+#             date = request.form.get('date')
+#             description = request.form.get('description')
+#             assignment_class = request.form.get('class')
+
+#             if not (title and date and description and assignment_class):
+#                 return jsonify({"error": "All fields are required"}), 400
+
+#             if file and allowed_file(file.filename):
+#                 filename = secure_filename(file.filename)
+#                 file_path = os.path.join(UPLOAD_FOLDER, filename)
+#                 file.save(file_path)
+
+#                 cursor.execute(
+#                     "INSERT INTO assignments (title, date, description, class, file_path) VALUES (%s, %s, %s, %s, %s)",
+#                     (title, date, description, assignment_class, file_path)
+#                 )
+#                 connection.commit()
+#                 return jsonify({"message": "Assignment uploaded successfully", "file_path": file_path}), 201
+#             else:
+#                 return jsonify({"error": "Invalid file type"}), 400
+
+#         # PUT: Update an assignment
+#         elif request.method == 'PUT':
+#             assignment_id = request.form.get('assignment_id')
+#             title = request.form.get('title')
+#             date = request.form.get('date')
+#             description = request.form.get('description')
+#             assignment_class = request.form.get('class')
+
+#             if not assignment_id:
+#                 return jsonify({"error": "Assignment ID is required"}), 400
+
+#             cursor.execute("SELECT * FROM assignments WHERE id = %s", (assignment_id,))
+#             assignment = cursor.fetchone()
+#             if not assignment:
+#                 return jsonify({"error": "Assignment not found"}), 404
+
+#             file = request.files.get('file')
+#             if file and allowed_file(file.filename):
+#                 filename = secure_filename(file.filename)
+#                 file_path = os.path.join(UPLOAD_FOLDER, filename)
+#                 file.save(file_path)
+
+#                 # Delete the old file
+#                 old_file_path = assignment['file_path']
+#                 if os.path.exists(old_file_path):
+#                     os.remove(old_file_path)
+
+#                 cursor.execute(
+#                     "UPDATE assignments SET title=%s, date=%s, description=%s, class=%s, file_path=%s WHERE id=%s",
+#                     (title, date, description, assignment_class, file_path, assignment_id)
+#                 )
+#                 connection.commit()
+#                 return jsonify({"message": "Assignment updated successfully", "file_path": file_path}), 200
+#             else:
+#                 cursor.execute(
+#                     "UPDATE assignments SET title=%s, date=%s, description=%s, class=%s WHERE id=%s",
+#                     (title, date, description, assignment_class, assignment_id)
+#                 )
+#                 connection.commit()
+#                 return jsonify({"message": "Assignment updated successfully"}), 200
+
+#         # DELETE: Delete an assignment
+#         elif request.method == 'DELETE':
+#             assignment_id = request.args.get('assignment_id')
+#             if not assignment_id:
+#                 return jsonify({"error": "Assignment ID is required"}), 400
+
+#             cursor.execute("SELECT file_path FROM assignments WHERE id = %s", (assignment_id,))
+#             assignment = cursor.fetchone()
+#             if not assignment:
+#                 return jsonify({"error": "Assignment not found"}), 404
+
+#             # Delete the file
+#             file_path = assignment['file_path']
+#             if os.path.exists(file_path):
+#                 os.remove(file_path)
+
+#             cursor.execute("DELETE FROM assignments WHERE id = %s", (assignment_id,))
+#             connection.commit()
+#             return jsonify({"message": "Assignment deleted successfully"}), 200
+
+#     except Exception as e:
+#         connection.rollback()
+#         return jsonify({"error": str(e)}), 500
+
+#     finally:
+#         cursor.close()
+#         connection.close()
 @user_routes.route('/admin/assignments', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def manage_assignments():
     connection = get_connection()
@@ -496,6 +767,11 @@ def manage_assignments():
         if request.method == 'GET':
             cursor.execute("SELECT * FROM assignments ORDER BY date DESC")
             assignments = cursor.fetchall()
+
+            for assignment in assignments:
+                if assignment['file_path']:
+                    assignment['file_url'] = url_for('static', filename=assignment['file_path'], _external=True)
+
             return jsonify(assignments), 200
 
         # POST: Add new assignment
@@ -514,15 +790,24 @@ def manage_assignments():
 
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
-                file_path = os.path.join(UPLOAD_FOLDER, filename)
+                assignment_folder = os.path.join(UPLOAD_FOLDER, 'assignments')
+                if not os.path.exists(assignment_folder):
+                    os.makedirs(assignment_folder)
+
+                file_path = os.path.join(assignment_folder, filename)
                 file.save(file_path)
+
+                relative_path = f"uploads/assignments/{filename}"
 
                 cursor.execute(
                     "INSERT INTO assignments (title, date, description, class, file_path) VALUES (%s, %s, %s, %s, %s)",
-                    (title, date, description, assignment_class, file_path)
+                    (title, date, description, assignment_class, relative_path)
                 )
                 connection.commit()
-                return jsonify({"message": "Assignment uploaded successfully", "file_path": file_path}), 201
+                return jsonify({
+                    "message": "Assignment uploaded successfully",
+                    "file_url": url_for('static', filename=relative_path, _external=True)
+                }), 201
             else:
                 return jsonify({"error": "Invalid file type"}), 400
 
@@ -545,20 +830,29 @@ def manage_assignments():
             file = request.files.get('file')
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
-                file_path = os.path.join(UPLOAD_FOLDER, filename)
+                assignment_folder = os.path.join(UPLOAD_FOLDER, 'assignments')
+                if not os.path.exists(assignment_folder):
+                    os.makedirs(assignment_folder)
+
+                file_path = os.path.join(assignment_folder, filename)
                 file.save(file_path)
 
                 # Delete the old file
-                old_file_path = assignment['file_path']
+                old_file_path = os.path.join('static', assignment['file_path'])
                 if os.path.exists(old_file_path):
                     os.remove(old_file_path)
 
+                relative_path = f"uploads/assignments/{filename}"
+
                 cursor.execute(
                     "UPDATE assignments SET title=%s, date=%s, description=%s, class=%s, file_path=%s WHERE id=%s",
-                    (title, date, description, assignment_class, file_path, assignment_id)
+                    (title, date, description, assignment_class, relative_path, assignment_id)
                 )
                 connection.commit()
-                return jsonify({"message": "Assignment updated successfully", "file_path": file_path}), 200
+                return jsonify({
+                    "message": "Assignment updated successfully",
+                    "file_url": url_for('static', filename=relative_path, _external=True)
+                }), 200
             else:
                 cursor.execute(
                     "UPDATE assignments SET title=%s, date=%s, description=%s, class=%s WHERE id=%s",
@@ -579,7 +873,7 @@ def manage_assignments():
                 return jsonify({"error": "Assignment not found"}), 404
 
             # Delete the file
-            file_path = assignment['file_path']
+            file_path = os.path.join('static', assignment['file_path'])
             if os.path.exists(file_path):
                 os.remove(file_path)
 
@@ -594,6 +888,7 @@ def manage_assignments():
     finally:
         cursor.close()
         connection.close()
+
 @user_routes.after_request
 def add_security_headers(response):
     response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
@@ -636,6 +931,9 @@ def get_student_assignments():
                 ORDER BY date DESC
             """, (student_class,))
             assignments = cursor.fetchall()
+            for assignment in assignments:
+                if assignment['file_path']:
+                    assignment['file_url'] = url_for('static', filename=assignment['file_path'], _external=True)
 
             return jsonify({
                 "assignments": assignments

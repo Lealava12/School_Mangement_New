@@ -9,6 +9,9 @@ const NoticeView = () => {
 
   const apiBaseUrl = 'http://localhost:5000/api';
 
+  // Helper to check if file is an image
+  const isImage = (fileUrl) => /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(fileUrl);
+
   // Fetch all notices
   const fetchNotices = async () => {
     try {
@@ -27,89 +30,60 @@ const NoticeView = () => {
   return (
     <>
       <Teachersidebar />
-      <Box
-                sx={{
-                    // backgroundColor: "#f8f8f8",
-                    p: 3,
-                    borderRadius: 2,
-                    maxWidth: "1300px",
-                    mx: "auto",
-                    mt: 13,
-                }}
-            >
-        <Grid item xs={12}>
-          <Typography
-            sx={{
-              color: "#000066",
-              fontWeight: 600,
-              fontSize: { xs: "16px", sm: "18px" },
-              mb: 2,
-            }}
-          >
-            View Notices:
-          </Typography>
-        </Grid>
-<Grid container spacing={3}>
-  {notices.map((notice) => (
-    <Grid item xs={12} sm={6} md={4} key={notice.id} display="flex" justifyContent="center">
-      <Box
+      <Grid
+        className="contact-form"
         sx={{
-          width: '95%', // Slightly less than full width to create nice gap
-          height: 230,
-          borderRadius: 2,
-          bgcolor: '#FFF5EE',
-          border: '1px solid #ddd',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
+          backgroundColor: "#f8f8f8",
           padding: 2,
-          textAlign: 'center',
-          transition: '0.3s',
-          '&:hover': {
-            boxShadow: 4, // Optional: nice hover effect
-            transform: 'scale(1.02)',
-          },
+          borderRadius: "8px",
+          width: { xs: '90%', sm: '80%', md: '70%' },
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          mt: 10
         }}
       >
-        <Typography
+        <Typography sx={{ color: "#000066", fontWeight: 600, fontSize: { xs: '16px', sm: '18px' }, mb: 2 }}>
+          View Notices:
+        </Typography>
+        <Grid
           sx={{
-            fontWeight: 600,
-            fontSize: { xs: "14px", sm: "16px" },
-            mb: 1,
+            display: "flex",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: 2,
+            mt: 2
           }}
         >
-          {notice.title}
-        </Typography>
-
-        {notice.file_path && (
-          <img
-            src={`http://localhost:5000${notice.file_path}`}
-            alt={notice.title}
-            style={{
-              maxWidth: "100%",
-              maxHeight: "100px",
-              objectFit: "contain",
-            }}
-          />
-        )}
-
-        <Typography
-          sx={{
-            fontSize: "12px",
-            color: "gray",
-            mt: 1,
-          }}
-        >
-          Uploaded on: {new Date(notice.uploaded_at).toLocaleDateString()}
-        </Typography>
-      </Box>
-    </Grid>
-  ))}
-</Grid>
-
-      </Box>
-
+          {notices.map((notice) => (
+           <Box
+                            key={notice.id}
+                            sx={{
+                                width: { xs: '100%', sm: 300 },
+                                height: 200,
+                                borderRadius: 1,
+                                bgcolor: 'gray',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                cursor: 'pointer',
+                                textAlign: 'center',
+                                p: 2,
+                            }}
+                        >
+                            <Typography sx={{ color: "white", fontSize: { xs: '14px', sm: '16px' } }}>{notice.title}</Typography>
+                            <Typography sx={{ color: "white", fontSize: { xs: '10px', sm: '12px' } }}>
+                                Uploaded on: {new Date(notice.uploaded_at).toLocaleDateString()}
+                            </Typography>
+                            {notice.file_url && (
+                                <a href={notice.file_url} target="_blank" rel="noopener noreferrer" style={{ color: "#fff", marginTop: 8 }}>
+                                    View File
+                                </a>
+                            )}
+                        </Box>
+          ))}
+        </Grid>
+      </Grid>
     </>
   );
 };

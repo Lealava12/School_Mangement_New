@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import { Grid, Button, Typography } from '@mui/material';
@@ -34,22 +33,16 @@ const Notice = () => {
         }
 
         try {
-            // Upload file first to get the file path
             const formData = new FormData();
+            formData.append('title', title);
             formData.append('file', selectedFile);
 
-            const uploadResponse = await axios.post(`${apiBaseUrl}/upload`, formData, {
+            const response = await axios.post(`${apiBaseUrl}/admin/notices`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
 
-            const filePath = uploadResponse.data.file_path; // Get file path from the response
-
-            // Now send the notice information including file path
-            const noticeData = { title, file_path: filePath };
-
-            const response = await axios.post(`${apiBaseUrl}/admin/notices`, noticeData);
             alert(response.data.message);
             fetchNotices(); // Refresh the list of notices
             clearForm();
@@ -171,6 +164,7 @@ const Notice = () => {
                                 borderRadius: 1,
                                 bgcolor: 'gray',
                                 display: 'flex',
+                                flexDirection: 'column',
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 cursor: 'pointer',
@@ -182,6 +176,11 @@ const Notice = () => {
                             <Typography sx={{ color: "white", fontSize: { xs: '10px', sm: '12px' } }}>
                                 Uploaded on: {new Date(notice.uploaded_at).toLocaleDateString()}
                             </Typography>
+                            {notice.file_url && (
+                                <a href={notice.file_url} target="_blank" rel="noopener noreferrer" style={{ color: "#fff", marginTop: 8 }}>
+                                    View File
+                                </a>
+                            )}
                         </Box>
                     ))}
                 </Grid>

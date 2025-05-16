@@ -26,83 +26,60 @@ const Studentsnoticeview = () => {
   return (
     <>
       <Studentsidebar />
-      <Box
+     <Grid
+        className="contact-form"
         sx={{
-
-          p: 3,
-          borderRadius: 2,
-          maxWidth: "1300px",
-          mx: "auto",
-          mt: 13,
+          backgroundColor: "#f8f8f8",
+          padding: 2,
+          borderRadius: "8px",
+          width: { xs: '90%', sm: '80%', md: '70%' },
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          mt: 10
         }}
       >
-        <Typography style={{ color: "#000066", fontWeight: 600, fontSize: "18px", }}>
-          Notice Board:
+        <Typography sx={{ color: "#000066", fontWeight: 600, fontSize: { xs: '16px', sm: '18px' }, mb: 2 }}>
+          View Notices:
         </Typography>
-        <Grid container spacing={3} style={{ marginTop: "10px" }}>
+        <Grid
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: 2,
+            mt: 2
+          }}
+        >
           {notices.map((notice) => (
-            <Grid item xs={12} sm={6} md={4} key={notice.id}>
-              <Box
-                sx={{
-                  width: '100%',
-                  maxWidth: 300,
-                  minHeight: 200,
-                  borderRadius: 1,
-                  bgcolor: '#FFF5EE',
-                  border: '1px solid #ddd',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  padding: 2,
-                  boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-                  transition: 'transform 0.2s',
-                  mx: 'auto', // center box inside Grid item
-                  '&:hover': {
-                    transform: 'scale(1.02)',
-                  },
-                }}
-              >
-                <Typography
-                  sx={{
-                    fontWeight: 600,
-                    marginBottom: "10px",
-                    color: "#000066",
-                    textAlign: 'center',
-                  }}
-                >
-                  {notice.title}
-                </Typography>
-                {notice.file_path && (
-                  <img
-                    src={`http://localhost:5000${notice.file_path}`}
-                    alt={notice.title}
-                    style={{ maxWidth: "100%", maxHeight: "100px", objectFit: "contain" }}
-                  />
-                )}
-                <Typography
-                  sx={{
-                    fontSize: "12px",
-                    marginTop: "10px",
-                    color: "#666",
-                    textAlign: 'center',
-                  }}
-                >
-                  Posted on: {new Date(notice.uploaded_at).toLocaleDateString()}
-                </Typography>
-              </Box>
-            </Grid>
+           <Box
+                            key={notice.id}
+                            sx={{
+                                width: { xs: '100%', sm: 300 },
+                                height: 200,
+                                borderRadius: 1,
+                                bgcolor: 'gray',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                cursor: 'pointer',
+                                textAlign: 'center',
+                                p: 2,
+                            }}
+                        >
+                            <Typography sx={{ color: "white", fontSize: { xs: '14px', sm: '16px' } }}>{notice.title}</Typography>
+                            <Typography sx={{ color: "white", fontSize: { xs: '10px', sm: '12px' } }}>
+                                Uploaded on: {new Date(notice.uploaded_at).toLocaleDateString()}
+                            </Typography>
+                            {notice.file_url && (
+                                <a href={notice.file_url} target="_blank" rel="noopener noreferrer" style={{ color: "#fff", marginTop: 8 }}>
+                                    View File
+                                </a>
+                            )}
+                        </Box>
           ))}
-          {notices.length === 0 && (
-            <Grid item xs={12}>
-              <Typography style={{ textAlign: 'center', color: '#666' }}>
-                No notices available at the moment.
-              </Typography>
-            </Grid>
-          )}
         </Grid>
-
-      </Box>
+      </Grid>
     </>
   );
 };
