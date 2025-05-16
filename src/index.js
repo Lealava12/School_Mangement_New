@@ -11,7 +11,6 @@ import Teacherm from "./Teacherm";
 import Studentm from './Studentm'
 import reportWebVitals from './reportWebVitals';
 import Fee from "./Fee";
-import Reports from "./Reports";
 import Notice from './Notice';
 import Classm from "./Classm";
 import Attendancem from "./Attendancem";
@@ -53,7 +52,6 @@ root.render(
         <Route path="/Teacherm" element={<Teacherm />} />
         <Route path="/Studentm" element={<Studentm />} />
         <Route path="/Fee" element={<Fee />} />
-        <Route path="/Reports" element={<Reports />} />
         <Route path="/Notice" element={<Notice />} />
         <Route path="/Classm" element={<Classm />} />
         <Route path="/Attendancem" element={<Attendancem />} />
